@@ -3,14 +3,14 @@ using Plots, LightGraphs, JLD, LaTeXStrings
 include(joinpath("..", "src", "func_includer.jl"))
 
 N = 100; G = PathGraph(N)
-X = 1:N
+X = zeros(N,2); X[:,1] = 1:N
 L = Matrix(laplacian_matrix(G))
 lamb, V = eigen(L)
 V = (V' .* sign.(V[1,:]))'
 
 W = 1.0 .* adjacency_matrix(G)
 ht_vlist, ht_elist = HTree_Elist(V,W)
-deleteat!(ht_vlist,4:7); deleteat!(ht_elist,4:7)
+# deleteat!(ht_vlist,4:7); deleteat!(ht_elist,4:7)
 
 
 parent = HTree_findParent(ht_vlist)
@@ -19,11 +19,11 @@ wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist)
 
 # plot(wavelet_packet[5][1][:,10],legend = false)
 
-f = [exp(-(k-N/3)^2/10)+exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.02*randn(N); f ./= norm(f)
+# f = [exp(-(k-N/3)^2/10)+0.5*exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.1*randn(N); f ./= norm(f)
 
 # f = V[:,10] + [V[1:25,20]; zeros(75)] + [V[1:50,40]; zeros(50)]  + V[:,75]
 
-# f = randn(N)
+f = randn(N)
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
@@ -39,10 +39,12 @@ Wav_varimax = assemble_wavelet_basis(dvec_varimax,wavelet_packet_varimax)
 ord = findmax(abs.(Wav), dims = 1)[2][:]
 idx = sortperm([i[1] for i in ord])
 heatmap(Wav[:,idx])
+plot(Wav[:,idx[end]])
 
-
-plot(Wav[:,idx[1]])
-
+ord = findmax(abs.(Wav_varimax), dims = 1)[2][:]
+idx = sortperm([i[1] for i in ord])
+heatmap(Wav_varimax[:,idx])
+plot(Wav_varimax[:,idx[end]])
 
 
 
