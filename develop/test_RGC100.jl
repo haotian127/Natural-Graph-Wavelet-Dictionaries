@@ -1,10 +1,9 @@
 using Plots, LightGraphs, JLD, LaTeXStrings
-include("../../src/func_includer.jl")
-include("Proj.jl")
+include(joinpath("..", "src", "func_includer.jl"))
 
-G = loadgraph("../../datasets/RGC100.lgz")
+G = loadgraph(joinpath(@__DIR__, "..", "datasets", "RGC100.lgz"))
 N = nv(G)
-X = load("../../datasets/RGC100_xyz.jld","xyz")[:,1:2]
+X = load(joinpath(@__DIR__, "..", "datasets", "RGC100_xyz.jld"),"xyz")[:,1:2]
 L = Matrix(laplacian_matrix(G))
 lamb, V = eigen(L)
 sgn = (maximum(V, dims = 1)[:] .> -minimum(V, dims = 1)[:]) .* 2 .- 1
@@ -15,7 +14,7 @@ ht_vlist, ht_elist = HTree_Elist(V,W)
 parent = HTree_findParent(ht_vlist)
 wavelet_packet = HTree_wavelet_packet(V,ht_vlist,ht_elist)
 
-
+scatter_gplot(X; marker = wavelet_packet[10][1][:,1])
 
 # ### mutilated Gaussian signal
 # f_mutilatedGaussian = zeros(N)
@@ -30,7 +29,7 @@ wavelet_packet = HTree_wavelet_packet(V,ht_vlist,ht_elist)
 # f = zeros(N); f[findall((X[:,1] .< 0) .& (X[:,2] .> 20))] .= 1
 
 f = spike(1,N)
-scatter_gplot(X[:,1],X[:,2]; marker = f)
+
 
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
