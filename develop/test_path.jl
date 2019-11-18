@@ -1,5 +1,6 @@
 using Plots, LightGraphs, JLD, LaTeXStrings
-include("../src/func_includer.jl")
+# include("../src/func_includer.jl")
+include(joinpath("..", "src", "func_includer.jl"))
 
 N = 100; G = PathGraph(N)
 X = 1:N
@@ -14,23 +15,25 @@ deleteat!(ht_vlist,4:7); deleteat!(ht_elist,4:7)
 
 parent = HTree_findParent(ht_vlist)
 wavelet_packet = HTree_wavelet_packet(V,ht_vlist,ht_elist)
-
 wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist)
 
 # plot(wavelet_packet[5][1][:,10],legend = false)
 
-# f = [exp.(-(k-N/3)^2/10) for k = 1:N] .+ 0.02*randn(N); f ./= norm(f)
+f = [exp(-(k-N/3)^2/10)+exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.02*randn(N); f ./= norm(f)
 
 # f = V[:,10] + [V[1:25,20]; zeros(75)] + [V[1:50,40]; zeros(50)]  + V[:,75]
 
-f = randn(N)
+# f = randn(N)
 
-ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
-C = HTree_coeff2mat(ht_coeff,N)
-heatmap(abs.(C))
-
+ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
+# C = HTree_coeff2mat(ht_coeff,N)
 dvec = best_basis_algorithm(ht_vlist,parent,ht_coeff_L1)
-Wav = assemble_wavelet_basis(dvec,wavelet_packet_varimax)
+Wav = assemble_wavelet_basis(dvec,wavelet_packet)
+
+ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
+# C_varimax = HTree_coeff2mat(ht_coeff_varimax,N)
+dvec_varimax = best_basis_algorithm(ht_vlist,parent,ht_coeff_L1_varimax)
+Wav_varimax = assemble_wavelet_basis(dvec_varimax,wavelet_packet_varimax)
 
 ### order wavelet by locations
 ord = findmax(abs.(Wav), dims = 1)[2][:]
@@ -38,22 +41,27 @@ idx = sortperm([i[1] for i in ord])
 heatmap(Wav[:,idx])
 
 
-plot(Wav[:,idx[19]])
+plot(Wav[:,idx[1]])
 
 
 
 
 error_Wavelet = [1.0]
+error_Wavelet_varimax = [1.0]
 error_Laplacian = [1.0]
 for frac = 0.01:0.01:0.3
     numKept = Int(ceil(frac * N))
-    ## wavelet varimax reconstruction
+    ## wavelet reconstruction
     coeff_Wavelet = Wav' * f
     ind = sortperm(coeff_Wavelet.^2, rev = true)
     ind = ind[numKept+1:end]
-    # rc_f = Wav[:,ind] * coeff_Wavelet[ind]
-    # push!(error_Wavelet, norm(f - rc_f) / norm(f))
     push!(error_Wavelet, norm(coeff_Wavelet[ind])/norm(f))
+
+    ## wavelet varimax reconstruction
+    coeff_Wavelet_varimax = Wav_varimax' * f
+    ind = sortperm(coeff_Wavelet_varimax.^2, rev = true)
+    ind = ind[numKept+1:end]
+    push!(error_Wavelet_varimax, norm(coeff_Wavelet_varimax[ind])/norm(f))
 
     ## Laplacian reconstruction
     coeff_Laplacian = V' * f
@@ -66,5 +74,5 @@ end
 
 # gr(dpi = 300)
 fraction = 0:0.01:0.3
-plt = plot(fraction,[error_Wavelet error_Laplacian], yaxis=:log, lab = ["Wavelets","Laplacian"])
+plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Laplacian], yaxis=:log, lab = ["Wavelets","Wavelets_varimax","Laplacian"])
 # savefig(plt,"figs/signal_approx_path_1.png")
