@@ -2,7 +2,7 @@ using Plots, LightGraphs, JLD, LaTeXStrings
 # include("../src/func_includer.jl")
 include(joinpath("..", "src", "func_includer.jl"))
 
-N = 100; G = PathGraph(N)
+N = 100; G = path_graph(N)
 X = zeros(N,2); X[:,1] = 1:N
 L = Matrix(laplacian_matrix(G))
 lamb, V = eigen(L)
@@ -10,7 +10,7 @@ V = (V' .* sign.(V[1,:]))'
 
 W = 1.0 .* adjacency_matrix(G)
 ht_vlist, ht_elist = HTree_Elist(V,W)
-# deleteat!(ht_vlist,4:7); deleteat!(ht_elist,4:7)
+deleteat!(ht_vlist,5:7); deleteat!(ht_elist,5:7)
 
 
 parent = HTree_findParent(ht_vlist)
@@ -23,7 +23,7 @@ wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist)
 
 # f = V[:,10] + [V[1:25,20]; zeros(75)] + [V[1:50,40]; zeros(50)]  + V[:,75]
 
-f = randn(N)
+f = spike(10,N)
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
@@ -39,12 +39,12 @@ Wav_varimax = assemble_wavelet_basis(dvec_varimax,wavelet_packet_varimax)
 ord = findmax(abs.(Wav), dims = 1)[2][:]
 idx = sortperm([i[1] for i in ord])
 heatmap(Wav[:,idx])
-plot(Wav[:,idx[end]])
+plot(Wav[:,idx[end]], legend = false)
 
 ord = findmax(abs.(Wav_varimax), dims = 1)[2][:]
 idx = sortperm([i[1] for i in ord])
 heatmap(Wav_varimax[:,idx])
-plot(Wav_varimax[:,idx[end]])
+plot(Wav_varimax[:,idx[20]], legend = false)
 
 
 
