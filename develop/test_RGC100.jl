@@ -14,7 +14,8 @@ ht_vlist, ht_elist = HTree_Elist(V,W)
 parent = HTree_findParent(ht_vlist)
 wavelet_packet = HTree_wavelet_packet(V,ht_vlist,ht_elist)
 
-# for lvl in 1:10; plt = scatter_gplot(X; marker = wavelet_packet[lvl][1][:,1]); savefig(plt, "figs\\RGC100_wavelet_layer$(lvl-1).png"); end
+ind = findall((X[:,1] .> -50) .& (X[:,1] .< 50) .& (X[:,2] .> -30) .& (X[:,2] .< 50))
+for lvl in 1:10; plt = scatter_gplot(X[ind,:]; marker = wavelet_packet[lvl][1][ind,1], ms = 8); savefig(plt, "figs\\RGC100_wavelet_layer$(lvl-1)_zoomin.png"); end
 
 # ### mutilated Gaussian signal
 # f_mutilatedGaussian = zeros(N)
