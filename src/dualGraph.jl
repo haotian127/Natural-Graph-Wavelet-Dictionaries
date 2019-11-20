@@ -1,4 +1,4 @@
-function dualGraph(D; method = "Gaussian", σ = 1)
+function dualGraph(D; method = "inverse", σ = 1)
 # inputs: eigenvector distance matrix
 # outputs: weight matrix of the dual graph
     n = size(D)[1]

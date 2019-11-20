@@ -1,46 +1,41 @@
 function Proj(x,A)
     ### project x into matrix A's column space, given A is full column rank
-    y = pinv(A'*A)*(A'*x)
+    y = try
+        pinv(A'*A)*(A'*x)
+    catch err
+        if err != Nothing
+            A'*x
+        end
+    end
     return A*y
 end
-
-
-
-
 
 function wavelet_perp_Matrix(w,A)
     N,k = size(A)
     B = zeros(N,k-1)
-
     if k == 1
         return
     end
-
     tmp = A'*w
-    if tmp[1] > 1e-8
+    if tmp[1] > 1e-6
         M = Matrix{Float64}(I, k-1, k-1)
         return A*vcat((-tmp[2:end] ./ tmp[1])', M)
     end
-    if tmp[end] > 1e-8
+    if tmp[end] > 1e-6
         M = Matrix{Float64}(I, k-1, k-1)
         return A*vcat(M,(-tmp[1:end-1] ./ tmp[end])')
     end
-
     ind = findall(tmp .== maximum(tmp))[1]
     rest_ind = setdiff([i for i in 1:k],ind)
     M = Matrix{Float64}(I, k-1, k-1)
     B = A * vcat(vcat(M[1:ind-1,:], (-tmp[rest_ind] ./ tmp[ind])'), M[ind:end,:])
-
-
     return B
 end
-
 
 function HTree_Vlist(W)
     #input: weighted adjacency_matrix W
     #output: hierarchical tree of vertices
     ht_vlist = [Vlist_Part(W)]
-
     while length(ht_vlist[end]) < N
         lvl_vlist = Vlist_Part(W[ht_vlist[end][1],ht_vlist[end][1]]; v_idx = ht_vlist[end][1])
         for i = 2:length(ht_vlist[end])
@@ -57,21 +52,17 @@ function Vlist_Part(W;v_idx = 1:size(W,1))
     if size(W,1) == 1
         return [v_idx]
     end
-
     p = partition_fiedler(W)[1]
     vlist1 = findall(p .> 0)
     vlist2 = findall(p .< 0)
     return [v_idx[vlist1],v_idx[vlist2]]
 end
 
-
-
-function HTree_Elist(V,W)
+function HTree_VElist(V,W)
     #input: hierarchical tree of vertices; eigenvectors V
     #output: hierarchical tree of eigenvectors
     ht_elist = [Elist_Part(V,W)]
     ht_vlist = [Vlist_Part(W)]
-
     while length(ht_elist[end]) < N
         lvl_elist = Elist_Part(V,W; e_idx = ht_elist[end][1],v_idx = ht_vlist[end][1])
         lvl_vlist = Vlist_Part(W[ht_vlist[end][1],ht_vlist[end][1]]; v_idx = ht_vlist[end][1])
@@ -84,7 +75,6 @@ function HTree_Elist(V,W)
     end
     return ht_vlist, ht_elist
 end
-
 
 function Elist_Part(V,W; e_idx = 1:size(V,2), v_idx = 1:size(V,2))
     ## partition e_idx into two sets of indicies
@@ -103,6 +93,55 @@ function Elist_Part(V,W; e_idx = 1:size(V,2), v_idx = 1:size(V,2))
 
     return [elist1,elist2]
 end
+
+
+function HTree_EVlist(V,W_dual)
+    #input: hierarchical tree of vertices; eigenvectors V
+    #output: hierarchical tree of eigenvectors
+    ht_elist = [DElist_Part(W_dual)]
+    ht_vlist = [DVlist_Part(V,W_dual)]
+    while length(ht_elist[end]) < N
+        lvl_elist = DElist_Part(W_dual; e_idx = ht_elist[end][1])
+        lvl_vlist = DVlist_Part(V, W_dual; e_idx = ht_elist[end][1], v_idx = ht_vlist[end][1])
+        for i = 2:length(ht_elist[end])
+            lvl_elist = vcat(lvl_elist, DElist_Part(W_dual; e_idx = ht_elist[end][i]))
+            lvl_vlist = vcat(lvl_vlist, DVlist_Part(V, W_dual; e_idx = ht_elist[end][i], v_idx = ht_vlist[end][i]))
+        end
+        push!(ht_elist,lvl_elist)
+        push!(ht_vlist,lvl_vlist)
+    end
+    return ht_elist, ht_vlist
+end
+
+function DVlist_Part(V,W_dual; v_idx = 1:size(V,2), e_idx = 1:size(V,2))
+    ## partition v_idx into two sets of indicies
+    if length(v_idx) == 1
+        return [e_idx]
+    end
+
+    p = partition_fiedler(W_dual[e_idx,e_idx])[1]
+    elist1 = findall(p .> 0)
+    # elist2 = findall(p .< 0)
+
+    Ve = V[v_idx,:] .^ 2
+    energyDistr_eigvecs = sum(Ve[:,elist1],dims = 2)[:]
+    vlist1 = sort(v_idx[sortperm(energyDistr_eigvecs; rev = true)[1:length(elist1)]])
+    vlist2 = setdiff(v_idx,vlist1)
+
+    return [vlist1,vlist2]
+end
+
+function DElist_Part(W_dual; e_idx = 1:size(W_dual,1))
+    ## partition e_idx into two sets of indicies
+    if length(e_idx) == 1
+        return [e_idx]
+    end
+    p = partition_fiedler(W_dual[e_idx,e_idx])[1]
+    elist1 = findall(p .> 0)
+    elist2 = findall(p .< 0)
+    return [e_idx[elist1],e_idx[elist2]]
+end
+
 
 
 
@@ -183,6 +222,17 @@ function assemble_wavelet_basis(dvec,wavelet_packet)
     end
     for i in 2:length(dvec)
         W = hcat(W,wavelet_packet[dvec[i][1]][dvec[i][2]])
+    end
+    return W
+end
+
+function assemble_wavelet_basis_at_certain_layer(wavelet_packet; layer = 1)
+    W = wavelet_packet[layer][1]
+    if length(wavelet_packet[layer]) < 2
+        return W
+    end
+    for i in 2:length(wavelet_packet[layer])
+        W = hcat(W,wavelet_packet[layer][i])
     end
     return W
 end
