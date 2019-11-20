@@ -11,11 +11,11 @@ V = (V' .* sgn)'
 
 W = 1.0 .* adjacency_matrix(G)
 ht_vlist, ht_elist = HTree_Elist(V,W)
-parent = HTree_findParent(ht_vlist)
+parent_vertex = HTree_findParent(ht_vlist)
 wavelet_packet = HTree_wavelet_packet(V,ht_vlist,ht_elist)
 
 ind = findall((X[:,1] .> -50) .& (X[:,1] .< 50) .& (X[:,2] .> -30) .& (X[:,2] .< 50))
-for lvl in 1:10; plt = scatter_gplot(X[ind,:]; marker = wavelet_packet[lvl][1][ind,1], ms = 8); savefig(plt, "figs\\RGC100_wavelet_layer$(lvl-1)_zoomin.png"); end
+for lvl in 1:10; gplot(W[ind,ind],X[ind,:]); plt = scatter_gplot!(X[ind,:]; marker = wavelet_packet[lvl][1][ind,1], ms = 8); savefig(plt, "figs\\RGC100_wavelet_layer$(lvl-1)_zoomin.png"); end
 
 # ### mutilated Gaussian signal
 # f_mutilatedGaussian = zeros(N)
