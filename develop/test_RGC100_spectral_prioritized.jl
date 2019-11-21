@@ -130,19 +130,3 @@ plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:l
 #
 # ind = findall((X[:,1] .> -50) .& (X[:,1] .< 50) .& (X[:,2] .> -30) .& (X[:,2] .< 50)); plt = scatter_gplot(X[ind,:]; marker = WB[:,3], ms = 8)
 # # savefig(plt, "figs\\RGC100_wavelet_spectral_layer$(lvl-1)_zoomin.png")
-
-
-
-
-
-
-
-
-
-
-try
-    a = sqrt(3)
-catch
-    a = sqrt(10)
-end
-print(a)

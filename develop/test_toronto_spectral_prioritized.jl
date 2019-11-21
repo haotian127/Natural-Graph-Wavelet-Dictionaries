@@ -1,18 +1,22 @@
-using Plots, LightGraphs, JLD, LaTeXStrings
+using Plots, LightGraphs, JLD, LaTeXStrings, Distances
 # include("../src/func_includer.jl")
 include(joinpath("..", "src", "func_includer.jl"))
 
 G = loadgraph(joinpath(@__DIR__, "..", "datasets", "new_toronto_graph.lgz"))
 N = nv(G)
 X = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"xy")
-L = Matrix(laplacian_matrix(G))
+W = 1.0 .* adjacency_matrix(G)
+dist_X = pairwise(Euclidean(),X; dims = 1)
+Weight = W .* dualGraph(dist_X; method = "inverse") # weighted adjacence matrix
+L = Matrix(Diagonal(sum(Weight;dims = 1)[:]) - Weight)
+# L = Matrix(laplacian_matrix(G))
 lamb, V = eigen(L)
 sgn = (maximum(V, dims = 1)[:] .> -minimum(V, dims = 1)[:]) .* 2 .- 1
 V = (V' .* sgn)'
 Q = incidence_matrix(G; oriented = true)
-W = 1.0 * adjacency_matrix(G)
+edge_weights = 1 ./ sqrt.(sum((Q' * X).^2, dims = 2)[:])
 
-dist_DAG = eigDAG_Distance(V,Q,N)
+dist_DAG = eigDAG_Distance(V,Q,N; edge_weight = edge_weights)
 W_dual = sparse(dualGraph(dist_DAG)) #sparse dual weighted adjacence matrix
 
 ht_vlist, ht_elist = HTree_VElist(V,W)
@@ -32,15 +36,15 @@ wavelet_packet_dual = HTree_wavelet_packet(V,ht_vlist_dual,ht_elist_dual)
 
 
 
-f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fv")
-# f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
+# f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fv")
+f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
 
 
 
 
 # f = zeros(N); ind = findall((X[:,1] .< 0) .& (X[:,2] .> 20)); f[ind] .= sin.(X[ind,2] .* 0.1); f[1] = 1; ind2 = findall((X[:,1] .> 90) .& (X[:,2] .< 20)); f[ind2] .= sin.(X[ind2,1] .* 0.07)
-gplot(W,X); plt = scatter_gplot!(X; marker = f)
-savefig(plt, "figs\\toronto_fv.png")
+# gplot(W,X); plt = scatter_gplot!(X; marker = f)
+# savefig(plt, "figs\\toronto_fv.png")
 
 
 
@@ -63,7 +67,7 @@ Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 ord = findmax(abs.(Wav), dims = 1)[2][:]
 idx = sortperm([i[1] for i in ord])
 heatmap(Wav[:,idx])
-plot(Wav[:,idx[end]], legend = false)
+# plot(Wav[:,idx[end]], legend = false)
 
 # ord = findmax(abs.(Wav_varimax), dims = 1)[2][:]
 # idx = sortperm([i[1] for i in ord])
@@ -73,7 +77,7 @@ plot(Wav[:,idx[end]], legend = false)
 ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
 idx = sortperm([i[1] for i in ord])
 heatmap(Wav_dual[:,idx])
-plot(Wav_dual[:,idx[30]], legend = false)
+# plot(Wav_dual[:,idx[30]], legend = false)
 
 
 
@@ -120,12 +124,12 @@ savefig(plt,"figs/signal_approx_toronto_fp.png")
 ######################################
 ### wavelet visualization
 ######################################
-lvl = 9; WB = assemble_wavelet_basis_at_certain_layer(wavelet_packet_dual; layer = lvl); ord = findmax(abs.(WB), dims = 1)[2][:]; idx = sortperm([i[1] for i in ord]); WB = WB[:,idx]
+# lvl = 9; WB = assemble_wavelet_basis_at_certain_layer(wavelet_packet_dual; layer = lvl); ord = findmax(abs.(WB), dims = 1)[2][:]; idx = sortperm([i[1] for i in ord]); WB = WB[:,idx]
 
 ind = findall((X[:,1] .> -79.4) .& (X[:,1] .< -79.35) .& (X[:,2] .> 43.62) .& (X[:,2] .< 43.66));
-scatter_gplot(X; marker = WB[:,1]); plt = plot!(framestyle = :none)
+# scatter_gplot(X; marker = WB[:,1]); plt = plot!(framestyle = :none)
 # savefig(plt, "figs\\RGC100_wavelet_spectral_layer$(lvl-1)_zoomin.png")
 
 
 
-for lvl in 1:15; gplot(W[ind,ind],X[ind,:]);scatter_gplot!(X[ind,:]; marker = wavelet_packet[lvl][1][ind,1], ms = 8); plt = plot!(framestyle = :none); savefig(plt, "figs\\toronto_wavelet_layer$(lvl-1)_zoomin.png"); end
+for lvl in 1:15; gplot(W[ind,ind],X[ind,:]);scatter_gplot!(X[ind,:]; marker = assemble_wavelet_basis_at_certain_layer(wavelet_packet; layer = lvl)[ind,1], ms = 8); plt = plot!(framestyle = :none); savefig(plt, "figs\\toronto_wavelet_layer$(lvl-1)_zoomin.png"); end

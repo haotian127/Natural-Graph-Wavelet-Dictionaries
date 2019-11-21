@@ -226,13 +226,13 @@ function assemble_wavelet_basis(dvec,wavelet_packet)
     return W
 end
 
-function assemble_wavelet_basis_at_certain_layer(wavelet_packet; layer = 1)
-    W = wavelet_packet[layer][1]
-    if length(wavelet_packet[layer]) < 2
+function assemble_wavelet_basis_at_certain_layer(wavelet_packet, ht_vlist; layer = 1)
+    W = wavelet_packet[1][1]
+    if layer < 2
         return W
     end
     for i in 2:length(wavelet_packet[layer])
-        W = hcat(W,wavelet_packet[layer][i])
+        W[:,ht_vlist[layer][i]] = wavelet_packet[layer][i]
     end
     return W
 end
