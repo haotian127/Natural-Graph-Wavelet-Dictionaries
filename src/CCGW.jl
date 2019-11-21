@@ -227,12 +227,12 @@ function assemble_wavelet_basis(dvec,wavelet_packet)
 end
 
 function assemble_wavelet_basis_at_certain_layer(wavelet_packet, ht_vlist; layer = 1)
-    W = wavelet_packet[1][1]
+    W = zeros(size(wavelet_packet[1][1]))
     if layer < 2
-        return W
+        return wavelet_packet[1][1]
     end
     for i in 2:length(wavelet_packet[layer])
-        W[:,ht_vlist[layer][i]] = wavelet_packet[layer][i]
+        W[:,ht_vlist[layer-1][i]] .= wavelet_packet[layer][i]
     end
     return W
 end

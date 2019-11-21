@@ -36,14 +36,14 @@ wavelet_packet_dual = HTree_wavelet_packet(V,ht_vlist_dual,ht_elist_dual)
 
 
 
-# f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fv")
-f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
+f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fv")
+# f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
 
 
 
 
 # f = zeros(N); ind = findall((X[:,1] .< 0) .& (X[:,2] .> 20)); f[ind] .= sin.(X[ind,2] .* 0.1); f[1] = 1; ind2 = findall((X[:,1] .> 90) .& (X[:,2] .< 20)); f[ind2] .= sin.(X[ind2,1] .* 0.07)
-# gplot(W,X); plt = scatter_gplot!(X; marker = f)
+ind = sortperm(abs.(f)); gplot(W[ind,ind],X[ind,:]); plt = scatter_gplot!(X[ind,:]; marker = f[ind])
 # savefig(plt, "figs\\toronto_fv.png")
 
 
@@ -132,4 +132,9 @@ ind = findall((X[:,1] .> -79.4) .& (X[:,1] .< -79.35) .& (X[:,2] .> 43.62) .& (X
 
 
 
-for lvl in 1:15; gplot(W[ind,ind],X[ind,:]);scatter_gplot!(X[ind,:]; marker = assemble_wavelet_basis_at_certain_layer(wavelet_packet; layer = lvl)[ind,1], ms = 8); plt = plot!(framestyle = :none); savefig(plt, "figs\\toronto_wavelet_layer$(lvl-1)_zoomin.png"); end
+for lvl in 1:10; gplot(W[ind,ind],X[ind,:]);scatter_gplot!(X[ind,:]; marker = assemble_wavelet_basis_at_certain_layer(wavelet_packet_dual, ht_vlist_dual; layer = lvl)[ind,1], ms = 8); plt = plot!(framestyle = :none); savefig(plt, "figs\\toronto_wavelet_dual_layer$(lvl-1)_zoomin.png"); end
+
+# lvl = 12; scatter_gplot(X[ind,:]; marker = assemble_wavelet_basis_at_certain_layer(wavelet_packet_dual, ht_vlist_dual; layer = lvl)[ind,1], ms = 8)
+
+# gplot(W,X, width = 1); plt = plot!(aspect_ratio = 1)
+# savefig(plt, "figs\\toronto.png")

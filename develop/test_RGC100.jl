@@ -74,3 +74,6 @@ end
 fraction = 0:0.01:0.3
 plt = plot(fraction,[error_Wavelet error_Laplacian], yaxis=:log, lab = ["Wavelets","Laplacian"])
 # savefig(plt,"figs/signal_approx_RGC100_constUL.png")
+
+# gplot(W,X, width = 1); plt = plot!(aspect_ratio = 1)
+# savefig(plt, "figs\\RGC100.png")
