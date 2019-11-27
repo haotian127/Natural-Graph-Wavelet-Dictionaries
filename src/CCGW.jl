@@ -292,7 +292,7 @@ end
 
 
 function HTree_findParent(ht_vlist)
-    #input: weighted adjacency_matrix W
+    #input: hierarchical tree vertex list
     #output: find parent
     L = length(ht_vlist)
     parent = [[[1,2]]]
@@ -338,4 +338,39 @@ function HTree_coeff2mat(ht_coeff,N)
         C[:,lvl] = tmp
     end
     return C'
+end
+
+
+
+function HTree_wavelet_packet_unorthogonalized(V,ht_vlist,ht_elist)
+    N = size(V,1)
+    wav_packet = [[Matrix{Float64}(I, N, N)]]
+    L = length(ht_vlist)
+    for lvl in 1:L
+        tmp = [const_proj_wavelets_unorthogonalized(V,ht_vlist[lvl][1],ht_elist[lvl][1])]
+        for i in 2:length(ht_vlist[lvl])
+            vlist = ht_vlist[lvl][i]
+            elist = ht_elist[lvl][i]
+            push!(tmp,const_proj_wavelets_unorthogonalized(V,vlist,elist))
+        end
+        push!(wav_packet,tmp)
+    end
+    return wav_packet
+end
+
+function const_proj_wavelets_unorthogonalized(V,vlist,elist)
+    if length(vlist) == 1
+        return V[:,elist]
+    end
+    N = size(V,1)
+    m = length(vlist)
+    Wav = zeros(N,m)
+
+    B = V[:,elist]
+    for k in 1:length(vlist)
+        wavelet = B*B'*spike(vlist[k],N)
+        Wav[:,k] .= wavelet ./ norm(wavelet)
+    end
+
+    return Wav
 end
