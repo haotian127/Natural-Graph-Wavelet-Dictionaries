@@ -2,7 +2,7 @@ using Plots, LightGraphs, JLD, LaTeXStrings
 # include("../src/func_includer.jl")
 include(joinpath("..", "src", "func_includer.jl"))
 
-N = 63; G = path_graph(N)
+N = 15; G = path_graph(N)
 X = zeros(N,2); X[:,1] = 1:N
 L = Matrix(laplacian_matrix(G))
 lamb, V = eigen(L)
@@ -41,11 +41,11 @@ wavelet_packet_dual_unortho = HTree_wavelet_packet_unorthogonalized(V,ht_vlist_d
 
 # f = V[:,10] + [V[1:25,20]; zeros(N-25)] + [zeros(50);V[51:end,40]]  + V[:,75]
 
-# f = spike(10,N)
+f = spike(10,N)
 
 # f = rand(N)
 
-f = [1 .- [(abs(k-24.9))^.5 for k = 1:50] ./ 5; zeros(N-50)] + [zeros(50);V[51:end,40]]
+# f = [1 .- [(abs(k-24.9))^.5 for k = 1:50] ./ 5; zeros(N-50)] + [zeros(50);V[51:end,40]]
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
@@ -123,14 +123,14 @@ plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual erro
 
 
 
-# heatmap(wavelet_packet_varimax[2][2])
-anim = @animate for i=1:32
-    WW = wavelet_packet_dual_unortho[2][1]
-    WW = Matrix(qr(WW).Q)
-    sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
-    WW = (WW' .* sgn)'
-    ord = findmax(abs.(WW), dims = 1)[2][:]
-    idx = sortperm([i[1] for i in ord])
-    plot(WW[:,idx[i]], legend = false)
-end
-gif(anim, "anim.gif", fps = 4)
+# # heatmap(wavelet_packet_varimax[2][2])
+# anim = @animate for i=1:32
+#     WW = wavelet_packet_dual_unortho[2][1]
+#     WW = Matrix(qr(WW).Q)
+#     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
+#     WW = (WW' .* sgn)'
+#     ord = findmax(abs.(WW), dims = 1)[2][:]
+#     idx = sortperm([i[1] for i in ord])
+#     plot(WW[:,idx[i]], legend = false)
+# end
+# gif(anim, "anim.gif", fps = 4)
