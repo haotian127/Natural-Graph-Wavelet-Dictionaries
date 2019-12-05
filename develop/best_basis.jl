@@ -32,7 +32,6 @@ function best_basis_algorithm2(ht_vlist,Parent,ht_coeff_L1)
     Subspaces = [union_array_of_arrays(Subspaces_copy[pair]) for pair in Parent[Lvl-1]]
 
     for lvl = Lvl-1:-1:1
-        global dvec, Subspaces
         dvec_copy = copy(dvec)
         Subspaces_copy = copy(Subspaces)
         tmp_count = 0
