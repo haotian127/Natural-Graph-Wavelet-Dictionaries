@@ -8,7 +8,6 @@ function best_basis_algorithm2(ht_vlist,Parent,ht_coeff_L1)
     tmp_count = 0
     tmp_loc = []
     for i in 1:length(Subspaces)
-        global tmp_count
         pair = Subspaces[i]
         if length(pair) == 1
             ind = findall(x -> x == dvec[pair[1]],dvec_copy)[1]

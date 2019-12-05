@@ -50,7 +50,7 @@ ind = sortperm(abs.(f)); gplot(W[ind,ind],X[ind,:]); plt = scatter_gplot!(X[ind,
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
-dvec = best_basis_algorithm(ht_vlist,parent_vertex,ht_coeff_L1)
+dvec = best_basis_algorithm2(ht_vlist,parent_vertex,ht_coeff_L1)
 Wav = assemble_wavelet_basis(dvec,wavelet_packet)
 
 # ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
@@ -60,7 +60,7 @@ Wav = assemble_wavelet_basis(dvec,wavelet_packet)
 
 ht_coeff_dual, ht_coeff_L1_dual = HTree_coeff_wavelet_packet(f,wavelet_packet_dual)
 # C_dual = HTree_coeff2mat(ht_coeff_dual,N)
-dvec_dual = best_basis_algorithm(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
+dvec_dual = best_basis_algorithm2(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
 Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
 ### order wavelet by locations
@@ -117,7 +117,7 @@ end
 gr(dpi = 300)
 fraction = 0:0.01:0.3
 plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["WB_vertex","WB_spectral","Laplacian"], linestyle = [:dot :dashdot :solid], linewidth = 3)
-# savefig(plt,"figs/signal_approx_toronto_fp.png")
+savefig(plt,"figs/signal_approx_toronto_fv.png")
 
 
 

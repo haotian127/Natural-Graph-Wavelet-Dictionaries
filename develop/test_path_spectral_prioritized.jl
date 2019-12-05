@@ -2,7 +2,7 @@ using Plots, LightGraphs, JLD, LaTeXStrings
 # include("../src/func_includer.jl")
 include(joinpath("..", "src", "func_includer.jl"))
 
-N = 15; G = path_graph(N)
+N = 127; G = path_graph(N)
 X = zeros(N,2); X[:,1] = 1:N
 L = Matrix(laplacian_matrix(G))
 lamb, V = eigen(L)
@@ -37,11 +37,11 @@ wavelet_packet_dual_unortho = HTree_wavelet_packet_unorthogonalized(V,ht_vlist_d
 
 # plot(wavelet_packet[5][1][:,10],legend = false)
 
-# f = [exp(-(k-N/3)^2/10)+0.5*exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.1*randn(N); f ./= norm(f)
+f = [exp(-(k-N/3)^2/10)+0.5*exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.1*randn(N); f ./= norm(f)
 
 # f = V[:,10] + [V[1:25,20]; zeros(N-25)] + [zeros(50);V[51:end,40]]  + V[:,75]
 
-f = spike(10,N)
+# f = spike(10,N)
 
 # f = rand(N)
 
@@ -49,18 +49,18 @@ f = spike(10,N)
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
-dvec = best_basis_algorithm(ht_vlist,parent_vertex,ht_coeff_L1)
+dvec = best_basis_algorithm2(ht_vlist,parent_vertex,ht_coeff_L1)
 Wav = assemble_wavelet_basis(dvec,wavelet_packet)
 
 ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
 # C_varimax = HTree_coeff2mat(ht_coeff_varimax,N)
 parent_varimax = HTree_findParent(ht_elist_varimax)
-dvec_varimax = best_basis_algorithm(ht_elist_varimax,parent_varimax,ht_coeff_L1_varimax)
+dvec_varimax = best_basis_algorithm2(ht_elist_varimax,parent_varimax,ht_coeff_L1_varimax)
 Wav_varimax = assemble_wavelet_basis(dvec_varimax,wavelet_packet_varimax)
 
 ht_coeff_dual, ht_coeff_L1_dual = HTree_coeff_wavelet_packet(f,wavelet_packet_dual)
 # C_varimax = HTree_coeff2mat(ht_coeff_varimax,N)
-dvec_dual = best_basis_algorithm(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
+dvec_dual = best_basis_algorithm2(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
 Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
 # ### order wavelet by locations
@@ -74,10 +74,10 @@ Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 # heatmap(Wav_varimax[:,idx])
 # plot(Wav_varimax[:,idx[20]], legend = false)
 #
-# ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
-# idx = sortperm([i[1] for i in ord])
-# heatmap(Wav_dual[:,idx])
-# plot(Wav_dual[:,idx[30]], legend = false)
+ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
+idx = sortperm([i[1] for i in ord])
+heatmap(Wav_dual[:,idx])
+plot(Wav_dual[:,idx[100]], legend = false)
 
 
 
