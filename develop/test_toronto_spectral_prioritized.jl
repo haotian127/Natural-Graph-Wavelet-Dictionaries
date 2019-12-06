@@ -36,8 +36,8 @@ wavelet_packet_dual = HTree_wavelet_packet(V,ht_vlist_dual,ht_elist_dual)
 
 
 
-f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fv")
-# f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
+# f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fv")
+f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
 
 
 
@@ -64,9 +64,9 @@ dvec_dual = best_basis_algorithm2(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
 Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
 ### order wavelet by locations
-ord = findmax(abs.(Wav), dims = 1)[2][:]
-idx = sortperm([i[1] for i in ord])
-heatmap(Wav[:,idx])
+# ord = findmax(abs.(Wav), dims = 1)[2][:]
+# idx = sortperm([i[1] for i in ord])
+# heatmap(Wav[:,idx])
 # plot(Wav[:,idx[end]], legend = false)
 
 # ord = findmax(abs.(Wav_varimax), dims = 1)[2][:]
@@ -74,9 +74,9 @@ heatmap(Wav[:,idx])
 # heatmap(Wav_varimax[:,idx])
 # plot(Wav_varimax[:,idx[20]], legend = false)
 
-ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
-idx = sortperm([i[1] for i in ord])
-heatmap(Wav_dual[:,idx])
+# ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
+# idx = sortperm([i[1] for i in ord])
+# heatmap(Wav_dual[:,idx])
 # plot(Wav_dual[:,idx[30]], legend = false)
 
 
@@ -85,10 +85,14 @@ error_Wavelet = [1.0]
 # error_Wavelet_varimax = [1.0]
 error_Wavelet_dual = [1.0]
 error_Laplacian = [1.0]
+
+coeff_Wavelet = Wav' * f
+coeff_Wavelet_dual = Wav_dual' * f
+coeff_Laplacian = V' * f
+
 for frac = 0.01:0.01:0.3
     numKept = Int(ceil(frac * N))
     ## wavelet reconstruction
-    coeff_Wavelet = Wav' * f
     ind = sortperm(coeff_Wavelet.^2, rev = true)
     ind = ind[numKept+1:end]
     push!(error_Wavelet, norm(coeff_Wavelet[ind])/norm(f))
@@ -100,13 +104,11 @@ for frac = 0.01:0.01:0.3
     # push!(error_Wavelet_varimax, norm(coeff_Wavelet_varimax[ind])/norm(f))
 
     ## wavelet dual reconstruction
-    coeff_Wavelet_dual = Wav_dual' * f
     ind = sortperm(coeff_Wavelet_dual.^2, rev = true)
     ind = ind[numKept+1:end]
     push!(error_Wavelet_dual, norm(coeff_Wavelet_dual[ind])/norm(f))
 
     ## Laplacian reconstruction
-    coeff_Laplacian = V' * f
     ind = sortperm(coeff_Laplacian.^2, rev = true)
     ind = ind[numKept+1:end]
     # rc_f = V[:,ind] * coeff_Laplacian[ind]
@@ -117,7 +119,7 @@ end
 gr(dpi = 300)
 fraction = 0:0.01:0.3
 plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["WB_vertex","WB_spectral","Laplacian"], linestyle = [:dot :dashdot :solid], linewidth = 3)
-savefig(plt,"figs/signal_approx_toronto_fv.png")
+# savefig(plt,"figs/signal_approx_toronto_fp.png")
 
 
 
@@ -126,13 +128,13 @@ savefig(plt,"figs/signal_approx_toronto_fv.png")
 ######################################
 # lvl = 9; WB = assemble_wavelet_basis_at_certain_layer(wavelet_packet_dual; layer = lvl); ord = findmax(abs.(WB), dims = 1)[2][:]; idx = sortperm([i[1] for i in ord]); WB = WB[:,idx]
 
-ind = findall((X[:,1] .> -79.4) .& (X[:,1] .< -79.35) .& (X[:,2] .> 43.62) .& (X[:,2] .< 43.66));
+# ind = findall((X[:,1] .> -79.4) .& (X[:,1] .< -79.35) .& (X[:,2] .> 43.62) .& (X[:,2] .< 43.66));
 # scatter_gplot(X; marker = WB[:,1]); plt = plot!(framestyle = :none)
 # savefig(plt, "figs\\RGC100_wavelet_spectral_layer$(lvl-1)_zoomin.png")
 
 
 
-for lvl in 1:10; gplot(W[ind,ind],X[ind,:]);scatter_gplot!(X[ind,:]; marker = assemble_wavelet_basis_at_certain_layer(wavelet_packet_dual, ht_vlist_dual; layer = lvl)[ind,1], ms = 8); plt = plot!(framestyle = :none); savefig(plt, "figs\\toronto_wavelet_dual_layer$(lvl-1)_zoomin.png"); end
+# for lvl in 1:10; gplot(W[ind,ind],X[ind,:]);scatter_gplot!(X[ind,:]; marker = assemble_wavelet_basis_at_certain_layer(wavelet_packet_dual, ht_vlist_dual; layer = lvl)[ind,1], ms = 8); plt = plot!(framestyle = :none); savefig(plt, "figs\\toronto_wavelet_dual_layer$(lvl-1)_zoomin.png"); end
 
 # lvl = 12; scatter_gplot(X[ind,:]; marker = assemble_wavelet_basis_at_certain_layer(wavelet_packet_dual, ht_vlist_dual; layer = lvl)[ind,1], ms = 8)
 

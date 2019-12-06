@@ -38,14 +38,14 @@ wavelet_packet_dual = HTree_wavelet_packet(V,ht_vlist_dual,ht_elist_dual)
 # f = V[:,10] + [V[1:25,20]; zeros(75)] + [V[1:50,40]; zeros(50)]  + V[:,75]
 
 f = zeros(N); ind = findall((X[:,1] .< 0) .& (X[:,2] .> 20)); f[ind] .= sin.(X[ind,2] .* 0.1); f[1] = 1; ind2 = findall((X[:,1] .> 90) .& (X[:,2] .< 20)); f[ind2] .= sin.(X[ind2,1] .* 0.07)
-plt = scatter_gplot(X; marker = f)
-savefig(plt, "figs\\RGC100_SinSpikeSin.png")
+# plt = scatter_gplot(X; marker = f)
+# savefig(plt, "figs\\RGC100_SinSpikeSin.png")
 
 
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
-dvec = best_basis_algorithm(ht_vlist,parent_vertex,ht_coeff_L1)
+dvec = best_basis_algorithm2(ht_vlist,parent_vertex,ht_coeff_L1)
 Wav = assemble_wavelet_basis(dvec,wavelet_packet)
 
 # ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
@@ -55,29 +55,29 @@ Wav = assemble_wavelet_basis(dvec,wavelet_packet)
 
 ht_coeff_dual, ht_coeff_L1_dual = HTree_coeff_wavelet_packet(f,wavelet_packet_dual)
 # C_dual = HTree_coeff2mat(ht_coeff_dual,N)
-dvec_dual = best_basis_algorithm(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
+dvec_dual = best_basis_algorithm2(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
 Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
-### order wavelet by locations
-ord = findmax(abs.(Wav), dims = 1)[2][:]
-idx = sortperm([i[1] for i in ord])
-heatmap(Wav[:,idx])
-plot(Wav[:,idx[end]], legend = false)
-
-ord = findmax(abs.(Wav_varimax), dims = 1)[2][:]
-idx = sortperm([i[1] for i in ord])
-heatmap(Wav_varimax[:,idx])
-plot(Wav_varimax[:,idx[20]], legend = false)
-
-ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
-idx = sortperm([i[1] for i in ord])
-heatmap(Wav_dual[:,idx])
-plot(Wav_dual[:,idx[30]], legend = false)
+# ### order wavelet by locations
+# ord = findmax(abs.(Wav), dims = 1)[2][:]
+# idx = sortperm([i[1] for i in ord])
+# heatmap(Wav[:,idx])
+# plot(Wav[:,idx[end]], legend = false)
+#
+# ord = findmax(abs.(Wav_varimax), dims = 1)[2][:]
+# idx = sortperm([i[1] for i in ord])
+# heatmap(Wav_varimax[:,idx])
+# plot(Wav_varimax[:,idx[20]], legend = false)
+#
+# ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
+# idx = sortperm([i[1] for i in ord])
+# heatmap(Wav_dual[:,idx])
+# plot(Wav_dual[:,idx[30]], legend = false)
 
 
 
 error_Wavelet = [1.0]
-error_Wavelet_varimax = [1.0]
+# error_Wavelet_varimax = [1.0]
 error_Wavelet_dual = [1.0]
 error_Laplacian = [1.0]
 for frac = 0.01:0.01:0.3
@@ -88,11 +88,11 @@ for frac = 0.01:0.01:0.3
     ind = ind[numKept+1:end]
     push!(error_Wavelet, norm(coeff_Wavelet[ind])/norm(f))
 
-    ## wavelet varimax reconstruction
-    coeff_Wavelet_varimax = Wav_varimax' * f
-    ind = sortperm(coeff_Wavelet_varimax.^2, rev = true)
-    ind = ind[numKept+1:end]
-    push!(error_Wavelet_varimax, norm(coeff_Wavelet_varimax[ind])/norm(f))
+    # ## wavelet varimax reconstruction
+    # coeff_Wavelet_varimax = Wav_varimax' * f
+    # ind = sortperm(coeff_Wavelet_varimax.^2, rev = true)
+    # ind = ind[numKept+1:end]
+    # push!(error_Wavelet_varimax, norm(coeff_Wavelet_varimax[ind])/norm(f))
 
     ## wavelet dual reconstruction
     coeff_Wavelet_dual = Wav_dual' * f
