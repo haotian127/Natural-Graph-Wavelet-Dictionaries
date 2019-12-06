@@ -2,7 +2,7 @@ using Plots, LightGraphs, JLD, LaTeXStrings
 # include("../src/func_includer.jl")
 include(joinpath("..", "src", "func_includer.jl"))
 
-N = 127; G = path_graph(N)
+N = 255; G = path_graph(N)
 X = zeros(N,2); X[:,1] = 1:N
 L = Matrix(laplacian_matrix(G))
 lamb, V = eigen(L)
@@ -37,9 +37,9 @@ wavelet_packet_dual_unortho = HTree_wavelet_packet_unorthogonalized(V,ht_vlist_d
 
 # plot(wavelet_packet[5][1][:,10],legend = false)
 
-f = [exp(-(k-N/3)^2/10)+0.5*exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.1*randn(N); f ./= norm(f)
+# f = [exp(-(k-N/3)^2/10)+0.5*exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.05*randn(N); f ./= norm(f)
 
-# f = V[:,10] + [V[1:25,20]; zeros(N-25)] + [zeros(50);V[51:end,40]]  + V[:,75]
+f = V[:,10] + [V[1:25,20]; zeros(N-25)] + [zeros(50);V[51:end,40]]  + V[:,75]
 
 # f = spike(10,N)
 
@@ -85,6 +85,7 @@ error_Wavelet = [1.0]
 error_Wavelet_varimax = [1.0]
 error_Wavelet_dual = [1.0]
 error_Laplacian = [1.0]
+error_Standard = [1.0]
 for frac = 0.01:0.01:0.3
     numKept = Int(ceil(frac * N))
     ## wavelet reconstruction
@@ -112,11 +113,17 @@ for frac = 0.01:0.01:0.3
     # rc_f = V[:,ind] * coeff_Laplacian[ind]
     # push!(error_Laplacian, norm(f - rc_f) / norm(f))
     push!(error_Laplacian, norm(coeff_Laplacian[ind])/norm(f))
+
+    ## Standard reconstruction
+    ind = sortperm(f.^2, rev = true)
+    ind = ind[numKept+1:end]
+    push!(error_Standard, norm(f[ind])/norm(f))
+
 end
 
 # gr(dpi = 300)
 fraction = 0:0.01:0.3
-plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["Wavelets","Wavelets_varimax","Wavelets_dual","Laplacian"])
+plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual error_Laplacian error_Standard], yaxis=:log, lab = ["Wavelets","Wavelets_varimax","Wavelets_dual","Laplacian", "Standard Basis"])
 # savefig(plt,"figs/signal_approx_path_1.png")
 
 
