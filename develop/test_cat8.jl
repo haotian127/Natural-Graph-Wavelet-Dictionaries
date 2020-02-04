@@ -2,9 +2,9 @@ using Plots, LightGraphs, JLD, LaTeXStrings
 # include("../src/func_includer.jl")
 include(joinpath("..", "src", "func_includer.jl"))
 
-G = loadgraph(joinpath(@__DIR__, "..", "datasets", "RGC100.lgz"))
+G = loadgraph(joinpath(@__DIR__, "..", "datasets", "cat8_graph.lgz"))
 N = nv(G)
-X = load(joinpath(@__DIR__, "..", "datasets", "RGC100_xyz.jld"),"xyz")[:,1:2]
+X = load(joinpath(@__DIR__, "..", "datasets", "cat8_xyz.jld"),"xyz")
 L = Matrix(laplacian_matrix(G))
 lamb, V = eigen(L)
 sgn = (maximum(V, dims = 1)[:] .> -minimum(V, dims = 1)[:]) .* 2 .- 1
@@ -25,7 +25,7 @@ ht_elist_dual, ht_vlist_dual = HTree_EVlist(V,W_dual)
 parent_vertex = HTree_findParent(ht_vlist)
 wavelet_packet = HTree_wavelet_packet(V,ht_vlist,ht_elist)
 # wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist)
-# wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist_dual)
+wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist_dual)
 
 parent_dual = HTree_findParent(ht_vlist_dual)
 wavelet_packet_dual = HTree_wavelet_packet(V,ht_vlist_dual,ht_elist_dual)
@@ -33,25 +33,19 @@ wavelet_packet_dual = HTree_wavelet_packet(V,ht_vlist_dual,ht_elist_dual)
 
 # plot(wavelet_packet[5][1][:,10],legend = false)
 
-# f = [exp(-(k-N/3)^2/10)+0.5*exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.1*randn(N); f ./= norm(f)
-
-# f = V[:,10] + [V[1:25,20]; zeros(75)] + [V[1:50,40]; zeros(50)]  + V[:,75]
-
-f = zeros(N); ind = findall((X[:,1] .< 0) .& (X[:,2] .> 20)); f[ind] .= sin.(X[ind,2] .* 0.1); f[1] = 1; ind2 = findall((X[:,1] .> 90) .& (X[:,2] .< 20)); f[ind2] .= sin.(X[ind2,1] .* 0.07)
-# plt = scatter_gplot(X; marker = f)
-# savefig(plt, "figs\\RGC100_SinSpikeSin.png")
-
-
+f = load(joinpath(@__DIR__, "..", "datasets", "cat8_texture_signal1.jld"),"f")
+plotlyjs(); plt = scatter(X[:,1],X[:,2],X[:,3], marker_z = f, ms = 4, c = :viridis, legend = false, cbar = true, aspect_ratio = 1, xlims = [-100, 100], ylims = [-100, 100], zlims = [-100, 100])
+savefig(plt, "figs\\cat_texture_signal1.png")
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
 dvec = best_basis_algorithm2(ht_vlist,parent_vertex,ht_coeff_L1)
 Wav = assemble_wavelet_basis(dvec,wavelet_packet)
 
-# ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
-# # C_varimax = HTree_coeff2mat(ht_coeff_varimax,N)
-# dvec_varimax = best_basis_algorithm(ht_vlist_dual,parent_dual,ht_coeff_L1_varimax)
-# Wav_varimax = assemble_wavelet_basis(dvec_varimax,wavelet_packet_varimax)
+ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
+# C_varimax = HTree_coeff2mat(ht_coeff_varimax,N)
+dvec_varimax = best_basis_algorithm2(ht_vlist_dual,parent_dual,ht_coeff_L1_varimax)
+Wav_varimax = assemble_wavelet_basis(dvec_varimax,wavelet_packet_varimax)
 
 ht_coeff_dual, ht_coeff_L1_dual = HTree_coeff_wavelet_packet(f,wavelet_packet_dual)
 # C_dual = HTree_coeff2mat(ht_coeff_dual,N)
@@ -77,7 +71,7 @@ Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
 
 error_Wavelet = [1.0]
-# error_Wavelet_varimax = [1.0]
+error_Wavelet_varimax = [1.0]
 error_Wavelet_dual = [1.0]
 error_Laplacian = [1.0]
 for frac = 0.01:0.01:0.3
@@ -89,10 +83,10 @@ for frac = 0.01:0.01:0.3
     push!(error_Wavelet, norm(coeff_Wavelet[ind])/norm(f))
 
     # ## wavelet varimax reconstruction
-    # coeff_Wavelet_varimax = Wav_varimax' * f
-    # ind = sortperm(coeff_Wavelet_varimax.^2, rev = true)
-    # ind = ind[numKept+1:end]
-    # push!(error_Wavelet_varimax, norm(coeff_Wavelet_varimax[ind])/norm(f))
+    coeff_Wavelet_varimax = Wav_varimax' * f
+    ind = sortperm(coeff_Wavelet_varimax.^2, rev = true)
+    ind = ind[numKept+1:end]
+    push!(error_Wavelet_varimax, norm(coeff_Wavelet_varimax[ind])/norm(f))
 
     ## wavelet dual reconstruction
     coeff_Wavelet_dual = Wav_dual' * f
@@ -111,8 +105,8 @@ end
 
 gr(dpi = 300)
 fraction = 0:0.01:0.3
-plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["WB_vertex","WB_spectral","Laplacian"], linestyle = [:dot :dashdot :solid], linewidth = 3)
-# savefig(plt,"figs/signal_approx_RGC100_SinSpikeSin.png")
+plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Wavelet_varimax error_Laplacian], yaxis=:log, labels = ["WB_vertex" "WB_spectral" "WB_varimax" "Laplacian"], linestyle = [:dot :dashdot :dash :solid], linewidth = 3)
+savefig(plt,"figs/signal_approx_cat8_signal1.png")
 
 
 
