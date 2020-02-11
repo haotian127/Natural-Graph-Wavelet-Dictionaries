@@ -106,8 +106,37 @@ end
 gr(dpi = 300)
 fraction = 0:0.01:0.3
 plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Wavelet_varimax error_Laplacian], yaxis=:log, labels = ["WB_vertex" "WB_spectral" "WB_varimax" "Laplacian"], linestyle = [:dot :dashdot :dash :solid], linewidth = 3)
-savefig(plt,"figs/signal_approx_cat8_signal1.png")
+# savefig(plt,"figs/signal_approx_cat8_signal1.png")
 
+
+
+
+
+
+
+### plot eigenvectors
+plotlyjs()
+## wavelet reconstruction
+coeff_Wavelet = Wav' * f
+ind1 = sortperm(coeff_Wavelet.^2, rev = true)
+cat_plot(X; marker = Wav[:,ind1[5]])
+
+## wavelet varimax reconstruction
+coeff_Wavelet_varimax = Wav_varimax' * f
+ind2 = sortperm(coeff_Wavelet_varimax.^2, rev = true)
+cat_plot(X; marker = Wav_varimax[:,ind2[5]])
+
+
+## wavelet dual reconstruction
+coeff_Wavelet_dual = Wav_dual' * f
+ind3 = sortperm(coeff_Wavelet_dual.^2, rev = true)
+cat_plot(X; marker = Wav_dual[:,ind3[5]])
+
+
+## Laplacian reconstruction
+coeff_Laplacian = V' * f
+ind4 = sortperm(coeff_Laplacian.^2, rev = true)
+cat_plot(X; marker = V[:,ind4[8]])
 
 
 
