@@ -43,7 +43,7 @@ f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
 
 
 # f = zeros(N); ind = findall((X[:,1] .< 0) .& (X[:,2] .> 20)); f[ind] .= sin.(X[ind,2] .* 0.1); f[1] = 1; ind2 = findall((X[:,1] .> 90) .& (X[:,2] .< 20)); f[ind2] .= sin.(X[ind2,1] .* 0.07)
-ind = sortperm(abs.(f)); gplot(W[ind,ind],X[ind,:]); plt = scatter_gplot!(X[ind,:]; marker = f[ind])
+# ind = sortperm(abs.(f)); gplot(W[ind,ind],X[ind,:]); plt = scatter_gplot!(X[ind,:]; marker = f[ind])
 # savefig(plt, "figs\\toronto_fv.png")
 
 
@@ -118,8 +118,8 @@ end
 
 gr(dpi = 300)
 fraction = 0:0.01:0.3
-plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["WB_vertex","WB_spectral","Laplacian"], linestyle = [:dot :dashdot :solid], linewidth = 3)
-# savefig(plt,"figs/signal_approx_toronto_fp.png")
+plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["WB_vertex" "WB_spectral" "Laplacian"], linestyle = [:dashdot :solid :dot], linewidth = 3)
+savefig(plt,"figs/signal_approx_toronto_fp.png")
 
 
 
