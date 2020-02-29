@@ -3,12 +3,13 @@
 
 
 function varimax(A; gamma = 1.0, maxit = 1000, reltol = 1e-14)
+	# gamma = 0, 1, m/2, and d(m - 1)/(d + m - 2), corresponding to quartimax, varimax, equamax, and parsimax.
     d,m = size(A);
 
 	if m == 1
 		return A
 	end
-	
+
     T = Matrix{Float64}(I, m, m);
     B = A * T;
 
