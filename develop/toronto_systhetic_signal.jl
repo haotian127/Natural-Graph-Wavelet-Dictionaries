@@ -48,9 +48,13 @@ function toronto_systhetic_signal(f, N_sample, N_step)
     end
     return f
 end
-scatter_gplot(X;marker = toronto_systhetic_signal(zeros(N), 100000, 6))
 
-## test
+f6 = toronto_systhetic_signal(zeros(N), 1000000, 6)
+f12 = toronto_systhetic_signal(zeros(N), 1000000, 12)
+f18 = toronto_systhetic_signal(zeros(N), 1000000, 18)
+f24 = toronto_systhetic_signal(zeros(N), 1000000, 24)
+f30 = toronto_systhetic_signal(zeros(N), 1000000, 30)
+scatter_gplot(X;marker = f30)
 
-fp = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
-scatter_gplot(X;marker = fp)
+## save
+save(joinpath(@__DIR__, "..", "datasets/toronto_systhetic_signal.jld"), "f6", f6, "f12", f12, "f18", f18, "f24", f24, "f30",f30)
