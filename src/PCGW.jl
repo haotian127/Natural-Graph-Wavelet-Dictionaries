@@ -86,7 +86,7 @@ function Elist_Part(V,W; e_idx = 1:size(V,2), v_idx = 1:size(V,2))
     vlist1 = findall(p .> 0)
     # vlist2 = findall(p .< 0)
 
-    Ve = V[:,e_idx] .^ 2
+    Ve = V[:,e_idx] .^ 2 #(W + I) * V[:,e_idx] .^ 2
     energyDistr_eigvecs = sum(Ve[vlist1,:],dims = 1)[:]
     elist1 = sort(e_idx[sortperm(energyDistr_eigvecs; rev = true)[1:length(vlist1)]])
     elist2 = setdiff(e_idx,elist1)

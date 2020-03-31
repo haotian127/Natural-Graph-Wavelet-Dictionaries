@@ -42,7 +42,7 @@ f18 = load(joinpath(@__DIR__, "..", "datasets", "toronto_systhetic_signal.jld"),
 f24 = load(joinpath(@__DIR__, "..", "datasets", "toronto_systhetic_signal.jld"), "f24")
 f30 = load(joinpath(@__DIR__, "..", "datasets", "toronto_systhetic_signal.jld"), "f30")
 
-f = f18
+f = f6
 # plt = scatter_gplot(X[sortperm(f30),:]; marker = sort(f30))
 # savefig(plt, "figs\\toronto_f30.png")
 
@@ -122,7 +122,7 @@ end
 gr(dpi = 300)
 fraction = 0:0.01:0.3
 plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["WB_vertex" "WB_spectral" "Laplacian"], linestyle = [:dashdot :solid :dot], linewidth = 3)
-# savefig(plt,"figs/signal_approx_toronto_f18.png")
+savefig(plt,"figs/signal_approx_toronto_f6_neibor_affinity.png")
 
 
 
