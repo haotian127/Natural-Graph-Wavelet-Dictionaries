@@ -1,5 +1,5 @@
 function Proj(x,A)
-    ### project x into matrix A's column space, given A is full column rank
+    ### project x onto matrix A's column space, given A is full column rank
     y = try
         pinv(A'*A)*(A'*x)
     catch err
@@ -193,7 +193,7 @@ function HTree_wavelet_packet_varimax(V,ht_elist)
     return wav_packet
 end
 
-function const_proj_wavelets(V,vlist,elist)
+function const_proj_wavelets(V,vlist,elist; method = "Gram-Schmidt")
     if length(vlist) == 1
         return V[:,elist]
     end
@@ -202,10 +202,20 @@ function const_proj_wavelets(V,vlist,elist)
     Wav = zeros(N,m)
 
     B = V[:,elist]
-    for k in 1:length(vlist)
-        wavelet = Proj(spike(vlist[k],N),B)
-        Wav[:,k] .= wavelet ./ norm(wavelet)
-        B = wavelet_perp_Matrix(wavelet,B)
+
+    if method == "Iterative-Projection"
+        for k in 1:length(vlist)
+            wavelet = Proj(spike(vlist[k],N),B)
+            Wav[:,k] .= wavelet ./ norm(wavelet)
+            B = wavelet_perp_Matrix(wavelet,B)
+        end
+    elseif method == "Gram-Schmidt"
+        P = B * B'
+        for k in 1:length(vlist)
+            wavelet = P * spike(vlist[k], N)
+            Wav[:,k] .= wavelet ./ norm(wavelet)
+        end
+        Wav = gram_schmidt(Wav)
     end
 
     return Wav
@@ -373,4 +383,21 @@ function const_proj_wavelets_unorthogonalized(V,vlist,elist)
     end
 
     return Wav
+end
+
+
+function gram_schmidt(a; tol = 1e-10)
+    q = []
+    for i = 1:length(a)
+        qtilde = a[i]
+        for j = 1:i-1
+            qtilde -= (q[j]'*a[i]) * q[j]
+        end
+        if norm(qtilde) < tol
+            println("Vectors are linearly dependent.")
+            return q
+        end
+        push!(q, qtilde/norm(qtilde))
+    end;
+    return q
 end
