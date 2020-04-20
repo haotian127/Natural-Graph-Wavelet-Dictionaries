@@ -215,7 +215,12 @@ function const_proj_wavelets(V,vlist,elist; method = "Gram-Schmidt")
             wavelet = P * spike(vlist[k], N)
             Wav[:,k] .= wavelet ./ norm(wavelet)
         end
-        Wav = gram_schmidt(Wav)
+        Wav, complement_dim = gram_schmidt(Wav)
+        if complement_dim != 0
+            complement_space = B * nullspace(Wav' * B)
+            Wav = hcat(Wav, complement_space)
+        end
+
     end
 
     return Wav
@@ -396,13 +401,14 @@ function gram_schmidt(A; tol = 1e-10)
 
     # Start Gram-Schmidt process
     q = []
+    complement_dim = 0
     for i = 1:length(a)
         qtilde = a[i]
         for j = 1:i-1
             qtilde -= (q[j]'*a[i]) * q[j]
         end
         if norm(qtilde) < tol
-            println(size(A,2) - i + 1)
+            complement_dim = size(A,2) - i + 1
             break
         end
         push!(q, qtilde/norm(qtilde))
@@ -411,5 +417,5 @@ function gram_schmidt(A; tol = 1e-10)
     for i = 1:length(q)
         Q[:,i] .= q[i]
     end
-    return Q
+    return Q, complement_dim
 end
