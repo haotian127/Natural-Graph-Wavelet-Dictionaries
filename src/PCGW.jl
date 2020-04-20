@@ -386,7 +386,15 @@ function const_proj_wavelets_unorthogonalized(V,vlist,elist)
 end
 
 
-function gram_schmidt(a; tol = 1e-10)
+# Gram-Schmidt Process Orthogonalization
+function gram_schmidt(A; tol = 1e-10)
+    # Input: matirx A
+    # Output: orthogonalization matrix of A's column vectors
+
+    # Convert the matrix to a list of column vectors
+    a = [A[:,i] for i in 1:size(A,2)]
+
+    # Start Gram-Schmidt process
     q = []
     for i = 1:length(a)
         qtilde = a[i]
@@ -394,10 +402,14 @@ function gram_schmidt(a; tol = 1e-10)
             qtilde -= (q[j]'*a[i]) * q[j]
         end
         if norm(qtilde) < tol
-            println("Vectors are linearly dependent.")
-            return q
+            println(size(A,2) - i + 1)
+            break
         end
         push!(q, qtilde/norm(qtilde))
-    end;
-    return q
+    end
+    Q = zeros(size(A,1), length(q))
+    for i = 1:length(q)
+        Q[:,i] .= q[i]
+    end
+    return Q
 end
