@@ -122,7 +122,7 @@ end
 gr(dpi = 300)
 fraction = 0:0.01:0.3
 plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["WB_vertex" "WB_spectral" "Laplacian"], linestyle = [:dashdot :solid :dot], linewidth = 3)
-savefig(plt,"figs/signal_approx_toronto_f6_neibor_affinity.png")
+# savefig(plt,"figs/signal_approx_toronto_f6_neibor_affinity.png")
 
 
 

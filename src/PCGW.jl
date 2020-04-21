@@ -333,14 +333,6 @@ end
 
 
 
-
-
-
-
-
-
-
-
 function HTree_coeff2mat(ht_coeff,N)
     L = length(ht_coeff)
     C = zeros(N,L)
@@ -412,6 +404,45 @@ function gram_schmidt(A; tol = 1e-10)
             break
         end
         push!(q, qtilde/norm(qtilde))
+    end
+    Q = zeros(size(A,1), length(q))
+    for i = 1:length(q)
+        Q[:,i] .= q[i]
+    end
+    return Q, complement_dim
+end
+
+
+# Modified Gram-Schmidt Process Orthogonalization
+function modified_gram_schmidt(A; tol = 1e-10, p = 1)
+    # Input: matirx A
+    # Output: orthogonalization matrix of A's column vectors based on L^p pivoting
+
+    n = size(A,2)
+    # Convert the matrix to a list of column vectors
+    a = [A[:,i] for i in 1:n]
+
+    # Start modified Gram-Schmidt process
+    q = []
+    v = copy(a)
+    vec_lp_norm = [norm(v[i], p) for i in 1:n]
+    complement_dim = 0
+    for i = 1:n
+        # Pivoting based on minimum lp-norm
+        idx = findmin(vec_lp_norm)[2]
+        v[i], v[idx+i-1] = v[idx+i-1], v[i]
+        # Check the linear dependency
+        if norm(v[i]) < tol
+            complement_dim = n - i + 1
+            break
+        end
+        qtilde = v[i]/norm(v[i], 2)
+        vec_lp_norm = []
+        for j = i+1:n
+            v[j] .-= (qtilde'*v[j]) * qtilde
+            push!(vec_lp_norm, norm(v[j], p))
+        end
+        push!(q, qtilde)
     end
     Q = zeros(size(A,1), length(q))
     for i = 1:length(q)
