@@ -77,7 +77,7 @@ Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
 idx = sortperm([i[1] for i in ord])
 heatmap(Wav_dual[:,idx])
-plot(Wav_dual[:,idx[200]], legend = false)
+plot(Wav_dual[:,idx[130]], legend = false)
 
 
 

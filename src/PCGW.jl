@@ -193,7 +193,7 @@ function HTree_wavelet_packet_varimax(V,ht_elist)
     return wav_packet
 end
 
-function const_proj_wavelets(V,vlist,elist; method = "Gram-Schmidt")
+function const_proj_wavelets(V,vlist,elist; method = "Modified Gram-Schmidt")
     if length(vlist) == 1
         return V[:,elist]
     end
@@ -220,7 +220,17 @@ function const_proj_wavelets(V,vlist,elist; method = "Gram-Schmidt")
             complement_space = B * nullspace(Wav' * B)
             Wav = hcat(Wav, complement_space)
         end
-
+    elseif method == "Modified Gram-Schmidt"
+        P = B * B'
+        for k in 1:length(vlist)
+            wavelet = P * spike(vlist[k], N)
+            Wav[:,k] .= wavelet ./ norm(wavelet)
+        end
+        Wav, complement_dim = modified_gram_schmidt(Wav)
+        if complement_dim != 0
+            complement_space = B * nullspace(Wav' * B)
+            Wav = hcat(Wav, complement_space)
+        end
     end
 
     return Wav
