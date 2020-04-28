@@ -386,8 +386,9 @@ function const_proj_wavelets_unorthogonalized(V,vlist,elist)
     Wav = zeros(N,m)
 
     B = V[:,elist]
+    P = B*B'
     for k in 1:length(vlist)
-        wavelet = B*B'*spike(vlist[k],N)
+        wavelet = P*spike(vlist[k],N)
         Wav[:,k] .= wavelet ./ norm(wavelet)
     end
 
