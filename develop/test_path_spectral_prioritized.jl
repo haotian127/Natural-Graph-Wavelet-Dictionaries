@@ -130,14 +130,14 @@ plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual erro
 
 
 
-# # heatmap(wavelet_packet_varimax[2][2])
-# anim = @animate for i=1:32
-#     WW = wavelet_packet_dual_unortho[2][1]
-#     WW = Matrix(qr(WW).Q)
-#     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
-#     WW = (WW' .* sgn)'
-#     ord = findmax(abs.(WW), dims = 1)[2][:]
-#     idx = sortperm([i[1] for i in ord])
-#     plot(WW[:,idx[i]], legend = false)
-# end
-# gif(anim, "anim.gif", fps = 4)
+# heatmap(wavelet_packet_varimax[2][2])
+anim = @animate for i=1:32
+    WW = wavelet_packet_varimax[4][3]
+    # WW = Matrix(qr(WW).Q)
+    sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
+    WW = (WW' .* sgn)'
+    ord = findmax(abs.(WW), dims = 1)[2][:]
+    idx = sortperm([i[1] for i in ord])
+    plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
+end
+gif(anim, "anim.gif", fps = 5)
