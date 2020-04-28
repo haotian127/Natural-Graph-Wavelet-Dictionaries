@@ -36,16 +36,13 @@ wavelet_packet_dual_unortho = HTree_wavelet_packet_unorthogonalized(V,ht_vlist_d
 
 
 # plot(wavelet_packet[5][1][:,10],legend = false)
-
 # f = [exp(-(k-N/3)^2/10)+0.5*exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.05*randn(N); f ./= norm(f)
-
 f = V[:,10] + [V[1:25,20]; zeros(N-25)] + [zeros(50);V[51:end,40]]  + V[:,75]
-
 # f = spike(10,N)
-
 # f = rand(N)
-
 # f = [1 .- [(abs(k-24.9))^.5 for k = 1:50] ./ 5; zeros(N-50)] + [zeros(50);V[51:end,40]]
+plt = plot(f, legend = false, title = L"f = \phi_{9} + \phi_{19}(1:25) + \phi_{39}(51:end) + \phi_{74}")
+# savefig(plt, "figs/path_signal.png")
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
@@ -123,21 +120,21 @@ end
 
 # gr(dpi = 300)
 fraction = 0:0.01:0.3
-plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual error_Laplacian error_Standard], yaxis=:log, lab = ["Wavelets" "Wavelets_varimax" "Wavelets_dual" "Laplacian" "Standard Basis"])
-# savefig(plt,"figs/signal_approx_path_1.png")
+plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual error_Laplacian error_Standard], yaxis=:log, lab = ["WB_spectral" "WB_varimax" "WB_vertex" "Laplacian" "Standard Basis"], linewidth = 2)
+# savefig(plt,"figs/path_signal_approx.png")
 
 
 
 
 
 # heatmap(wavelet_packet_varimax[2][2])
-anim = @animate for i=1:32
-    WW = wavelet_packet_varimax[4][3]
-    # WW = Matrix(qr(WW).Q)
-    sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
-    WW = (WW' .* sgn)'
-    ord = findmax(abs.(WW), dims = 1)[2][:]
-    idx = sortperm([i[1] for i in ord])
-    plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
-end
-gif(anim, "anim.gif", fps = 5)
+# anim = @animate for i=1:32
+#     WW = wavelet_packet_varimax[4][3]
+#     # WW = Matrix(qr(WW).Q)
+#     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
+#     WW = (WW' .* sgn)'
+#     ord = findmax(abs.(WW), dims = 1)[2][:]
+#     idx = sortperm([i[1] for i in ord])
+#     plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
+# end
+# gif(anim, "anim.gif", fps = 5)
