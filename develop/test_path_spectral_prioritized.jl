@@ -120,7 +120,7 @@ end
 
 # gr(dpi = 300)
 fraction = 0:0.01:0.3
-plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual error_Laplacian error_Standard], yaxis=:log, lab = ["WB_spectral" "WB_varimax" "WB_vertex" "Laplacian" "Standard Basis"], linewidth = 2)
+plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual error_Laplacian error_Standard], yaxis=:log, lab = ["WB_vertex" "WB_varimax" "WB_spectral" "Laplacian" "Standard Basis"], linewidth = 2)
 # savefig(plt,"figs/path_signal_approx.png")
 
 
