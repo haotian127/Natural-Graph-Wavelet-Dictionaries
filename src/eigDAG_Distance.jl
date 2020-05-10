@@ -1,7 +1,7 @@
 """
     eigDAG_Distance(V, Q, numEigs; edge_weights = 1)
 
-eigDAG_Distance compute DAG distances between pairwise graph Laplacian eigenvectors.
+EIGDAG_DISTANCE compute DAG distances between pairwise graph Laplacian eigenvectors.
 
 # Input Arguments
 - `V::Matrix{Float64}`: matrix of graph Laplacian eigenvectors, ϕ\\_i (i = 0,1,...,size(V,1)-1).
