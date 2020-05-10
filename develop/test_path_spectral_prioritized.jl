@@ -1,5 +1,4 @@
 using Plots, LightGraphs, JLD, LaTeXStrings
-# include("../src/func_includer.jl")
 include(joinpath("..", "src", "func_includer.jl"))
 
 N = 256; G = path_graph(N)
