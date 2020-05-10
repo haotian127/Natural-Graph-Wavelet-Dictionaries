@@ -1,7 +1,6 @@
 ## load packages
 using Plots, LightGraphs, JLD, LaTeXStrings, Distances
 include(joinpath("..", "src", "func_includer.jl"))
-
 ## load graph info
 G = loadgraph(joinpath(@__DIR__, "..", "datasets", "new_toronto_graph.lgz"))
 N = nv(G)

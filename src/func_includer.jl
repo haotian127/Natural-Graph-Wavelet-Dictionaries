@@ -1,9 +1,12 @@
+# Load all .jl files in src folder
 
-include(joinpath("..", "src", "gplot.jl"))
-include(joinpath("..", "src", "helpers.jl"))
-include(joinpath("..", "src", "partition_fiedler.jl"))
-include(joinpath("..", "src", "varimax.jl"))
-include(joinpath("..", "src", "PCGW.jl"))
-include(joinpath("..", "src", "eigDAG_Distance.jl"))
-include(joinpath("..", "src", "dualGraph.jl"))
-include(joinpath("..", "src", "best_basis.jl"))
+filenames = readdir("src")
+
+for f in filenames
+    if f == "func_includer.jl"
+        continue
+    elseif occursin(r"^.*\.jl$",f)
+        print(joinpath(@__DIR__, f), "\n")
+        include(joinpath(@__DIR__, f))
+    end
+end
