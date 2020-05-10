@@ -78,9 +78,6 @@ Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 # heatmap(Wav_dual[:,idx])
 # plot(Wav_dual[:,idx[30]], legend = false)
 
-
-
-
 ## draw approx. error figure w.r.t. fraction of kept coefficients
 
 error_Wavelet = [1.0]
@@ -122,8 +119,6 @@ gr(dpi = 300)
 fraction = 0:0.01:0.3
 plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["WB_vertex" "WB_spectral" "Laplacian"], linestyle = [:dashdot :solid :dot], linewidth = 3)
 # savefig(plt,"figs/signal_approx_toronto_f6_signless_Laplacian_affinity_MGS.png")
-
-
 
 ######################################
 ### wavelet visualization
