@@ -35,7 +35,7 @@ wavelet_packet_dual = HTree_wavelet_packet(V,ht_vlist_dual,ht_elist_dual)
 
 f = load(joinpath(@__DIR__, "..", "datasets", "cat8_texture_signal1.jld"),"f")
 plotlyjs(); plt = scatter(X[:,1],X[:,2],X[:,3], marker_z = f, ms = 4, c = :viridis, legend = false, cbar = true, aspect_ratio = 1, xlims = [-100, 100], ylims = [-100, 100], zlims = [-100, 100])
-savefig(plt, "figs\\cat_texture_signal1.png")
+# savefig(plt, "figs\\cat_texture_signal1.png")
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
