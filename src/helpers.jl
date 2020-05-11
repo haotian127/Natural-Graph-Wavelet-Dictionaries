@@ -131,10 +131,50 @@ function scatter_gplot!(X; marker = nothing, ms = 4)
     end
 end
 
+
+
+"""
+    cat_plot(X; marker = nothing, ms = 4)
+
+CAT_PLOT generates a scatter plot figure for cat example, which is for quick viewing of a graph signal within a specific range (i.e., xlims, ylims, zlims).
+CAT_PLOT!(X; ...) adds a plot to `current` one.
+
+# Input Arguments
+- `X::Matrix{Float}`: 3-dim points.
+- `marker::Array{Float}`: default is nothing. Present different colors given different signal value at each node.
+- `ms::Array{Float}`: default is 4. Present different node sizes given different signal value at each node.
+
+"""
 function cat_plot(X; marker = nothing, ms = 4)
     scatter(X[:,1],X[:,2],X[:,3], marker_z = marker, ms = ms, c = :viridis, legend = false, cbar = true, aspect_ratio = 1, xlims = [-100, 100], ylims = [-100, 100], zlims = [-100, 100])
 end
 
 function cat_plot!(X; marker = nothing, ms = 4)
     scatter!(X[:,1],X[:,2],X[:,3], marker_z = marker, ms = ms, c = :viridis, legend = false, cbar = true, aspect_ratio = 1, xlims = [-100, 100], ylims = [-100, 100], zlims = [-100, 100])
+end
+
+
+## draw approx. error figure w.r.t. fraction of kept coefficients
+function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, isSave = false, path = "")
+    N = length(f)
+    L = length(ortho_mx_list)
+    err = [[1.0] for _ in 1:L]
+    coeff = [mx'*f for mx in ortho_mx_list]
+
+    for frac = 0.01:0.01:fraction_cap
+        numKept = Int(ceil(frac * N))
+        for l in 1:L
+            ind = sortperm(coeff[l].^2, rev = true)
+            ind = ind[numKept+1:end]
+            push!(err[l], norm(coeff[l][ind])/norm(f))
+        end
+    end
+
+    gr(dpi = 300)
+    fraction = 0:0.01:fraction_cap
+    plt = plot(fraction, err, yaxis=:log, lab = label, linewidth = 3)
+    if isSave
+        savefig(plt, path)
+        return "figure saved!"
+    end
 end
