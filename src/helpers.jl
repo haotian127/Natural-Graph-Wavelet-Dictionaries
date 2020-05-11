@@ -154,7 +154,17 @@ function cat_plot!(X; marker = nothing, ms = 4)
 end
 
 
-## draw approx. error figure w.r.t. fraction of kept coefficients
+"""
+    approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, isSave = false, path = "")
+
+APPROX_ERROR_PLOT draw approx. error figure w.r.t. fraction of kept coefficients
+
+# Input Arguments
+- `ortho_mx_list::Array{Matrix{Float}}`: a list of orthonormal matrices.
+- `f::Array{Float}`: target graph signal for approximation.
+- `fraction_cap::Float`: default is 0.3. The capital of fration of kept coefficients.
+
+"""
 function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, isSave = false, path = "")
     N = length(f)
     L = length(ortho_mx_list)
