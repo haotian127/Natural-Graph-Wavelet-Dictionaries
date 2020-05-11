@@ -27,7 +27,7 @@ SPIKE gives the n-dim spike vector with i-th element equals 1.
 - `n::Int`: dimension of the target spike vector.
 
 # Output Argument
-- `a::Array{Float}`: the n-dim spike vector with i-th element equals 1.
+- `a::Array{Float64}`: the n-dim spike vector with i-th element equals 1.
 
 """
 function spike(i,n)
@@ -46,7 +46,7 @@ CHARACTERISTIC gives the characteristic function in n-dim vector space with valu
 - `n::Int`: dimension of the target vector.
 
 # Output Argument
-- `v::Array{Float}`: the n-dim characteristic vector with values of index in list equal to 1.
+- `v::Array{Float64}`: the n-dim characteristic vector with values of index in list equal to 1.
 
 """
 function characteristic(list,n)
@@ -59,16 +59,16 @@ end
 """
     heat_sol(f0,Φ,Σ,t)
 
-HEAT_SOL gives the solution of heat partial differential equation with initial condition u(⋅, 0) = f0
+HEAT\\_SOL gives the solution of heat partial differential equation with initial condition u(⋅, 0) = f0
 
 # Input Arguments
-- `f0::Array{Float}`: initial condition vector.
-- `Φ::Matrix{Float}`: graph Laplacian eigenvectors, served as graph Fourier transform matrix
+- `f0::Array{Float64}`: initial condition vector.
+- `Φ::Matrix{Float64}`: graph Laplacian eigenvectors, served as graph Fourier transform matrix
 - `Σ::Array{Int}`: diagonal matrix of eigenvalues.
 - `t::Float`: time elapse.
 
 # Output Argument
-- `u::Array{Float}`: the solution vector at time t
+- `u::Array{Float64}`: the solution vector at time t
 
 """
 function heat_sol(f0,Φ,Σ,t)
@@ -80,14 +80,14 @@ end
 """
     freq_band_matrix(ls,n)
 
-FREQ_BAND_MATRIX provides characteristic diagonal matrix, which is useful for spectral graph filters design.
+FREQ\\_BAND\\_MATRIX provides characteristic diagonal matrix, which is useful for spectral graph filters design.
 
 # Input Arguments
 - `ls::Array{Int}`: list of indices.
 - `n::Int`: dimension of the target vector.
 
 # Output Argument
-- `D::Array{Float}`: the zero/one diagonal matrix.
+- `D::Array{Float64}`: the zero/one diagonal matrix.
 
 """
 # using LinearAlgebra
@@ -100,13 +100,13 @@ end
 """
     scatter_gplot(X; marker = nothing, ms = 4)
 
-SCATTER_GPLOT generates a scatter plot figure, which is for quick viewing of a graph signal.
-SCATTER_GPLOT!(X; ...) adds a plot to `current` one.
+SCATTER\\_GPLOT generates a scatter plot figure, which is for quick viewing of a graph signal.
+SCATTER\\_GPLOT!(X; ...) adds a plot to `current` one.
 
 # Input Arguments
-- `X::Matrix{Float}`: points locations, can be 2-dim or 3-dim.
-- `marker::Array{Float}`: default is nothing. Present different colors given different signal value at each node.
-- `ms::Array{Float}`: default is 4. Present different node sizes given different signal value at each node.
+- `X::Matrix{Float64}`: points locations, can be 2-dim or 3-dim.
+- `marker::Array{Float64}`: default is nothing. Present different colors given different signal value at each node.
+- `ms::Array{Float64}`: default is 4. Present different node sizes given different signal value at each node.
 
 """
 function scatter_gplot(X; marker = nothing, ms = 4)
@@ -136,13 +136,13 @@ end
 """
     cat_plot(X; marker = nothing, ms = 4)
 
-CAT_PLOT generates a scatter plot figure for cat example, which is for quick viewing of a graph signal within a specific range (i.e., xlims, ylims, zlims).
-CAT_PLOT!(X; ...) adds a plot to `current` one.
+CAT\\_PLOT generates a scatter plot figure for cat example, which is for quick viewing of a graph signal within a specific range (i.e., xlims, ylims, zlims).
+CAT\\_PLOT!(X; ...) adds a plot to `current` one.
 
 # Input Arguments
-- `X::Matrix{Float}`: 3-dim points.
-- `marker::Array{Float}`: default is nothing. Present different colors given different signal value at each node.
-- `ms::Array{Float}`: default is 4. Present different node sizes given different signal value at each node.
+- `X::Matrix{Float64}`: 3-dim points.
+- `marker::Array{Float64}`: default is nothing. Present different colors given different signal value at each node.
+- `ms::Array{Float64}`: default is 4. Present different node sizes given different signal value at each node.
 
 """
 function cat_plot(X; marker = nothing, ms = 4)
@@ -155,17 +155,17 @@ end
 
 
 """
-    approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, isSave = false, path = "")
+    approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, doSave = false, path = "")
 
-APPROX_ERROR_PLOT draw approx. error figure w.r.t. fraction of kept coefficients
+APPROX\\_ERROR\\_PLOT draw approx. error figure w.r.t. fraction of kept coefficients
 
 # Input Arguments
-- `ortho_mx_list::Array{Matrix{Float}}`: a list of orthonormal matrices.
-- `f::Array{Float}`: target graph signal for approximation.
+- `ortho_mx_list::Array{Matrix{Float64}}`: a list of orthonormal matrices.
+- `f::Array{Float64}`: target graph signal for approximation.
 - `fraction_cap::Float`: default is 0.3. The capital of fration of kept coefficients.
 
 """
-function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, isSave = false, path = "")
+function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, doSave = false, path = "")
     N = length(f)
     L = length(ortho_mx_list)
     err = [[1.0] for _ in 1:L]
@@ -174,8 +174,7 @@ function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, 
     for frac = 0.01:0.01:fraction_cap
         numKept = Int(ceil(frac * N))
         for l in 1:L
-            ind = sortperm(coeff[l].^2, rev = true)
-            ind = ind[numKept+1:end]
+            ind = sortperm(coeff[l].^2, rev = true)[numKept+1:end]
             push!(err[l], norm(coeff[l][ind])/norm(f))
         end
     end
@@ -183,8 +182,9 @@ function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, 
     gr(dpi = 300)
     fraction = 0:0.01:fraction_cap
     plt = plot(fraction, err, yaxis=:log, lab = label, linewidth = 3)
-    if isSave
+    if doSave
         savefig(plt, path)
-        return "figure saved!"
+        return "figure saved! @ " * path
     end
+    return "use current() to show figure."
 end

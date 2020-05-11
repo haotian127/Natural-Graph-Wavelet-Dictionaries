@@ -40,7 +40,7 @@ f = V[:,10] + [V[1:25,20]; zeros(N-25)] + [zeros(50);V[51:end,40]]  + V[:,75]
 # f = spike(10,N)
 # f = rand(N)
 # f = [1 .- [(abs(k-24.9))^.5 for k = 1:50] ./ 5; zeros(N-50)] + [zeros(50);V[51:end,40]]
-plt = plot(f, legend = false, title = L"f = \phi_{9} + \phi_{19}(1:25) + \phi_{39}(51:end) + \phi_{74}")
+# plt = plot(f, legend = false, title = L"f = \phi_{9} + \phi_{19}(1:25) + \phi_{39}(51:end) + \phi_{74}")
 # savefig(plt, "figs/path_signal.png")
 
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
@@ -59,73 +59,32 @@ ht_coeff_dual, ht_coeff_L1_dual = HTree_coeff_wavelet_packet(f,wavelet_packet_du
 dvec_dual = best_basis_algorithm2(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
 Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
-# ### order wavelet by locations
+## order wavelets by centered locations
 # ord = findmax(abs.(Wav), dims = 1)[2][:]
 # idx = sortperm([i[1] for i in ord])
 # heatmap(Wav[:,idx])
 # plot(Wav[:,idx[end]], legend = false)
-#
+
 # ord = findmax(abs.(Wav_varimax), dims = 1)[2][:]
 # idx = sortperm([i[1] for i in ord])
 # heatmap(Wav_varimax[:,idx])
 # plot(Wav_varimax[:,idx[20]], legend = false)
-#
-ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
-idx = sortperm([i[1] for i in ord])
-heatmap(Wav_dual[:,idx])
-plot(Wav_dual[:,idx[130]], legend = false)
+
+# ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
+# idx = sortperm([i[1] for i in ord])
+# heatmap(Wav_dual[:,idx])
+# plot(Wav_dual[:,idx[130]], legend = false)
 
 
 
-error_Wavelet = [1.0]
-error_Wavelet_varimax = [1.0]
-error_Wavelet_dual = [1.0]
-error_Laplacian = [1.0]
-error_Standard = [1.0]
-for frac = 0.01:0.01:0.3
-    numKept = Int(ceil(frac * N))
-    ## wavelet reconstruction
-    coeff_Wavelet = Wav' * f
-    ind = sortperm(coeff_Wavelet.^2, rev = true)
-    ind = ind[numKept+1:end]
-    push!(error_Wavelet, norm(coeff_Wavelet[ind])/norm(f))
-
-    ## wavelet varimax reconstruction
-    coeff_Wavelet_varimax = Wav_varimax' * f
-    ind = sortperm(coeff_Wavelet_varimax.^2, rev = true)
-    ind = ind[numKept+1:end]
-    push!(error_Wavelet_varimax, norm(coeff_Wavelet_varimax[ind])/norm(f))
-
-    ## wavelet dual reconstruction
-    coeff_Wavelet_dual = Wav_dual' * f
-    ind = sortperm(coeff_Wavelet_dual.^2, rev = true)
-    ind = ind[numKept+1:end]
-    push!(error_Wavelet_dual, norm(coeff_Wavelet_dual[ind])/norm(f))
-
-    ## Laplacian reconstruction
-    coeff_Laplacian = V' * f
-    ind = sortperm(coeff_Laplacian.^2, rev = true)
-    ind = ind[numKept+1:end]
-    # rc_f = V[:,ind] * coeff_Laplacian[ind]
-    # push!(error_Laplacian, norm(f - rc_f) / norm(f))
-    push!(error_Laplacian, norm(coeff_Laplacian[ind])/norm(f))
-
-    ## Standard reconstruction
-    ind = sortperm(f.^2, rev = true)
-    ind = ind[numKept+1:end]
-    push!(error_Standard, norm(f[ind])/norm(f))
-
-end
-
-# gr(dpi = 300)
-fraction = 0:0.01:0.3
-plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual error_Laplacian error_Standard], yaxis=:log, lab = ["WB_vertex" "WB_varimax" "WB_spectral" "Laplacian" "Standard Basis"], linewidth = 2)
-# savefig(plt,"figs/path_signal_approx.png")
+approx_error_plot([Wav, Wav_varimax, Wav_dual, V, I], f; label = ["WB_vertex" "WB_varimax" "WB_spectral" "Laplacian" "Standard Basis"], doSave = true, path = "figs/path_signal_approx.png")
+current()
 
 
 
 
 
+## generate gif files
 # heatmap(wavelet_packet_varimax[2][2])
 # anim = @animate for i=1:32
 #     WW = wavelet_packet_varimax[4][2]
@@ -136,4 +95,4 @@ plt = plot(fraction,[error_Wavelet error_Wavelet_varimax error_Wavelet_dual erro
 #     idx = sortperm([i[1] for i in ord])
 #     plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
 # end
-# gif(anim, "anim.gif", fps = 5)
+# gif(anim, "gif\anim.gif", fps = 5)
