@@ -48,7 +48,7 @@ end
 
 
 function Vlist_Part(W;v_idx = 1:size(W,1))
-    ## partition v_idx into two sets of indicies
+    ## partition v_idx into two sets of indices
     if size(W,1) == 1
         return [v_idx]
     end
