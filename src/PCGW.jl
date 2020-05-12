@@ -145,23 +145,21 @@ function DElist_Part(W_dual; e_idx = 1:size(W_dual,1))
 end
 
 
-
-
 function HTree_coeff_wavelet_packet(f,wavelet_packet)
-    ht_coeff = [[f]]
-    ht_coeff_abs = [[norm(f,1)]]
+    ht_coeff = []
+    ht_coeff_L1 = []
     L = length(wavelet_packet)
-    for lvl in 2:L
-        tmp = [wavelet_packet[lvl][1]'*f]
-        tmp_energy = [norm(wavelet_packet[lvl][1]'*f,1)]
-        for i in 2:length(wavelet_packet[lvl])
-            push!(tmp,wavelet_packet[lvl][i]'*f)
-            push!(tmp_energy, norm(wavelet_packet[lvl][i]'*f,1))
+    for lvl in 1:L
+        tmp = []
+        tmp_energy = []
+        for mx in wavelet_packet[lvl]
+            push!(tmp,mx'*f)
+            push!(tmp_energy, norm(mx'*f,1))
         end
         push!(ht_coeff,tmp)
-        push!(ht_coeff_abs,tmp_energy)
+        push!(ht_coeff_L1,tmp_energy)
     end
-    return ht_coeff,ht_coeff_abs
+    return ht_coeff,ht_coeff_L1
 end
 
 function HTree_wavelet_packet(V,ht_vlist,ht_elist)
@@ -277,60 +275,6 @@ function assemble_wavelet_basis_at_certain_layer(wavelet_packet, ht_vlist; layer
     end
     return W
 end
-
-
-
-function best_basis_algorithm(ht_vlist,parent,ht_coeff_L1)
-    Lvl = length(ht_vlist)
-    dvec = [[Lvl+1, k] for k = 1:length(ht_vlist[Lvl])]
-    for i in 1:length(parent[Lvl])
-        pair = parent[Lvl][i]
-        if length(pair) == 1
-            ind = findall(x -> x == [Lvl+1,pair[1]],dvec)[:]
-            deleteat!(dvec,ind)
-            push!(dvec,[Lvl, i])
-        else
-            if sum(ht_coeff_L1[Lvl+1][pair]) > ht_coeff_L1[Lvl][i]
-                ind1 = findall(x -> x == [Lvl+1,pair[1]],dvec)[:]
-                ind2 = findall(x -> x == [Lvl+1,pair[2]],dvec)[:]
-                deleteat!(dvec,union(ind1,ind2))
-                push!(dvec,[Lvl, i])
-            else
-                continue
-            end
-        end
-    end
-
-    for lvl = Lvl-1:-1:1
-        for i in 1:length(parent[lvl])
-            pair = parent[lvl][i]
-            if length(pair) == 1
-                ind = findall(x -> x == [lvl+1,pair[1]],dvec)[:]
-                deleteat!(dvec,ind)
-                push!(dvec,[lvl, i])
-            else
-                if ([lvl+1,pair[1]] in dvec) && ([lvl+1,pair[2]] in dvec)
-                    if sum(ht_coeff_L1[lvl+1][pair]) > ht_coeff_L1[lvl][i]
-                        ind1 = findall(x -> x == [lvl+1,pair[1]],dvec)[:]
-                        ind2 = findall(x -> x == [lvl+1,pair[2]],dvec)[:]
-                        deleteat!(dvec,union(ind1,ind2))
-                        push!(dvec,[lvl, i])
-                    else
-                        continue
-                    end
-                else
-                    continue
-                end
-            end
-        end
-
-    end
-
-    return dvec
-end
-
-
-
 
 function HTree_findParent(ht_vlist)
     #input: hierarchical tree vertex list
