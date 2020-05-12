@@ -188,3 +188,20 @@ function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, 
     end
     return "use current() to show figure."
 end
+
+"""
+    sortWaveletsByCenteredLocations(Wav)
+
+sort wavelets by centered locations
+
+# Input Argument
+- `Wav::Matrix{Float64}`: a matrix whose columns are wavelet vectors.
+
+# Output Argument
+- `Wav::Matrix{Float64}`: the sorted matrix.
+"""
+function sortWaveletsByCenteredLocations(Wav)
+    ord = findmax(abs.(Wav), dims = 1)[2][:]
+    idx = sortperm([i[1] for i in ord])
+    return Wav[:,idx]
+end
