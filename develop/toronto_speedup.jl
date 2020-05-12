@@ -46,20 +46,17 @@ f = f6
 # savefig(plt, "figs\\toronto_f30.png")
 
 
-## build wavelet basis by best basis selection algorithm
+## Build wavelet basis by best basis selection algorithm
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
-# C = HTree_coeff2mat(ht_coeff,N)
-dvec = best_basis_algorithm2(ht_vlist,parent_vertex,ht_coeff_L1)
+dvec = best_basis_algorithm(ht_coeff_L1, parent_vertex)
 Wav = assemble_wavelet_basis(dvec,wavelet_packet)
 
-# ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
-# # C_varimax = HTree_coeff2mat(ht_coeff_varimax,N)
-# dvec_varimax = best_basis_algorithm(ht_vlist_dual,parent_dual,ht_coeff_L1_varimax)
-# Wav_varimax = assemble_wavelet_basis(dvec_varimax,wavelet_packet_varimax)
+ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
+dvec_varimax = best_basis_algorithm(ht_coeff_L1_varimax, parent_varimax)
+Wav_varimax = assemble_wavelet_basis(dvec_varimax,wavelet_packet_varimax)
 
 ht_coeff_dual, ht_coeff_L1_dual = HTree_coeff_wavelet_packet(f,wavelet_packet_dual)
-# C_dual = HTree_coeff2mat(ht_coeff_dual,N)
-dvec_dual = best_basis_algorithm2(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
+dvec_dual = best_basis_algorithm(ht_coeff_L1_dual, parent_dual)
 Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
 ## order wavelet by locations
