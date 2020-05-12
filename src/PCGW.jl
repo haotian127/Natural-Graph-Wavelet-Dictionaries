@@ -169,8 +169,8 @@ function HTree_wavelet_packet(V,ht_vlist,ht_elist)
     wav_packet = [[Matrix{Float64}(I, N, N)]]
     L = length(ht_vlist)
     for lvl in 1:L
-        tmp = [const_proj_wavelets(V,ht_vlist[lvl][1],ht_elist[lvl][1])]
-        for i in 2:length(ht_vlist[lvl])
+        tmp = []
+        for i in 1:length(ht_vlist[lvl])
             vlist = ht_vlist[lvl][i]
             elist = ht_elist[lvl][i]
             push!(tmp,const_proj_wavelets(V,vlist,elist))
@@ -185,8 +185,8 @@ function HTree_wavelet_packet_varimax(V,ht_elist)
     wav_packet = [[Matrix{Float64}(I, N, N)]]
     L = length(ht_elist)
     for lvl in 1:L
-        tmp = [varimax(V[:,ht_elist[lvl][1]])]
-        for i in 2:length(ht_elist[lvl])
+        tmp = []
+        for i in 1:length(ht_elist[lvl])
             elist = ht_elist[lvl][i]
             push!(tmp,varimax(V[:,elist]))
         end
@@ -195,6 +195,20 @@ function HTree_wavelet_packet_varimax(V,ht_elist)
     return wav_packet
 end
 
+"""
+    const_proj_wavelets(V,vlist,elist; method = "Modified Gram-Schmidt with Lp Pivoting")
+
+CONST\\_PROJ\\_WAVELETS construct projection wavelets, i.e., project δ ∈ vlist onto span({φⱼ| j ∈ elist}).
+
+# Input Arguments
+- `V::Matrix{Float64}`: graph Laplacian eigenvectors Φ
+- `vlist::Array{Int}`: the list of considered node indices.
+- `elist::Array{Int}`: the list of considered eigenvector indices.
+
+# Output Argument
+- `Wav::Matrix{Float64}`: a matrix whose columns are projected wavelet vectors.
+
+"""
 function const_proj_wavelets(V,vlist,elist; method = "Modified Gram-Schmidt with Lp Pivoting")
     if length(vlist) == 1
         return V[:,elist]
@@ -366,8 +380,8 @@ function HTree_wavelet_packet_unorthogonalized(V,ht_vlist,ht_elist)
     wav_packet = [[Matrix{Float64}(I, N, N)]]
     L = length(ht_vlist)
     for lvl in 1:L
-        tmp = [const_proj_wavelets_unorthogonalized(V,ht_vlist[lvl][1],ht_elist[lvl][1])]
-        for i in 2:length(ht_vlist[lvl])
+        tmp = []
+        for i in 1:length(ht_vlist[lvl])
             vlist = ht_vlist[lvl][i]
             elist = ht_elist[lvl][i]
             push!(tmp,const_proj_wavelets_unorthogonalized(V,vlist,elist))
