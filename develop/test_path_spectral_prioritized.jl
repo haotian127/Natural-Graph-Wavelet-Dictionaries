@@ -1,7 +1,8 @@
 using Plots, LightGraphs, JLD, LaTeXStrings
 include(joinpath("..", "src", "func_includer.jl"))
 
-N = 256; G = path_graph(N)
+## Build Graph
+N = 128; G = path_graph(N)
 X = zeros(N,2); X[:,1] = 1:N
 L = Matrix(laplacian_matrix(G))
 lamb, V = eigen(L)
@@ -9,9 +10,10 @@ V = (V' .* sign.(V[1,:]))'
 Q = incidence_matrix(G; oriented = true)
 W = 1.0 * adjacency_matrix(G)
 
+## Build Dual Graph
 dist_DAG = eigDAG_Distance(V,Q,N)
-# W_dual = sparse(dualGraph(dist_DAG)) #sparse dual weighted adjacence matrix
-W_dual = 1.0 * adjacency_matrix(path_graph(N))
+W_dual = sparse(dualGraph(dist_DAG)) #sparse dual weighted adjacence matrix
+# W_dual = 1.0 * adjacency_matrix(path_graph(N))
 
 ## Assemble wavelet packets
 ht_vlist, ht_elist = HTree_VElist(V,W)
@@ -38,10 +40,12 @@ f = V[:,10] + [V[1:25,20]; zeros(N-25)] + [zeros(50);V[51:end,40]]  + V[:,75]
 # savefig(plt, "figs/path_signal.png")
 
 ## Best basis selection algorithm
+@time begin
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
 # C = HTree_coeff2mat(ht_coeff,N)
 dvec = best_basis_algorithm2(ht_vlist,parent_vertex,ht_coeff_L1)
 Wav = assemble_wavelet_basis(dvec,wavelet_packet)
+end
 
 ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
 # C_varimax = HTree_coeff2mat(ht_coeff_varimax,N)
@@ -76,8 +80,8 @@ current()
 
 ## generate gif files
 # heatmap(wavelet_packet_varimax[2][2])
-# anim = @animate for i=1:32
-#     WW = wavelet_packet_varimax[4][2]
+# anim = @animate for i=1:10
+#     WW = wavelet_packet_varimax[3][2]
 #     # WW = Matrix(qr(WW).Q)
 #     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
 #     WW = (WW' .* sgn)'
@@ -85,4 +89,4 @@ current()
 #     idx = sortperm([i[1] for i in ord])
 #     plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
 # end
-# gif(anim, "gif\anim.gif", fps = 5)
+# gif(anim, "gif/anim.gif", fps = 5)
