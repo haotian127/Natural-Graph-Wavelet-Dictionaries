@@ -281,7 +281,6 @@ function HTree_findParent(ht_vlist)
     #output: find parent
     L = length(ht_vlist)
     parent = [[[1,2]]]
-
     for lvl in 1:L-1
         lvl_parent = Array{Int64,1}[]
         ind = 1

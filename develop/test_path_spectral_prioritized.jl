@@ -29,7 +29,6 @@ wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist_varimax)
 parent_dual = HTree_findParent(ht_vlist_dual)
 wavelet_packet_dual = HTree_wavelet_packet(V,ht_vlist_dual,ht_elist_dual)
 
-
 ## Graph signal
 # f = [exp(-(k-N/3)^2/10)+0.5*exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.05*randn(N); f ./= norm(f)
 f = V[:,10] + [V[1:25,20]; zeros(N-25)] + [zeros(50);V[51:end,40]]  + V[:,75]
@@ -52,22 +51,8 @@ ht_coeff_dual, ht_coeff_L1_dual = HTree_coeff_wavelet_packet(f,wavelet_packet_du
 dvec_dual = best_basis_algorithm(ht_coeff_L1_dual, parent_dual)
 Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
-## order wavelets by centered locations
-# ord = findmax(abs.(Wav), dims = 1)[2][:]
-# idx = sortperm([i[1] for i in ord])
-# heatmap(Wav[:,idx])
-# plot(Wav[:,idx[end]], legend = false)
-
-# ord = findmax(abs.(Wav_varimax), dims = 1)[2][:]
-# idx = sortperm([i[1] for i in ord])
-# heatmap(Wav_varimax[:,idx])
-# plot(Wav_varimax[:,idx[20]], legend = false)
-
-# ord = findmax(abs.(Wav_dual), dims = 1)[2][:]
-# idx = sortperm([i[1] for i in ord])
-# heatmap(Wav_dual[:,idx])
-# plot(Wav_dual[:,idx[130]], legend = false)
-
+## sort wavelets by centered locations
+heatmap(sortWaveletsByCenteredLocations(Wav_dual))
 
 ## plot approx. error figure w.r.t. fraction of kept coefficients
 approx_error_plot([Wav, Wav_varimax, Wav_dual, V, I], f; label = ["WB_vertex" "WB_varimax" "WB_spectral" "Laplacian" "Standard Basis"])

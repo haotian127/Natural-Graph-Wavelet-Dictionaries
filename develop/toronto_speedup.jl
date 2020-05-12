@@ -1,7 +1,8 @@
-## load packages
+## Load packages
 using Plots, LightGraphs, JLD, LaTeXStrings, Distances
 include(joinpath("..", "src", "func_includer.jl"))
-## load graph info
+
+## Load graph info
 G = loadgraph(joinpath(@__DIR__, "..", "datasets", "new_toronto_graph.lgz"))
 N = nv(G)
 X = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"xy")
@@ -16,16 +17,17 @@ V = (V' .* sgn)'
 Q = incidence_matrix(G; oriented = true)
 edge_weights = 1 ./ sqrt.(sum((Q' * X).^2, dims = 2)[:])
 
-## build dual graph by non-trivial Laplacian eigenvectors metric
+## Build dual graph by non-trivial Laplacian eigenvectors metric
 dist_DAG = eigDAG_Distance(V,Q,N; edge_weight = edge_weights)
 W_dual = sparse(dualGraph(dist_DAG))
 
-## build two versions of wavelet packets: vertex_prioritized and spectral_prioritized (dual)
+## Build two versions of wavelet packets: vertex_prioritized and spectral_prioritized (dual)
 ht_vlist, ht_elist = HTree_VElist(V,W)
 ht_elist_dual, ht_vlist_dual = HTree_EVlist(V,W_dual)
 
 parent_vertex = HTree_findParent(ht_vlist)
 wavelet_packet = HTree_wavelet_packet(V,ht_vlist,ht_elist)
+
 # wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist)
 # wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist_dual)
 
