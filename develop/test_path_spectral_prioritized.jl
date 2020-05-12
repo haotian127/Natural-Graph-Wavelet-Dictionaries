@@ -40,21 +40,16 @@ f = V[:,10] + [V[1:25,20]; zeros(N-25)] + [zeros(50);V[51:end,40]]  + V[:,75]
 # savefig(plt, "figs/path_signal.png")
 
 ## Best basis selection algorithm
-@time begin
 ht_coeff, ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)
-# C = HTree_coeff2mat(ht_coeff,N)
-dvec = best_basis_algorithm2(ht_vlist,parent_vertex,ht_coeff_L1)
+dvec = best_basis_algorithm(ht_coeff_L1, parent_vertex)
 Wav = assemble_wavelet_basis(dvec,wavelet_packet)
-end
 
 ht_coeff_varimax, ht_coeff_L1_varimax = HTree_coeff_wavelet_packet(f,wavelet_packet_varimax)
-# C_varimax = HTree_coeff2mat(ht_coeff_varimax,N)
-dvec_varimax = best_basis_algorithm2(ht_elist_varimax,parent_varimax,ht_coeff_L1_varimax)
+dvec_varimax = best_basis_algorithm(ht_coeff_L1_varimax, parent_varimax)
 Wav_varimax = assemble_wavelet_basis(dvec_varimax,wavelet_packet_varimax)
 
 ht_coeff_dual, ht_coeff_L1_dual = HTree_coeff_wavelet_packet(f,wavelet_packet_dual)
-# C_varimax = HTree_coeff2mat(ht_coeff_varimax,N)
-dvec_dual = best_basis_algorithm2(ht_vlist_dual,parent_dual,ht_coeff_L1_dual)
+dvec_dual = best_basis_algorithm(ht_coeff_L1_dual, parent_dual)
 Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
 ## order wavelets by centered locations
