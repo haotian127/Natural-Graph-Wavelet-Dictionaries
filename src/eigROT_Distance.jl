@@ -16,36 +16,22 @@ EIGROT\\_DISTANCE computes the ROT distance matrix of P's column vectors on a gr
 
 """
 function eigROT_Distance(P,Q; le = 1, α = 1.0)
-n = size(P,2)
-dis = zeros(n,n)
-if le == 1
-        Q2 = [Q -Q]
-        m2 = size(Q2)[2]
-        for i = 1:n-1, j = i+1:n
-                f = P[:,i] - P[:,j]
-                md = Model(with_optimizer(Clp.Optimizer, LogLevel = 0));
-                @variable(md, w[1:m2] >= 0.0);
-                @objective(md, Min, sum(w));
-                @constraint(md, Q2 * w .== f);
-                status = optimize!(md);
-                wt = abs.(JuMP.value.(w));
-                dis[i,j] = norm(wt .^ α,1)
-        end
-else
+        n = size(P,2)
+        dis = zeros(n,n)
         le2 = [le;le]
         Q2 = [Q -Q]
-        m2 = size(Q2)[2]
+        m2 = size(Q2,2)
         for i = 1:n-1, j = i+1:n
                 f = P[:,i] - P[:,j]
-                md = Model(with_optimizer(Clp.Optimizer, LogLevel = 0));
-                @variable(md);@variable(md, w[1:m2] >= 0.0);
-                @objective(md, Min, sum(w.*le2));
-                @constraint(md, Q2 * w .== f);
-                status = optimize!(md);
-                wt = abs.(JuMP.value.(w));
-                dis[i,j] = norm((wt .^ α) .* le2,1)
+                md = Model(optimizer_with_attributes(Clp.Optimizer, "LogLevel" => 0))
+                @variable(md, w[1:m2] >= 0.0)
+                le == 1 ? @objective(md, Min, sum(w)) : @objective(md, Min, sum(w .* le2))
+                @constraint(md, Q2 * w .== f)
+                JuMP.optimize!(md)
+                wt = abs.(JuMP.value.(w))
+                dis[i,j] = le == 1 ? norm(wt .^ α, 1) : norm((wt .^ α) .* le2, 1)
         end
-end
+
         return dis + dis'
 end
 
@@ -68,37 +54,22 @@ ROT\\_DISTANCE computes the ROT distance matrix from A's column vectors to B's c
 """
 
 function ROT_Distance(A,B,Q; le = 1, α = 1.0)
-m = size(A,2)
-n = size(B,2)
-dis = zeros(m,n)
-if le == 1
-        Q2 = [Q -Q]
-        m2 = size(Q2)[2]
-        for i = 1:m, j = 1:n
-                f = A[:,i] - B[:,j]
-                md = Model(with_optimizer(Clp.Optimizer, LogLevel = 0));
-                @variable(md, w[1:m2] >= 0.0);
-                @objective(md, Min, sum(w));
-                @constraint(md, Q2 * w .== f);
-                status = optimize!(md);
-                wt = abs.(JuMP.value.(w));
-                dis[i,j] = norm(wt .^ α,1)
-        end
-else
+        m = size(A,2)
+        n = size(B,2)
+        dis = zeros(m,n)
         le2 = [le;le]
         Q2 = [Q -Q]
-        m2 = size(Q2)[2]
-        wt = zeros(m2)
+        m2 = size(Q2,2)
         for i = 1:m, j = 1:n
                 f = A[:,i] - B[:,j]
-                md = Model(with_optimizer(Clp.Optimizer, LogLevel = 0));
-                @variable(md);@variable(md, w[1:m2] >= 0.0);
-                @objective(md, Min, sum(w.*le2));
-                @constraint(md, Q2 * w .== f);
-                status = optimize!(md);
-                wt = abs.(JuMP.value.(w));
-                dis[i,j] = norm((wt .^ α) .* le2, 1)
+                md = Model(optimizer_with_attributes(Clp.Optimizer, "LogLevel" => 0))
+                @variable(md, w[1:m2] >= 0.0)
+                le == 1 ? @objective(md, Min, sum(w)) : @objective(md, Min, sum(w .* le2))
+                @constraint(md, Q2 * w .== f)
+                JuMP.optimize!(md)
+                wt = abs.(JuMP.value.(w))
+                dis[i,j] = le == 1 ? norm(wt .^ α, 1) : norm((wt .^ α) .* le2, 1)
         end
-end
+
         return dis
 end
