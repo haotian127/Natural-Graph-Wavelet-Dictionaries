@@ -10,16 +10,21 @@ V = (V' .* sign.(V[1,:]))'
 Q = incidence_matrix(G; oriented = true)
 W = 1.0 * adjacency_matrix(G)
 
-## Test
-Q2 = [Q -Q]
-m2 = size(Q, 2) * 2
-f = spike(1,N) - spike(N,N)
-md = Model(with_optimizer(Clp.Optimizer, LogLevel = 0))
-@variable(md, w[1:m2] >= 0.0)
-@objective(md, Min, sum(w))
-@constraint(md, Q2 * w .== f)
-JuMP.optimize!(md)
-wt = abs.(JuMP.value.(w))
+## Test ROT distance
+# @time distROT = eigROT_Distance(V.^2, Q)
+p, q = [rand(20); zeros(N-20)], [zeros(N-20); rand(20)]; p, q = p/norm(p,1), q/norm(q,1);
+wt, d = ROT_Distance(p, q, Q)
 
+E = collect(edges(G))
+m = length(E)
+selectedEdgeIdx = findall(wt .> 1e-4)
 
-gplot(W, X); plot!([X[1,2] X[2,1]]', [X[1,1] X[2,2]]', linecolor = :red, linewidth = 3, arrow = 0.4, aspect_ratio = 1, legend = false)
+gplot(W, X); scatter_gplot!(X; marker = p, ms = 200 .* abs.(p)); scatter_gplot!(X; marker = q, ms = 200 .* abs.(q))
+for i in selectedEdgeIdx
+    if i > m
+        plot!([X[E[i-m].dst,1] X[E[i-m].src,1]]', [X[E[i-m].dst,2] X[E[i-m].src,2]]', linecolor = :red, linewidth = 3 * wt[i] / maximum(wt), arrow = 0.4, aspect_ratio = 1, legend = false)
+    else
+        plot!([X[E[i].src,1] X[E[i].dst,1]]', [X[E[i].src,2] X[E[i].dst,2]]', linecolor = :red, linewidth = 3 * wt[i] / maximum(wt), arrow = 0.4, aspect_ratio = 1, legend = false)
+    end
+end
+current()
