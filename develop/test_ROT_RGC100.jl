@@ -19,7 +19,7 @@ edge_lengths = sqrt.(sum((Q' * X).^2, dims = 2)[:])
 # @time distROT = eigROT_Distance(V.^2, Q; le = edge_lengths)
 # JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_weighted_alp1.jld"), "distROT", distROT)
 
-# Runtime for α = 0.5 case:
+# Runtime for α = 0.5 case: seconds (175.62 G allocations: 7.767 TiB, 5.76% gc time)
 @time distROT = eigROT_Distance(V.^2, Q; le = edge_lengths, α = 0.5)
 JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_weighted_alp05.jld"), "distROT", distROT)
 
