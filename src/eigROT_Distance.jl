@@ -38,7 +38,7 @@ end
 """
     ROT_Distance(A,B,Q; le = 1, α = 1.0)
 
-ROT\\_DISTANCE computes the ROT distance matrix from A's column vectors to B's column vectors.
+ROT\\_DISTANCE computes the ROT distance matrix from A's column vectors to B's column vectors. If A, B are vector inputs, then it also returns the optimal transport plan solution and cost value.
 
 # Input Argument
 - `A::Matrix{Float64}`: a matrix whose columns are initial probability measures.
@@ -53,25 +53,24 @@ ROT\\_DISTANCE computes the ROT distance matrix from A's column vectors to B's c
 """
 
 function ROT_Distance(A,B,Q; le = 1, α = 1.0)
-        m = ndims(A) > 1 ? size(A,2) : 1
-        n = ndims(B) > 1 ? size(B,2) : 1
-        dis = zeros(m,n)
-        le2 = [le;le]
-        Q2 = [Q -Q]
-        m2 = size(Q2,2)
-        for i = 1:m, j = 1:n
-                f = (ndims(A) > 1 && ndims(B) > 1) ? B[:,j] - A[:,i] : B - A
-                md = Model(optimizer_with_attributes(Clp.Optimizer, "LogLevel" => 0))
-                @variable(md, w[1:m2] >= 0.0)
-                le == 1 ? @objective(md, Min, sum(w)) : @objective(md, Min, sum(w .* le2))
-                @constraint(md, Q2 * w .== f)
-                JuMP.optimize!(md)
-                wt = abs.(JuMP.value.(w))
-                dis[i,j] = le == 1 ? norm(wt .^ α, 1) : norm((wt .^ α) .* le2, 1)
-                if ndims(A) == 1 && ndims(B) == 1
-                        return wt, dis[1,1]
-                end
+    m = ndims(A) > 1 ? size(A,2) : 1
+    n = ndims(B) > 1 ? size(B,2) : 1
+    dis = zeros(m,n)
+    le2 = [le;le]
+    Q2 = [Q -Q]
+    m2 = size(Q2,2)
+    for i = 1:m, j = 1:n
+        f = (ndims(A) > 1 && ndims(B) > 1) ? B[:,j] - A[:,i] : B - A
+        md = Model(optimizer_with_attributes(Clp.Optimizer, "LogLevel" => 0))
+        @variable(md, w[1:m2] >= 0.0)
+        le == 1 ? @objective(md, Min, sum(w)) : @objective(md, Min, sum(w .* le2))
+        @constraint(md, Q2 * w .== f)
+        JuMP.optimize!(md)
+        wt = abs.(JuMP.value.(w))
+        dis[i,j] = le == 1 ? norm(wt .^ α, 1) : norm((wt .^ α) .* le2, 1)
+        if ndims(A) == 1 && ndims(B) == 1
+            return wt, dis[1,1]
         end
-
-        return dis
+    end
+    return dis
 end
