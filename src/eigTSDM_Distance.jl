@@ -1,13 +1,22 @@
+"""
+    eigTSDM_Distance(V,Ve,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
+
+EIGTSDM\\_DISTANCE computes the TSDM distance matrix of Ve's column vectors on a graph.
+
+# Input Argument
+- `V::Matrix{Float64}`: matrix of graph Laplacian eigenvectors.
+- `Ve::Matrix{Float64}`: feature matrix of eigenvectors, e.g., V.^2 or exp.(V) .÷ sum(exp.(V), dims=1).
+- `lambda::Matrix{Float64}`: vector of eigenvalues.
+- `Q::Matrix{Float64}`: oriented incidence matrix.
+- `L::Matrix{Float64}`: Laplacian matrix.
+- `m*dt::Matrix{Float64}`: stopping time.
+- `tol::Float64`: toleration of convergence.
+
+# Output Argument
+- `dis::Matrix{Float64}`: distance matrix, d\\_TSDM.
+"""
+
 function eigTSDM_Distance(V,Ve,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
-"""
-    Arguments:
-    V, matrix of graph Laplacian eigenvectors;
-    Ve, feature matrix of eigenvectors, e.g., V.^2 or exp.(V) ./ sum(exp.(V), dims=1);
-    lambda, vector of eigenvalues;
-    Q, oriented incidence_matrix;
-    L, laplacian_matrix;
-    m*dt, stopping time; tol, toleration of convergence
-"""
     n = size(Ve)[1]
     dis = zeros(n,n)
     if m == "Inf"
