@@ -90,7 +90,6 @@ FREQ\\_BAND\\_MATRIX provides characteristic diagonal matrix, which is useful fo
 - `D::Array{Float64}`: the zero/one diagonal matrix.
 
 """
-# using LinearAlgebra
 function freq_band_matrix(ls, n)
     f = characteristic(list,n)
     return Diagonal(f)
