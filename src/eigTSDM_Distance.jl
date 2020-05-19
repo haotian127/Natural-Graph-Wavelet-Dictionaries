@@ -5,26 +5,26 @@ EIGTSDM\\_DISTANCE computes the TSDM distance matrix of Ve's column vectors on a
 
 # Input Argument
 - `V::Matrix{Float64}`: matrix of graph Laplacian eigenvectors.
-- `Ve::Matrix{Float64}`: feature matrix of eigenvectors, e.g., V.^2 or exp.(V) .÷ sum(exp.(V), dims=1).
-- `lambda::Matrix{Float64}`: vector of eigenvalues.
-- `Q::Matrix{Float64}`: oriented incidence matrix.
-- `L::Matrix{Float64}`: Laplacian matrix.
-- `m*dt::Matrix{Float64}`: stopping time.
-- `tol::Float64`: toleration of convergence.
+- `Ve::Matrix{Float64}`: feature matrix of eigenvectors, e.g., V.^2 or exp.(V)./sum(exp.(V), dims=1).
+- `lambda::Array{Float64}`: vector of eigenvalues.
+- `Q::Matrix{Float64}`: the oriented incidence matrix of the graph.
+- `L::Matrix{Float64}`: the graph Laplacian matrix.
+- `m*dt::Float64`: default is T = ∞, the stopping time T = m⋅dt in TSDM.
+- `tol::Float64`: tolerance for convergence.
 
 # Output Argument
-- `dis::Matrix{Float64}`: distance matrix, d\\_TSDM.
-"""
+- `dis::Matrix{Float64}`: distance matrix, d(φᵢ,φⱼ;T).
 
+"""
 function eigTSDM_Distance(V,Ve,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
-    n = size(Ve)[1]
+    n = size(Ve,1)
     dis = zeros(n,n)
     if m == "Inf"
         for i = 1:n, j = i+1:n
             cost = 0
-            f0 = Ve[:,i] - Ve[:,j]
-            f = f0
-            c = V'*f0
+            f₀ = Ve[:,i] - Ve[:,j]
+            f = f₀
+            c = V'*f₀
             global ind
             ind = 0
             while(norm(L*f,1)>tol)
@@ -37,9 +37,9 @@ function eigTSDM_Distance(V,Ve,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
     else
         for i = 1:n, j = i+1:n
             cost = 0
-            f0 = Ve[:,i] - Ve[:,j]
-            f = f0
-            c = V'*f0
+            f₀ = Ve[:,i] - Ve[:,j]
+            f = f₀
+            c = V'*f₀
             for k = 1:m
                 cost = cost + dt * norm(Q' * f,1)
                 f = u_sol(c,V,lambda,k,dt)
