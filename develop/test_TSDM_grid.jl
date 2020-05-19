@@ -14,7 +14,12 @@ W = 1.0 * adjacency_matrix(G)
 grid_graph = GraphStruct(G,X,N,L,lamb,V)
 
 ## Test TSDM distance and compare with ROT distance
+print("=======================\n")
+
 p, q = [rand(20); zeros(N-20)], [zeros(N-20); rand(20)]; p, q = p/norm(p,1), q/norm(q,1);
-dTSD = TSD_Distance(p,q,V,lamb,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
-_, dROT = ROT_Distance(p, q, Q)
-print("d_TSD(p, q; T = ∞) = ", dTSD, "\n", "d_ROT(p,q; α = 1) = ", dROT)
+@time dTSD = TSD_Distance(p,q,V,lamb,Q,L;m = 1000,dt = 0.1,tol = 1e-3)
+# _, dROT = ROT_Distance(p, q, Q)
+
+print("\n","d_TSD(p, q; T = ∞) = ", dTSD, "\n", "d_ROT(p, q; α = 1) = ", dROT, "\n")
+
+## consider to draw the TSDM solution on the grid graph
