@@ -30,7 +30,7 @@ function eigTSDM_Distance(Ve,V,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
             while(norm(L*f,1)>tol)
                 ind += 1
                 cost += dt * norm(Q' * f,1)
-                f = u_sol(c,V,lambda,ind,dt)
+                f = u_sol(c,V,lambda,ind*dt)
             end
             dis[i,j] = cost
         end
@@ -42,7 +42,7 @@ function eigTSDM_Distance(Ve,V,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
             c = V'*f₀
             for k = 1:m
                 cost = cost + dt * norm(Q' * f,1)
-                f = u_sol(c,V,lambda,k,dt)
+                f = u_sol(c,V,lambda,k*dt)
             end
             dis[i,j] = cost
         end
@@ -66,34 +66,38 @@ TSD\\_DISTANCE computes the TSD distance between two vector meassures p and q on
 - `tol::Float64`: tolerance for convergence.
 
 # Output Argument
-- `dist::Float64`: TSD distance d\\_TSD(p,q;T).
+- `cost::Float64`: TSD distance d\\_TSD(p,q;T).
 
 """
 function TSD_Distance(p,q,V,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
     cost = 0
-    f₀ = q - p
-    f = f₀
-    c = V'*f₀
+    u₀ = q - p
+    A = Q' * V
+    b = V' * u₀
     if m == "Inf"
-        global ind
-        ind = 0
-        while(norm(L*f,1)>tol)
-            ind += 1
-            cost += dt * norm(Q' * f,1)
-            f = u_sol(c,V,lambda,ind,dt)
-        end    
+        t = 0
+        while(true)
+            t += dt
+            increment = dt * norm(∇u(t, A, b, lambda), 1)
+            cost += increment
+            if increment < tol
+                break
+            end
+        end
     else
         for k = 1:m
-            cost = cost + dt * norm(Q' * f,1)
-            f = u_sol(c,V,lambda,k,dt)
+            cost += dt * norm(∇u(k*dt, A, b, lambda), 1)
         end
     end
-    dist = cost
-    return dist
+    return cost
 end
 
-function u_sol(c,V,D,k,dt)
-    t = k * dt
-    u = V * (exp.(-t .* D) .* c)
+function ∇u(t, A, b, lambda)
+    gu = A * (exp.(-t .* lambda) .* b)
+    return gu
+end
+
+function u_sol(c,V,lambda,t)
+    u = V * (exp.(-t .* lambda) .* c)
     return u
 end
