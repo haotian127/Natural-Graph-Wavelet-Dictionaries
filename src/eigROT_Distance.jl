@@ -51,7 +51,6 @@ ROT\\_DISTANCE computes the ROT distance matrix from A's column vectors to B's c
 - `dis::Matrix{Float64}`: distance matrix, dis[i,j] = d\\_ROT(aᵢ, bⱼ; α).
 
 """
-
 function ROT_Distance(A,B,Q; le = 1, α = 1.0)
     m = ndims(A) > 1 ? size(A,2) : 1
     n = ndims(B) > 1 ? size(B,2) : 1
