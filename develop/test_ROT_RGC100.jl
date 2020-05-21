@@ -10,18 +10,44 @@ Weight = A .* dualGraph(dist_X; method = "inverse") # weighted adjacence matrix
 L = Matrix(Diagonal(sum(Weight;dims = 1)[:]) - Weight)
 lamb, V = eigen(L)
 sgn = (maximum(V, dims = 1)[:] .> -minimum(V, dims = 1)[:]) .* 2 .- 1
-V = (V' .* sgn)'
+V = (V' .* sgn)'; V = Matrix(V);
 Q = incidence_matrix(G; oriented = true)
 edge_lengths = sqrt.(sum((Q' * X).^2, dims = 2)[:])
-# edge_weights = 1 ./ edge_lengths
 ## Test weighted ROT distance on RGC100
 # Runtime for α = 1 case: 4 hours (175.62 G allocations: 7.767 TiB, 5.64% gc time)
 # @time distROT = eigROT_Distance(V.^2, Q; le = edge_lengths)
 # JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_weighted_alp1.jld"), "distROT", distROT)
 
 # Runtime for α = 0.5 case: seconds (175.62 G allocations: 7.767 TiB, 5.76% gc time)
-@time distROT = eigROT_Distance(V.^2, Q; le = edge_lengths, α = 0.5)
-JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_weighted_alp05.jld"), "distROT", distROT)
+# @time distROT = eigROT_Distance(V.^2, Q; le = edge_lengths, α = 0.5)
+# JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_weighted_alp05.jld"), "distROT", distROT)
+
+## Try out OptimalTransport.jl
+using OptimalTransport, SimpleWeightedGraphs
+sources, destinations =Int64[], Int64[]; for e in collect(edges(G)); push!(sources, e.src); push!(destinations, e.dst); end
+wG = SimpleWeightedGraph(sources, destinations, edge_lengths) #edge weights are the Euclidean length of the edge
+costmx = floyd_warshall_shortest_paths(G, weights(wG)).dists
+
+P = V.^2
+
+i = 151; j = 1003;
+print("=================\n")
+@time _, d = ROT_Distance(P[:,i], P[:,j], Q; le = edge_lengths)
+@time emdcost = emd2(P[:,i], P[:,j], costmx)
+
+# Runtime: give up after 8.5 hours running
+# Error log:
+# """
+# C:\Users\lihao\.julia\conda\3\lib\site-packages\ot\lp\__init__.py:421: UserWarning: Problem infeasible. Check that a and b are in the simplex
+#   check_result(result_code)
+# RESULT MIGHT BE INACURATE * 50
+# Max number of iteration reached, currently 100000. Sometimes iterations go on in cycle even though the solution has been reached, to check if it's the case here have a look at the minimal reduced cost. If it is very close to machine precision, you might actually have the correct solution, if not try setting the maximum number of iterations a bit higher
+# C:\Users\lihao\.julia\conda\3\lib\site-packages\ot\lp\__init__.py:421: UserWarning: numItermax reached before optimality. Try to increase numItermax.
+#   check_result(result_code)
+# """
+# print("==================\n")
+# @time distEMD = eigEMD_Distance(V.^2, costmx)
+# JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_distEMD_weighted.jld"), "distEMD", distEMD)
 
 ## MDS: low dimensional embedding
 E = transform(fit(MDS, distROT, maxoutdim = 3, distances = true))
