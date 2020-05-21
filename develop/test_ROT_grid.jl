@@ -33,6 +33,3 @@ p, q = [rand(20); zeros(N-20)], [zeros(N-20); rand(20)]; p, q = p/norm(p,1), q/n
 using OptimalTransport
 distmx = floyd_warshall_shortest_paths(G).dists
 @time emdcost = emd2(p, q, 1.0.*distmx)
-
-
-g = SimpleWeightedGraph(sources, destinations, weights)
