@@ -30,10 +30,12 @@ costmx = floyd_warshall_shortest_paths(G, weights(wG)).dists
 
 P = V.^2
 
-i = 151; j = 1003;
+i = 565; j = 721;
+p = P[:,i]; q = P[:,j]; p ./= norm(p,1); q ./= norm(q,1)
+u = (p-q .> 0) .* (p-q); v =  - (p-q .< 0) .* (p-q);
 print("=================\n")
-@time _, d = ROT_Distance(P[:,i], P[:,j], Q; le = edge_lengths)
-@time emdcost = emd2(P[:,i], P[:,j], costmx)
+@time _, d = ROT_Distance(u, v, Q; le = edge_lengths)
+@time emdcost = emd2(u, v, costmx)
 
 # Runtime: give up after 8.5 hours running
 # Error log:
