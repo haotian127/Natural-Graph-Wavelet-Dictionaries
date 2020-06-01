@@ -1,6 +1,10 @@
 using Optim
 
-function eigHadAffinity_fast(V,D,numEigs)
+function eigHAD_Distance(V,D,numEigs)
+    body
+end
+
+function eigHAD_Affinity(V,D,numEigs)
 #input: V, matrix eigenvectors; D, vector of eigenvalues; numEigs, number of eigenvectors.
 
 N = size(V)[1]
