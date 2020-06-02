@@ -57,3 +57,53 @@ function SC_NGW_frame(dist, 𝛷; σ = 0.3, β = 4)
     end
     return Ψ
 end
+
+"""
+    TFSC_NGW_frame(dist, 𝛷; σ = 0.3, β = 4)
+
+TFSC\\_NGW\\_ FRAME return a M-dim list of the Time-Frequency adapted Soft Clustering NGW frame Ψ[j,n,:] is the wavelet focused on node n, with filter focused on φⱼ₋₁∈V⃰.
+
+# Input Arguments
+- `partial_dist_ls::Array{Matrix{Float64}}`: an M-dim array of N by N matrix measuring partial node behaviorial difference between graph Laplacian eigenvectors.
+- `𝛷::Matrix{Float64}`: the matrix of graph Laplacian eigenvectors.
+- `M::Int64`: the number of graph clusters.
+- `γ::Float64`: default is 0.05, the threshold for active eigenvectors on each subgraph Gₖ.
+- `σ::Float64`: default is 0.3, the SoftFilter parameter of variance.
+- `β::Int64`: default is 4, the SoftFilter parameter of tailing (decay rate).
+
+# Output Argument
+- `TF_Ψ::Array{Tensor{Float64}}`: a M-dim array of Time-Frequency adapted Soft Clustering NGW frame, (N, N, N) tensor.
+
+"""
+function TFSC_NGW_frame(partial_dist_ls, 𝛷, M, graphClusters, activeEigenVecs; σ = 0.3, β = 4)
+    N = size(𝛷,1)
+    TF_Ψ = []
+    for k in 1:M
+        J = length(activeEigenVecs[k])
+        Ψ = zeros(J,N,N)
+        for j in 1:J
+            f = SoftFilter(partial_dist_ls[k], activeEigenVecs[k][j]; σ = σ, β = β)
+            for n in 1:N
+                wavelet = 𝛷 * Diagonal(f) * 𝛷' * spike(n,N)
+                Ψ[j,n,:] = wavelet ./ norm(wavelet)
+            end
+        end
+        push!(TF_Ψ, Ψ)
+    end
+    return TF_Ψ
+end
+
+# Find active eigenvectors for each subgraph Gₖ
+function find_active_eigenvectors(𝛷, M, graphClusters; γ = 0.05)
+    activeEigenVecs = Array{Array{Int64,1},1}()
+    for k in 1:M
+        currentActiveEigenVecs = Array{Int64,1}()
+        for ℓ in 1:N
+            if sum(𝛷[graphClusters[k],ℓ].^2) > γ
+                push!(currentActiveEigenVecs, ℓ)
+            end
+        end
+        push!(activeEigenVecs, currentActiveEigenVecs)
+    end
+    return activeEigenVecs
+end
