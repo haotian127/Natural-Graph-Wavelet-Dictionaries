@@ -208,6 +208,7 @@ end
 using Clustering
 """
     spectral_clustering(𝛷, M)
+
 SPECTRAL_CLUSTERING return M graph clusters, i.e., {Vₖ| k = 1,2,...,M}.
 
 # Input Argument
@@ -223,7 +224,7 @@ function spectral_clustering(𝛷, M)
         return [1:size(𝛷,1)]
     end
     cluster_indices = assignments(kmeans(𝛷[:,2:M]', M))
-    clusters = []
+    clusters = Array{Array{Int64,1},1}()
     for k in 1:M
         push!(clusters, findall(cluster_indices .== k)[:])
     end
