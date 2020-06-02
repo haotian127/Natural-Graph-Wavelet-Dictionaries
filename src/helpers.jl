@@ -204,3 +204,28 @@ function sortWaveletsByCenteredLocations(Wav)
     idx = sortperm([i[1] for i in ord])
     return Wav[:,idx]
 end
+
+using Clustering
+"""
+    spectral_clustering(𝛷, M)
+SPECTRAL_CLUSTERING return M graph clusters, i.e., {Vₖ| k = 1,2,...,M}.
+
+# Input Argument
+- `𝛷::Matrix{Float64}`: the matrix of graph Laplacian eigenvectors.
+- `M::Int64`: the number of graph clusters.
+
+# Output Argument
+- `clusters::Array{Array{Int64}}`: graph cluster indices.
+
+"""
+function spectral_clustering(𝛷, M)
+    if M < 2
+        return [1:size(𝛷,1)]
+    end
+    cluster_indices = assignments(kmeans(𝛷[:,2:M]', M))
+    clusters = []
+    for k in 1:M
+        push!(clusters, findall(cluster_indices .== k)[:])
+    end
+    return clusters
+end
