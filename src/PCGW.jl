@@ -83,14 +83,14 @@ function Elist_Part(V,W; e_idx = 1:size(V,2), v_idx = 1:size(V,2))
     end
 
     p = partition_fiedler(W[v_idx,v_idx])[1]
-    vlist1 = findall(p .> 0)
-    # vlist2 = findall(p .< 0)
+    vlist1 = v_idx[findall(p .> 0)]
+    vlist2 = setdiff(v_idx, vlist1)
 
-    # Ve = V[:,e_idx] .^ 2
+    Ve = V[:,e_idx] .^ 2
     # Ve = (W + I) * V[:,e_idx] .^ 2
-    Ve = (W + Diagonal(sum(W;dims=2)[:])) * V[:,e_idx] .^ 2
-    energyDistr_eigvecs = sum(Ve[vlist1,:],dims = 1)[:]
-    elist1 = sort(e_idx[sortperm(energyDistr_eigvecs; rev = true)[1:length(vlist1)]])
+    # Ve = (W + Diagonal(sum(W;dims=2)[:])) * V[:,e_idx] .^ 2
+    energyGain_vlist1 = sum(Ve[vlist1,:], dims = 1)[:] - sum(Ve[vlist2,:], dims = 1)[:]
+    elist1 = sort(e_idx[sortperm(energyGain_vlist1; rev = true)[1:length(vlist1)]])
     elist2 = setdiff(e_idx,elist1)
 
     return [elist1,elist2]
@@ -122,12 +122,12 @@ function DVlist_Part(V,W_dual; v_idx = 1:size(V,2), e_idx = 1:size(V,2))
     end
 
     p = partition_fiedler(W_dual[e_idx,e_idx])[1]
-    elist1 = findall(p .> 0)
-    # elist2 = findall(p .< 0)
+    elist1 = e_idx[findall(p .> 0)]
+    elist2 = setdiff(e_idx, elist1)
 
     Ve = V[v_idx,:] .^ 2
-    energyDistr_eigvecs = sum(Ve[:,elist1],dims = 2)[:]
-    vlist1 = sort(v_idx[sortperm(energyDistr_eigvecs; rev = true)[1:length(elist1)]])
+    energyGain_elist1 = sum(Ve[:,elist1],dims = 2)[:] - sum(Ve[:,elist2],dims = 2)[:]
+    vlist1 = sort(v_idx[sortperm(energyGain_elist1; rev = true)[1:length(elist1)]])
     vlist2 = setdiff(v_idx,vlist1)
 
     return [vlist1,vlist2]
@@ -139,9 +139,9 @@ function DElist_Part(W_dual; e_idx = 1:size(W_dual,1))
         return [e_idx]
     end
     p = partition_fiedler(W_dual[e_idx,e_idx])[1]
-    elist1 = findall(p .> 0)
-    elist2 = findall(p .< 0)
-    return [e_idx[elist1],e_idx[elist2]]
+    elist1 = e_idx[findall(p .> 0)]
+    elist2 = setdiff(e_idx, elist1)
+    return [elist1,elist2]
 end
 
 
