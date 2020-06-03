@@ -154,7 +154,7 @@ end
 
 
 """
-    approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, doSave = false, path = "")
+    approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, Save = false, path = "")
 
 APPROX\\_ERROR\\_PLOT draw approx. error figure w.r.t. fraction of kept coefficients
 
@@ -164,7 +164,7 @@ APPROX\\_ERROR\\_PLOT draw approx. error figure w.r.t. fraction of kept coeffici
 - `fraction_cap::Float`: default is 0.3. The capital of fration of kept coefficients.
 
 """
-function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, doSave = false, path = "")
+function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, Save = false, path = "")
     N = length(f)
     L = length(ortho_mx_list)
     err = [[1.0] for _ in 1:L]
@@ -181,7 +181,7 @@ function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, 
     gr(dpi = 300)
     fraction = 0:0.01:fraction_cap
     plt = plot(fraction, err, yaxis=:log, lab = label, linewidth = 3)
-    if doSave
+    if Save
         savefig(plt, path)
         return "figure saved! @ " * path
     end
