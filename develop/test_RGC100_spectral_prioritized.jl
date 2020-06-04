@@ -34,7 +34,6 @@ wavelet_packet_dual = HTree_wavelet_packet(V,ht_vlist_dual,ht_elist_dual)
 
 ## Graph signal
 # f = [exp(-(k-N/3)^2/10)+0.5*exp(-(k-2*N/3)^2/30) for k = 1:N] .+ 0.1*randn(N); f ./= norm(f)
-# f = V[:,10] + [V[1:25,20]; zeros(75)] + [V[1:50,40]; zeros(50)]  + V[:,75]
 f = zeros(N); ind = findall((X[:,1] .< 0) .& (X[:,2] .> 20)); f[ind] .= sin.(X[ind,2] .* 0.1); f[1] = 1; ind2 = findall((X[:,1] .> 90) .& (X[:,2] .< 20)); f[ind2] .= sin.(X[ind2,1] .* 0.07)
 # plt = scatter_gplot(X; marker = f)
 # savefig(plt, "figs\\RGC100_SinSpikeSin.png")
@@ -54,10 +53,10 @@ dvec_dual = best_basis_algorithm(ht_coeff_L1_dual, parent_dual)
 Wav_dual = assemble_wavelet_basis(dvec_dual,wavelet_packet_dual)
 
 ## sort wavelets by centered locations
-heatmap(sortWaveletsByCenteredLocations(Wav_dual))
+# heatmap(sortWaveletsByCenteredLocations(Wav_dual))
 
 ## plot approx. error figure w.r.t. fraction of kept coefficients
-approx_error_plot([Wav, Wav_varimax, Wav_dual, V, I], f; label = ["WB_vertex" "WB_varimax" "WB_spectral" "Laplacian" "Standard Basis"], Save = true, path = "figs/signal_approx_RGC100_SinSpikeSin.png")
+approx_error_plot([Wav, Wav_varimax, Wav_dual, V, I], f; label = ["WB_vertex" "WB_varimax" "WB_spectral" "Laplacian" "Standard Basis"])
 current()
 # plt = plot(fraction,[error_Wavelet error_Wavelet_dual error_Laplacian], yaxis=:log, lab = ["WB_vertex" "WB_spectral" "Laplacian"], linestyle = [:dashdot :solid :dot], linewidth = 3)
 
