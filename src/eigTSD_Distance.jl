@@ -1,7 +1,7 @@
 """
-    eigTSDM_Distance(Ve,V,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
+    eigTSD_Distance(Ve,V,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
 
-EIGTSDM\\_DISTANCE computes the TSDM distance matrix of Ve's column vectors on a graph.
+EIGTSD\\_DISTANCE computes the TSDM distance matrix of Ve's column vectors on a graph.
 
 # Input Argument
 - `Ve::Matrix{Float64}`: feature matrix of eigenvectors, e.g., V.^2 or exp.(V)./sum(exp.(V), dims=1).
@@ -16,11 +16,11 @@ EIGTSDM\\_DISTANCE computes the TSDM distance matrix of Ve's column vectors on a
 - `dis::Matrix{Float64}`: distance matrix, d(φᵢ,φⱼ;T).
 
 """
-function eigTSDM_Distance(Ve,V,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
-    n = size(Ve,1)
-    dis = zeros(n,n)
+function eigTSD_Distance(Ve,V,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
+    N, J = size(Ve)
+    dis = zeros(J,J)
     if m == "Inf"
-        for i = 1:n, j = i+1:n
+        for i = 1:J-1, j = i+1:J
             cost = 0
             f₀ = Ve[:,i] - Ve[:,j]
             f = f₀
@@ -35,7 +35,7 @@ function eigTSDM_Distance(Ve,V,lambda,Q,L;m = "Inf",dt = 0.1,tol = 1e-5)
             dis[i,j] = cost
         end
     else
-        for i = 1:n, j = i+1:n
+        for i = 1:J-1, j = i+1:J
             cost = 0
             f₀ = Ve[:,i] - Ve[:,j]
             f = f₀
