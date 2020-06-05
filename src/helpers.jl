@@ -110,6 +110,11 @@ SCATTER\\_GPLOT!(X; ...) adds a plot to `current` one.
 """
 function scatter_gplot(X; marker = nothing, ms = 4)
     dim = size(X,2)
+    if marker != nothing
+        idx = sortperm(marker)
+        X = X[idx,:]
+        marker = marker[idx]
+    end
     if dim == 2
         scatter(X[:,1],X[:,2],marker_z = marker,ms = ms, c = :viridis, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
     elseif dim == 3
@@ -121,6 +126,11 @@ end
 
 function scatter_gplot!(X; marker = nothing, ms = 4)
     dim = size(X,2)
+    if marker != nothing
+        idx = sortperm(marker)
+        X = X[idx,:]
+        marker = marker[idx]
+    end
     if dim == 2
         scatter!(X[:,1],X[:,2],marker_z = marker,ms = ms, c = :viridis, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
     elseif dim == 3
