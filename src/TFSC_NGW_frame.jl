@@ -35,7 +35,7 @@ end
 """
     SC_NGW_frame(dist, 𝛷; σ = 0.3, β = 4)
 
-SC\\_NGW\\_ FRAME return the Soft Clustering NGW frame Ψ[j,n,:] is the wavelet focused on node n, with filter focused on φⱼ₋₁∈V⃰.
+SC\\_NGW\\_FRAME return the Soft Clustering NGW frame Ψ[j,n,:] is the wavelet focused on node n, with filter focused on φⱼ₋₁∈V⃰.
 
 # Input Arguments
 - `dist::Matrix{Float64}`: N by N matrix measuring behaviorial difference between graph Laplacian eigenvectors.
