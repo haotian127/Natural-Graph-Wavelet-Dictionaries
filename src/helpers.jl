@@ -108,9 +108,9 @@ SCATTER\\_GPLOT!(X; ...) adds a plot to `current` one.
 - `ms::Array{Float64}`: default is 4. Present different node sizes given different signal value at each node.
 
 """
-function scatter_gplot(X; marker = nothing, ms = 4)
+function scatter_gplot(X; marker = nothing, ms = 4, smallValFirst = true)
     dim = size(X,2)
-    if marker != nothing
+    if marker != nothing && smallValFirst
         idx = sortperm(marker)
         X = X[idx,:]
         marker = marker[idx]
@@ -124,9 +124,9 @@ function scatter_gplot(X; marker = nothing, ms = 4)
     end
 end
 
-function scatter_gplot!(X; marker = nothing, ms = 4)
+function scatter_gplot!(X; marker = nothing, ms = 4, smallValFirst = true)
     dim = size(X,2)
-    if marker != nothing
+    if marker != nothing && smallValFirst
         idx = sortperm(marker)
         X = X[idx,:]
         marker = marker[idx]
