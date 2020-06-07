@@ -1,4 +1,4 @@
-using SparseArrays
+using SparseArrays, Plots
 """
     gplot(A, xyz; plotp = true,
           style = :auto, width = 2, color = :blue,
