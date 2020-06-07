@@ -16,8 +16,6 @@ VARIMAX perform varimax (or quartimax, equamax, parsimax) rotation to the column
 
 Implemented by Haotian Li, Aug. 20, 2019
 """
-
-
 function varimax(A; gamma = 1.0, minit = 20, maxit = 1000, reltol = 1e-14)
 	# gamma = 0, 1, m/2, and d(m - 1)/(d + m - 2), corresponding to quartimax, varimax, equamax, and parsimax.
 
