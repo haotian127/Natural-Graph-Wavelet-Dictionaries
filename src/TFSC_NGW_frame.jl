@@ -77,7 +77,7 @@ TFSC\\_NGW\\_ FRAME return a M-dim list of the Time-Frequency adapted Soft Clust
 """
 function TFSC_NGW_frame(partial_dist_ls, 𝛷, M, graphClusters, activeEigenVecs; σ = 0.3, β = 4)
     N = size(𝛷,1)
-    TF_Ψ = []
+    TF_Ψ = Array{Array{Float64,3},1}()
     for k in 1:M
         J = length(activeEigenVecs[k])
         Ψ = zeros(J,N,N)
