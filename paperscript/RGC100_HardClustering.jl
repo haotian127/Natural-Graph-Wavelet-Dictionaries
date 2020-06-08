@@ -13,8 +13,11 @@ Q = incidence_matrix(G; oriented = true)
 W = 1.0 * adjacency_matrix(G)
 
 ## Build Dual Graph
-distDAG = eigDAG_Distance(𝛷,Q,N)
-W_dual = sparse(dualGraph(distDAG))
+# distDAG = eigDAG_Distance(𝛷,Q,N)
+# W_dual = sparse(dualGraph(distDAG))
+
+distROT = JLD.load(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_weighted_alp1.jld"), "distROT")
+W_dual = sparse(dualGraph(distROT))
 
 ## Build Hard Clustering NGW frame
 K = 5
@@ -23,12 +26,12 @@ K = 5
 ## Generate figures of the constructed wavelet vectors
 pyplot(dpi = 400)
 
-for i in 1:K
-    gplot(W, X; width = 1); plt = scatter_gplot!(X; marker = 𝛷[:,dualClusters[i][2]], ms = 3)
-    savefig(plt, "paperfigs/RGC100_HC_dualCluster$(i)_eigenvector$(dualClusters[i][2]).png")
-end
-
-for i in 1:K
-    gplot(W, X; width = 1); plt = scatter_gplot!(X; marker = Ψ[i,1,:], ms = 3)
-    savefig(plt, "paperfigs/RGC100_HC_wavelet$(i).png")
-end
+# for i in 1:K
+#     gplot(W, X; width = 1); plt = scatter_gplot!(X; marker = 𝛷[:,dualClusters[i][2]], ms = 3)
+#     savefig(plt, "paperfigs/RGC100_HC_ROT_dualCluster$(i)_eigenvector$(dualClusters[i][2]).png")
+# end
+#
+# for i in 1:K
+#     gplot(W, X; width = 1); plt = scatter_gplot!(X; marker = Ψ[i,1,:], ms = 3)
+#     savefig(plt, "paperfigs/RGC100_HC_ROT_wavelet$(i).png")
+# end
