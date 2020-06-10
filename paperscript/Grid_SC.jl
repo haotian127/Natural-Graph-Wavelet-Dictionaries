@@ -11,17 +11,17 @@ W = 1.0 * adjacency_matrix(G)
 
 ## Non-trivial eigenvector metric
 # distDAG = eigDAG_Distance(𝛷, Q, N)
-# distHAD = eigHAD_Distance(𝛷,lamb)
-distTSD = eigTSD_Distance(𝛷,𝛷,lamb,Q,L)
+distHAD = eigHAD_Distance(𝛷,lamb)
+# distTSD = eigTSD_Distance(𝛷,𝛷,lamb,Q,L)
 
 ## Test Soft Clustering NGW frame
-Ψ = SC_NGW_frame(distTSD, 𝛷; σ = 0.3, β = 4)
+Ψ = SC_NGW_frame(distHAD, 𝛷; σ = 0.3, β = 4)
 
 ## Generate figures
 gr(dpi = 400)
-focusEigenVecInd = [1, 3, 4, 6]
+focusEigenVecInd = [6, 9, 10, 19]
 
-for i in focusEigenVecInd[2:end]
+for i in focusEigenVecInd
     gplot(W, X; width = 1); scatter_gplot!(X; marker = 𝛷[:,i], ms = 14); Grid_SC_plt = plot!(framestyle = :none, xlim = [0.5, 11], ylim = [0.5, 5.5])
     savefig(Grid_SC_plt, "paperfigs/Grid_EigenVec$(i).png")
 end
@@ -29,5 +29,12 @@ end
 
 for i in focusEigenVecInd
     gplot(W, X; width = 1); scatter_gplot!(X; marker = Ψ[i,28,:], ms = 14); Grid_SC_plt = plot!(framestyle = :none, xlim = [0.5, 11], ylim = [0.5, 5.5])
-    savefig(Grid_SC_plt, "paperfigs/Grid_SC_TSD_wavelet_focusEigenVec$(i).png")
+    savefig(Grid_SC_plt, "paperfigs/Grid_SC_HAD_wavelet_focusEigenVec$(i).png")
+end
+
+Ψ_SGWT = pSGWT.sgwt_transform(28, Matrix(W); nf = 6)
+
+for i in 2:5
+    gplot(W, X; width = 1); scatter_gplot!(X; marker = Ψ_SGWT[:,i], ms = 14); Grid_SC_plt = plot!(framestyle = :none, xlim = [0.5, 11], ylim = [0.5, 5.5])
+    savefig(Grid_SC_plt, "paperfigs/Grid_SGWT_MexicanHat_wavelet_scale$(i).png")
 end
