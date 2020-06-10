@@ -15,7 +15,15 @@ EIGHAD\\_DISTANCE compute HAD distance between pairwise graph Laplacian eigenvec
 """
 function eigHAD_Distance(𝛷, lamb; indexEigs = 1:size(𝛷,2))
     A = eigHAD_Affinity(𝛷, lamb; indexEigs = indexEigs)
-    dis = -log.(A)
+    n = size(A,1)
+    dis = zeros(n,n)
+    for i = 1:n, j = 1:n
+        if A[i,j] == 0
+            dis[i,j] = 1e9
+        else
+            dis[i,j] = -log(A[i,j])
+        end
+    end
     return dis
 end
 

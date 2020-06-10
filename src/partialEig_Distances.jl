@@ -9,7 +9,7 @@ function partialEig_Distance(graphClusters, activeEigenVecs, lamb, 𝛷, Q, L; e
     for k in 1:M
         J = length(activeEigenVecs[k])
         restrict_𝛷 = zeros(N,J); restrict_𝛷[graphClusters[k], :] = 𝛷[graphClusters[k], activeEigenVecs[k]]
-        tmp_dist = zeros(N,N); for i in 1:N, j in 1:N; if i != j; tmp_dist[i,j] = Inf; end; end
+        tmp_dist = zeros(N,N); for i in 1:N, j in 1:N; if i != j; tmp_dist[i,j] = 1e9; end; end
         if eigen_metric == :DAG
             tmp_dist[activeEigenVecs[k],activeEigenVecs[k]] = eigDAG_Distance(restrict_𝛷, Q, J; edge_weight = edge_weight)
         elseif eigen_metric == :HAD
