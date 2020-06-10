@@ -1,6 +1,22 @@
-using Plots, LightGraphs, JLD, Distances, MultivariateStats
+## Load packages and functions
+using MultivariateStats
 include(joinpath("..", "src", "func_includer.jl"))
 
+### Unweighted Version
+## Build unweighted RGC#100 graph
+G = loadgraph(joinpath(@__DIR__, "..", "datasets", "RGC100.lgz")); N = nv(G)
+X = load(joinpath(@__DIR__, "..", "datasets", "RGC100_xyz.jld"),"xyz")[:,1:2]
+L = Matrix(laplacian_matrix(G))
+lamb, V = eigen(L); sgn = (maximum(V, dims = 1)[:] .> -minimum(V, dims = 1)[:]) .* 2 .- 1; V = Matrix((V' .* sgn)')
+Q = incidence_matrix(G; oriented = true)
+
+## Test unweighted ROT distance on RGC100
+# Runtime for α = 1 case: 4 hours (163.35 G allocations: 6.885 TiB, 5.22% gc time)
+@time distROT = eigROT_Distance(V.^2, Q)
+# JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_unweighted_alp1.jld"), "distROT", distROT)
+
+
+### Weighted Version
 ## Build weighted RGC#100 graph
 G = loadgraph(joinpath(@__DIR__, "..", "datasets", "RGC100.lgz")); N = nv(G)
 X = load(joinpath(@__DIR__, "..", "datasets", "RGC100_xyz.jld"),"xyz")
@@ -86,7 +102,7 @@ X3 = E[1,1:2]
 Y3 = E[2,1:2]
 Z3 = E[3,1:2]
 
-plotlyjs()
+plotly()
 scatter(X0,Y0,Z0, zcolor = 1:N, m=(:grays, 0.6, 2),cbar = true, legend = false)
 scatter!(X1,Y1,Z1, m=(:red, 0.9,3), cbar = false, legend = false)
 scatter!(X2,Y2,Z2, zcolor = 1:Int(round(N/length(branchfreq))):N,m=(:viridis, 0.8,5), cbar = false, legend = false)
