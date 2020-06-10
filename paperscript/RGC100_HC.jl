@@ -16,7 +16,7 @@ W = 1.0 * adjacency_matrix(G)
 # distDAG = eigDAG_Distance(𝛷,Q,N)
 # W_dual = sparse(dualGraph(distDAG))
 
-distROT = JLD.load(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_weighted_alp1.jld"), "distROT")
+distROT = JLD.load(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_unweighted_alp1.jld"), "distROT")
 W_dual = sparse(dualGraph(distROT))
 
 ## Build Hard Clustering NGW frame
