@@ -190,13 +190,36 @@ function approx_error_plot(ortho_mx_list, f; fraction_cap = 0.3, label = false, 
 
     gr(dpi = 300)
     fraction = 0:0.01:fraction_cap
-    plt = plot(fraction, err, yaxis=:log, lab = label, linewidth = 3)
+    plt = plot(fraction, err, yscale=:log10, lab = label, linewidth = 3, xaxis = "Fraction of Coefficients Retained", yaxis = "Relative Approximation Error")
     if Save
         savefig(plt, path)
         return "figure saved! @ " * path
     end
     return "use current() to show figure."
 end
+
+################################################################################
+####################### Approximation error plot################################
+################################################################################
+### function to plot the approximation error curve
+function approx_error_plot2(DVEC::Array{Array{Float64,1},1})
+    gr(dpi = 400)
+    plot(xaxis = "Fraction of Coefficients Retained", yaxis = "Relative Approximation Error")
+    frac = 0.3
+    T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC_NGW", "varimax_NGW"]
+    L = [(:dashdot,:orange), (:dashdot,:pink), (:dashdot, :red), (:solid, :gray), (:solid, :green), (:solid, :blue), (:solid, :purple), (:solid, :black)]
+    LW = [1, 1, 1, 1, 1, 2, 2, 2]
+    for i = 1:length(DVEC)
+        dvec = DVEC[i]
+        N = length(dvec)
+        dvec_norm = norm(dvec,2)
+        dvec_sort = sort(dvec.^2) # the smallest first
+        er = sqrt.(reverse(cumsum(dvec_sort)))/dvec_norm # this is the relative L^2 error of the whole thing, i.e., its length is N
+        p = Int64(floor(frac*N)) + 1 # upper limit
+        plot!(frac*(0:(p-1))/(p-1), er[1:p], yaxis=:log, xlims = (0.,frac), label = T[i], line = L[i], linewidth = LW[i])
+    end
+end
+
 
 """
     sortWaveletsByCenteredLocations(Wav)
