@@ -28,7 +28,18 @@ end
 # standardize the input distance matrix
 function standardize(dist)
     N = size(dist,1)
-    return dist ./ maximum(dist[2:N,2:N])
+    c = 0.0
+    for i = 1:N, j = i:N
+        if dist[i,j] < 1e9
+            c = max(c, dist[i,j])
+        end
+    end
+    for i = 1:N, j = i:N
+        if dist[i,j] < 1e9
+            dist[i,j] /= c
+        end
+    end
+    return dist
 end
 
 
@@ -59,7 +70,7 @@ function SC_NGW_frame(dist, 𝛷; σ = 0.3, β = 4)
 end
 
 """
-    TFSC_NGW_frame(dist, 𝛷; σ = 0.3, β = 4)
+    TFSC_NGW_frame(partial_dist_ls, 𝛷, M, graphClusters, activeEigenVecs; σ = 0.3, β = 4)
 
 TFSC\\_NGW\\_ FRAME return a M-dim list of the Time-Frequency adapted Soft Clustering NGW frame Ψ[j,n,:] is the wavelet focused on node n, with filter focused on φⱼ₋₁∈V⃰.
 
