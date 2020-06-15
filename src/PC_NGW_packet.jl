@@ -251,9 +251,6 @@ function const_proj_wavelets(V,vlist,elist; method = "Modified Gram-Schmidt with
 end
 
 
-
-
-
 function assemble_wavelet_basis(dvec,wavelet_packet)
     W = wavelet_packet[dvec[1][1]][dvec[1][2]]
     if length(dvec) < 2
@@ -297,8 +294,6 @@ function HTree_findParent(ht_vlist)
     end
     return parent
 end
-
-
 
 
 
