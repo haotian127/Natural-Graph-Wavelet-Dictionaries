@@ -1,3 +1,23 @@
+"""
+    best_basis_selection(f, wavelet_packet, parent_pointer)
+
+BEST BASIS SELECTION inorder to approximate graph signal f, it selects best basis from wavelet\\_packet based on ℓ₁-norm of coefficients.
+
+# Input Arguments
+- `f::Array{Float64}`: graph signal.
+- `wavelet_packet::Array{Array{Matrix{Float64}}}`: a wavelet packet tree.
+- `parent_pointer::Array{Array{Array{Int64}}}`: the parent pointer for the tree.
+
+# Output Argument
+- `Wav::Matrix{Float64}`: columns are a set of wavelet ONB.
+
+"""
+function best_basis_selection(f, wavelet_packet, parent_pointer)
+    ht_coeff_L1 = HTree_coeff_wavelet_packet(f,wavelet_packet)[2]
+    bb_locs = best_basis_algorithm(ht_coeff_L1, parent_pointer)
+    Wav = assemble_wavelet_basis(bb_locs, wavelet_packet)
+    return Wav
+end
 
 function best_basis_algorithm(ht_coeff_L1, parent)
     Lvl = length(parent)
