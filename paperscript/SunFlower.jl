@@ -15,10 +15,9 @@ W_dual = sparse(dualGraph(distDAG)) #required: sparse dual weighted adjacence ma
 
 ## Assemble wavelet packets
 ht_elist_dual, ht_vlist_dual = HTree_EVlist(𝛷,W_dual)
-ht_elist_varimax = ht_elist_dual
-
 wavelet_packet_dual = HTree_wavelet_packet(𝛷,ht_vlist_dual,ht_elist_dual)
 
+ht_elist_varimax = ht_elist_dual
 wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
 
 
