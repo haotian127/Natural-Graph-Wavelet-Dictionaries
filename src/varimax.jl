@@ -1,11 +1,10 @@
-
 """
 	varimax(A; gamma = 1.0, minit = 50, maxit = 1000, reltol = 1e-14)
 
 VARIMAX perform varimax (or quartimax, equamax, parsimax) rotation to the column vectors of the input matrix.
 
 # Input Arguments
-- `A::Matrix{Float64}`: input matrix, whose column vectors are to be rotated.
+- `A::Matrix{Float64}`: input matrix, whose column vectors are to be rotated. d, m = size(A).
 - `gamma::Float64`: default is 1. gamma = 0, 1, m/2, and d(m - 1)/(d + m - 2), corresponding to quartimax, varimax, equamax, and parsimax.
 - `minit::Int`: default is 50. Minimum number of iterations, in case of the stopping criteria fails initially.
 - `maxit::Int`: default is 1000. Maximum number of iterations.
@@ -17,21 +16,17 @@ VARIMAX perform varimax (or quartimax, equamax, parsimax) rotation to the column
 Implemented by Haotian Li, Aug. 20, 2019
 """
 function varimax(A; gamma = 1.0, minit = 20, maxit = 1000, reltol = 1e-14)
-	# gamma = 0, 1, m/2, and d(m - 1)/(d + m - 2), corresponding to quartimax, varimax, equamax, and parsimax.
-
 	# Get the sizes of input matrix
-    d,m = size(A)
+    d, m = size(A)
 
 	# If there is only one vector, then do nothing.
 	if m == 1
 		return A
 	end
 
-
-	# Warm up step: start with better orthogonal matrix T
+	# Warm up step: start with a good initial orthogonal matrix T by SVD and QR
     T = Matrix{Float64}(I, m, m)
     B = A * T
-
     L,_,M = svd(A' * (d*B.^3 - gamma*B * Diagonal(sum(B.^2, dims = 1)[:])))
     T = L * M'
 	if norm(T-Matrix{Float64}(I, m, m)) < reltol
@@ -39,7 +34,7 @@ function varimax(A; gamma = 1.0, minit = 20, maxit = 1000, reltol = 1e-14)
         B = A * T
     end
 
-	# Iteration step: get better T in order to maximize the objective (as described in Factor Analysis book)
+	# Iteration step: get better T to maximize the objective (as described in Factor Analysis book)
     D = 0
     for k in 1:maxit
         Dold = D
@@ -58,5 +53,6 @@ function varimax(A; gamma = 1.0, minit = 20, maxit = 1000, reltol = 1e-14)
 	       B[:,i] .= - B[:,i]
 	   end
 	end
+
 	return B
 end

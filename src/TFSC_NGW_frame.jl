@@ -25,7 +25,7 @@ function SoftFilter(dist, j; σ = 0.3, β = 4)
     return f
 end
 
-# standardize the input distance matrix
+# standardize the input distance matrix (ignoring 'inf' elements, i.e., element values = 1e9)
 function standardize(dist)
     N = size(dist,1)
     c = 0.0
