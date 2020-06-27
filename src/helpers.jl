@@ -108,7 +108,7 @@ SCATTER\\_GPLOT!(X; ...) adds a plot to `current` one.
 - `ms::Array{Float64}`: default is 4. Present different node sizes given different signal value at each node.
 
 """
-function scatter_gplot(X; marker = nothing, ms = 4, smallValFirst = true)
+function scatter_gplot(X; marker = nothing, ms = 4, smallValFirst = true, c = :viridis)
     dim = size(X,2)
     if marker != nothing && smallValFirst
         idx = sortperm(marker)
@@ -116,15 +116,15 @@ function scatter_gplot(X; marker = nothing, ms = 4, smallValFirst = true)
         marker = marker[idx]
     end
     if dim == 2
-        scatter(X[:,1],X[:,2],marker_z = marker,ms = ms, c = :viridis, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
+        scatter(X[:,1],X[:,2],marker_z = marker,ms = ms, c = c, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
     elseif dim == 3
-        scatter(X[:,1],X[:,2],X[:,3], marker_z = marker, ms = ms, c = :viridis, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
+        scatter(X[:,1],X[:,2],X[:,3], marker_z = marker, ms = ms, c = c, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
     else
         print("Dimension Error: scatter_gplot only supports for 2-dim or 3-dim scatter plots.")
     end
 end
 
-function scatter_gplot!(X; marker = nothing, ms = 4, smallValFirst = true)
+function scatter_gplot!(X; marker = nothing, ms = 4, smallValFirst = true, c = :viridis)
     dim = size(X,2)
     if marker != nothing && smallValFirst
         idx = sortperm(marker)
@@ -132,9 +132,9 @@ function scatter_gplot!(X; marker = nothing, ms = 4, smallValFirst = true)
         marker = marker[idx]
     end
     if dim == 2
-        scatter!(X[:,1],X[:,2],marker_z = marker,ms = ms, c = :viridis, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
+        scatter!(X[:,1],X[:,2],marker_z = marker,ms = ms, c = c, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
     elseif dim == 3
-        scatter!(X[:,1],X[:,2],X[:,3], marker_z = marker, ms = ms, c = :viridis, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
+        scatter!(X[:,1],X[:,2],X[:,3], marker_z = marker, ms = ms, c = c, legend = false, mswidth = 0, cbar = true, aspect_ratio = 1)
     else
         print("Dimension Error: scatter_gplot! only supports for 2-dim or 3-dim scatter plots.")
     end
@@ -262,4 +262,57 @@ function spectral_clustering(𝛷, M)
         push!(clusters, findall(cluster_indices .== k)[:])
     end
     return clusters
+end
+
+"""
+    transform2D(X; s = 1, t = [0,0])
+
+TRANSFORM2D dilate each point of `X` by scale s and translate by 2D vector t.
+"""
+function transform2D(X; s = 1, t = [0,0])
+    X1 = X .* s
+    X2 = zeros(size(X))
+    for i in 1:size(X,1)
+        X2[i,1] = X1[i,1] + t[1]
+        X2[i,2] = X1[i,2] + t[2]
+    end
+    return X2
+end
+
+"""
+    NN_rendering(X, Img_Mat)
+
+NN\\_RENDERING generates a rendering signal at each point of `X` from the image `Img_Mat` by nearest neighbor method.
+"""
+function NN_rendering(X, Img_Mat)
+    N = size(X,1)
+    f = zeros(N)
+    for i in 1:N
+        nn_x, nn_y = Int(round(X[i, 2])), Int(round(X[i, 1]))
+        if nn_x < 1 || nn_x > size(Img_Mat, 2) || nn_y < 1 || nn_y > size(Img_Mat, 1)
+            print("Error: pixel out of boundary!")
+            return
+        end
+        f[i] = Img_Mat[nn_x, nn_y]
+    end
+    return f
+end
+
+"""
+    Bilinear_rendering(X, Img_Mat)
+
+NN\\_RENDERING generates a rendering signal at each point of `X` from the image `Img_Mat` by bilinear interpolation method.
+"""
+function Bilinear_rendering(X, Img_Mat)
+    N = size(X,1)
+    f = zeros(N)
+    for i in 1:N
+        x1, x2, y1, y2 = Int(floor(X[i, 2])), Int(floor(X[i, 2])) + 1, Int(floor(X[i, 1])), Int(floor(X[i, 1])) + 1
+        x, y = X[i,2], X[i,1]
+        F = [Img_Mat[x1,y1] Img_Mat[x1,y2]
+            Img_Mat[x2,y1] Img_Mat[x2,y2]]
+        prod_res = 1/((x2 - x1) * (y2 - y1)) * [x2-x x-x1] * F * [y2-y y-y1]'
+        f[i] = prod_res[1,1]
+    end
+    return f
 end
