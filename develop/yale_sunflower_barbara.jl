@@ -29,6 +29,7 @@ wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
 
 
 ## Start barbara experiment and generating different signals focused at different locations
+gr(dpi = 400)
 ### focus on the eye, i.e., f_eye_NN, f_eye_Bilinear
 N = 400; c=1.0/N; θ=(sqrt(5.0)-1)*π;
 X_sf = zeros(N,2); for k=1:N X_sf[k,:]=c*(k-1)*[cos((k-1)*θ) sin((k-1)*θ)]; end; X_transform = transform2D(X_sf; s = 20, t = [395, 100]) # t = [395, 100] is the location of the eye.
@@ -46,7 +47,6 @@ heatmap(barbara, yflip=true, ratio=1, c=:greys, clim=(0,1)); scatter_gplot!(X_tr
 heatmap(barbara, yflip=true, ratio=1, c=:greys, clim=(0,1)); scatter_gplot!(X_transform; marker = f_eye_Bilinear, ms = 1, smallValFirst = false, c = :greys)
 
 # Plot rendering results
-gr(dpi = 400)
 scatter_gplot(X_sf .* 50; marker = f_eye_NN, ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); nn_render_result = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, clim=(0,1), frame = :none)
 savefig(nn_render_result, "figs/Barbara_Sunflower_NN_feye.png")
 
@@ -138,6 +138,20 @@ dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
 approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]); sunflower_approx_error_plt = current()
 savefig(sunflower_approx_error_plt, "figs/Barbara_SunFlower_reconstruct_errors_feye_NN.png")
 
+## Show some important NGW basis vectors
+importance_idx = sortperm(abs.(dvec_spectral), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_dual[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_NN_feye_PC_NGW_important_basis_vector$(i).png")
+end
+
+importance_idx = sortperm(abs.(dvec_varimax), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_varimax[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_NN_feye_varimax_NGW_important_basis_vector$(i).png")
+end
+
+
 
 
 ## Graph signal approximation
@@ -176,6 +190,19 @@ approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:],
 savefig(sunflower_approx_error_plt, "figs/Barbara_SunFlower_reconstruct_errors_fface_NN.png")
 
 
+## Show some important NGW basis vectors
+importance_idx = sortperm(abs.(dvec_spectral), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_dual[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_NN_fface_PC_NGW_important_basis_vector$(i).png")
+end
+
+importance_idx = sortperm(abs.(dvec_varimax), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_varimax[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_NN_fface_varimax_NGW_important_basis_vector$(i).png")
+end
+
 
 ## Graph signal approximation
 f = f_trouser_NN
@@ -211,6 +238,19 @@ dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
 
 approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]); sunflower_approx_error_plt = current()
 savefig(sunflower_approx_error_plt, "figs/Barbara_SunFlower_reconstruct_errors_ftrouser_NN.png")
+
+## Show some important NGW basis vectors
+importance_idx = sortperm(abs.(dvec_spectral), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_dual[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_NN_ftrouser_PC_NGW_important_basis_vector$(i).png")
+end
+
+importance_idx = sortperm(abs.(dvec_varimax), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_varimax[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_NN_ftrouser_varimax_NGW_important_basis_vector$(i).png")
+end
 
 
 
@@ -250,6 +290,22 @@ approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:],
 savefig(sunflower_approx_error_plt, "figs/Barbara_SunFlower_reconstruct_errors_feye_Bilinear.png")
 
 
+## Show some important NGW basis vectors
+importance_idx = sortperm(abs.(dvec_spectral), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_dual[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_Bilinear_feye_PC_NGW_important_basis_vector$(i).png")
+end
+
+importance_idx = sortperm(abs.(dvec_varimax), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_varimax[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_Bilinear_feye_varimax_NGW_important_basis_vector$(i).png")
+end
+
+
+
+
 
 ## Graph signal approximation
 f = f_face_Bilinear
@@ -287,6 +343,20 @@ approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:],
 savefig(sunflower_approx_error_plt, "figs/Barbara_SunFlower_reconstruct_errors_fface_Bilinear.png")
 
 
+## Show some important NGW basis vectors
+importance_idx = sortperm(abs.(dvec_spectral), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_dual[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_Bilinear_fface_PC_NGW_important_basis_vector$(i).png")
+end
+
+importance_idx = sortperm(abs.(dvec_varimax), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_varimax[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_Bilinear_fface_varimax_NGW_important_basis_vector$(i).png")
+end
+
+
 
 ## Graph signal approximation
 f = f_trouser_Bilinear
@@ -322,3 +392,17 @@ dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
 
 approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]); sunflower_approx_error_plt = current()
 savefig(sunflower_approx_error_plt, "figs/Barbara_SunFlower_reconstruct_errors_ftrouser_Bilinear.png")
+
+
+## Show some important NGW basis vectors
+importance_idx = sortperm(abs.(dvec_spectral), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_dual[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_Bilinear_ftrouser_PC_NGW_important_basis_vector$(i).png")
+end
+
+importance_idx = sortperm(abs.(dvec_varimax), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = Wav_varimax[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_Bilinear_ftrouser_varimax_NGW_important_basis_vector$(i).png")
+end
