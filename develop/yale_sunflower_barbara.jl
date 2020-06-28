@@ -51,7 +51,7 @@ scatter_gplot(X_sf .* 50; marker = f_eye_NN, ms = LinRange(3.0, 7.0, N), smallVa
 savefig(nn_render_result, "figs/Barbara_Sunflower_NN_feye.png")
 
 scatter_gplot(X_sf .* 50; marker = f_eye_Bilinear, ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); bilinear_render_result = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, clim=(0,1), frame = :none)
-savefig(nn_render_result, "figs/Barbara_Sunflower_Bilinear_feye.png")
+savefig(bilinear_render_result, "figs/Barbara_Sunflower_Bilinear_feye.png")
 
 
 
@@ -75,7 +75,7 @@ scatter_gplot(X_sf .* 50; marker = f_face_NN, ms = LinRange(3.0, 7.0, N), smallV
 savefig(nn_render_result, "figs/Barbara_Sunflower_NN_fface.png")
 
 scatter_gplot(X_sf .* 50; marker = f_face_Bilinear, ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); bilinear_render_result = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, clim=(0,1), frame = :none)
-savefig(nn_render_result, "figs/Barbara_Sunflower_Bilinear_fface.png")
+savefig(bilinear_render_result, "figs/Barbara_Sunflower_Bilinear_fface.png")
 
 
 
@@ -99,7 +99,7 @@ scatter_gplot(X_sf .* 50; marker = f_trouser_NN, ms = LinRange(3.0, 7.0, N), sma
 savefig(nn_render_result, "figs/Barbara_Sunflower_NN_ftrouser.png")
 
 scatter_gplot(X_sf .* 50; marker = f_trouser_Bilinear, ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); bilinear_render_result = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, clim=(0,1), frame = :none)
-savefig(nn_render_result, "figs/Barbara_Sunflower_Bilinear_ftrouser.png")
+savefig(bilinear_render_result, "figs/Barbara_Sunflower_Bilinear_ftrouser.png")
 
 
 
