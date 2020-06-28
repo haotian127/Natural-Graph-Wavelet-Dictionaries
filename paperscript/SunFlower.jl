@@ -74,3 +74,7 @@ dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
 
 approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]); sunflower_approx_error_plt = current()
 # savefig(sunflower_approx_error_plt, "paperfigs/SunFlower_reconstruct_errors.png")
+
+
+# gr(dpi = 400); gplot(1.0*adjacency_matrix(G), X, width = 1, color = :blue); plot!(aspect_ratio=1, framestyle = :none); plt = scatter_gplot!(X; ms = (1:N) / 45 .+ 1, smallValFirst = false, c=:red)
+# savefig(plt, "figs/Sunflower.png")
