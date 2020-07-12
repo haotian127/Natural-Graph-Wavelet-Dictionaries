@@ -27,6 +27,8 @@ wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist_varimax)
 
 ## generate gif files
 
+gr(dpi = 300)
+# Father wavelets
 # Pair Clustering NGW
 # anim = @animate for i=1:128
 #     WW = wavelet_packet_dual[3][1]
@@ -56,7 +58,7 @@ anim = @animate for i=1:128
     WW = (WW' .* sgn)'
     ord = findmax(abs.(WW), dims = 1)[2][:]
     idx = sortperm([j[1] for j in ord])
-    plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
+    plot(WW[:,idx[i]], legend = false, ylim = [-0.4,0.6])
 end
 gif(anim, "gif/anim_Path512_PC_NGW_mother.gif", fps = 30)
 
@@ -67,6 +69,6 @@ anim = @animate for i=1:128
     WW = (WW' .* sgn)'
     ord = findmax(abs.(WW), dims = 1)[2][:]
     idx = sortperm([j[1] for j in ord])
-    plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
+    plot(WW[:,idx[i]], legend = false, ylim = [-0.4,0.6])
 end
 gif(anim, "gif/anim_Path512_Varimax_NGW_mother.gif", fps = 30)
