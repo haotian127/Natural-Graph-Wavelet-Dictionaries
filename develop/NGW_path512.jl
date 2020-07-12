@@ -28,7 +28,7 @@ wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist_varimax)
 ## generate gif files
 
 # Pair Clustering NGW
-anim = @animate for i=1:100
+anim = @animate for i=1:128
     WW = wavelet_packet_dual[3][1]
     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
     WW = (WW' .* sgn)'
@@ -39,7 +39,7 @@ end
 gif(anim, "gif/anim_Path512_PC_NGW.gif", fps = 30)
 
 # Varimax NGW
-anim = @animate for i=1:100
+anim = @animate for i=1:128
     WW = wavelet_packet_varimax[3][1]
     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
     WW = (WW' .* sgn)'
