@@ -28,23 +28,45 @@ wavelet_packet_varimax = HTree_wavelet_packet_varimax(V,ht_elist_varimax)
 ## generate gif files
 
 # Pair Clustering NGW
+# anim = @animate for i=1:128
+#     WW = wavelet_packet_dual[3][1]
+#     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
+#     WW = (WW' .* sgn)'
+#     ord = findmax(abs.(WW), dims = 1)[2][:]
+#     idx = sortperm([j[1] for j in ord])
+#     plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
+# end
+# gif(anim, "gif/anim_Path512_PC_NGW.gif", fps = 30)
+#
+# # Varimax NGW
+# anim = @animate for i=1:128
+#     WW = wavelet_packet_varimax[3][1]
+#     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
+#     WW = (WW' .* sgn)'
+#     ord = findmax(abs.(WW), dims = 1)[2][:]
+#     idx = sortperm([j[1] for j in ord])
+#     plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
+# end
+# gif(anim, "gif/anim_Path512_Varimax_NGW.gif", fps = 30)
+
+# Mother Wavelet
 anim = @animate for i=1:128
-    WW = wavelet_packet_dual[3][1]
+    WW = wavelet_packet_dual[3][2]
     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
     WW = (WW' .* sgn)'
     ord = findmax(abs.(WW), dims = 1)[2][:]
     idx = sortperm([j[1] for j in ord])
     plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
 end
-gif(anim, "gif/anim_Path512_PC_NGW.gif", fps = 30)
+gif(anim, "gif/anim_Path512_PC_NGW_mother.gif", fps = 30)
 
 # Varimax NGW
 anim = @animate for i=1:128
-    WW = wavelet_packet_varimax[3][1]
+    WW = wavelet_packet_varimax[3][2]
     sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
     WW = (WW' .* sgn)'
     ord = findmax(abs.(WW), dims = 1)[2][:]
     idx = sortperm([j[1] for j in ord])
     plot(WW[:,idx[i]], legend = false, ylim = [-0.3,0.7])
 end
-gif(anim, "gif/anim_Path512_Varimax_NGW.gif", fps = 30)
+gif(anim, "gif/anim_Path512_Varimax_NGW_mother.gif", fps = 30)
