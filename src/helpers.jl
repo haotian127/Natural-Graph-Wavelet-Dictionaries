@@ -316,3 +316,33 @@ function Bilinear_rendering(X, Img_Mat)
     end
     return f
 end
+
+"""
+    dct1d(k, N)
+
+DCT1D returns k-th 1D DCT basis vector in Rᴺ.
+
+# Input Arguments
+- `k::Int`: ord of DCT basis vector. k = 1,2,...,N.
+- `N::Int`: vector dimension.
+
+# Output Argument
+- `φ::Array{Float64}`: k-th 1D DCT basis vector in Rᴺ. (k is 1-indexed)
+"""
+function dct1d(k, N)
+    φ = [cos(π*(k-1)*(l+0.5)/N) for l = 0:N-1]
+    return φ ./ norm(φ, 2)
+end
+
+function dct2d_basis(N1, N2)
+    N = N1 * N2
+    𝚽 = zeros(N, N)
+    ind = 1
+    for i in 1:N1, j in 1:N2
+        φ₁, φ₂ = dct1d(i, N1), dct1d(j, N2)
+        φ = reshape(φ₁*φ₂', N)
+        𝚽[:,ind] = φ
+        ind += 1
+    end
+    return 𝚽
+end
