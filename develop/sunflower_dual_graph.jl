@@ -17,12 +17,15 @@ using MultivariateStats
 gr(dpi=300)
 X_dual = Matrix(transpose(transform(fit(MDS, distDAG, maxoutdim = 2, distances = true))))
 scatter_gplot(X_dual; ms = 3, c = :blue); plt = plot!(aspect_ratio = 1, title = "MDS embedding of the dual graph's nodes")
-savefig(plt, "figs/sunflower_DAG_dual_partition_lvl0")
+# savefig(plt, "figs/sunflower_DAG_dual_partition_lvl0")
 
 
 ## Assemble wavelet packets
 ht_elist_dual, ht_vlist_dual = HTree_EVlist(𝛷,W_dual)
 wavelet_packet_dual = HTree_wavelet_packet(𝛷,ht_vlist_dual,ht_elist_dual)
+
+ht_elist_varimax = ht_elist_dual
+wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
 
 for l in 1:3
     lvl_dual_partition = zeros(N)
@@ -30,7 +33,7 @@ for l in 1:3
         lvl_dual_partition .+= i .* characteristic(ht_elist_dual[l][i], N)
     end
     scatter_gplot(X_dual; marker = lvl_dual_partition, ms = 3); plt = plot!(cbar = false, aspect_ratio = 1, title = "dual graph partition lvl = $(l)")
-    savefig(plt, "figs/Sunflower_DAG_dual_partition_lvl$(l)")
+    # savefig(plt, "figs/Sunflower_DAG_dual_partition_lvl$(l)")
 end
 
 
@@ -49,3 +52,37 @@ idx = 110; scatter_gplot(X; marker = 𝛷[:,idx], ms = LinRange(3.0, 7.0, N), sm
 idx = 228; scatter_gplot(X; marker = 𝛷[:,idx], ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\phi_{", idx-1, "}")); savefig(plt, "figs/Sunflower_GL_eigenvector_$(idx-1).png")
 
 idx = 343; scatter_gplot(X; marker = 𝛷[:,idx], ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\phi_{", idx-1, "}")); savefig(plt, "figs/Sunflower_GL_eigenvector_$(idx-1).png")
+
+# group 1: GL
+idx = ht_elist_dual[3][1][2]; scatter_gplot(X; marker = 𝛷[:,idx], ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\phi_{", idx-1, "}")); savefig(plt, "figs/Sunflower_GL_eigenvector_$(idx-1).png") # 1
+idx = ht_elist_dual[3][1][Int((1+end)//2)]; scatter_gplot(X; marker = 𝛷[:,idx], ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\phi_{", idx-1, "}")); savefig(plt, "figs/Sunflower_GL_eigenvector_$(idx-1).png") # 7
+idx = ht_elist_dual[3][1][end]; scatter_gplot(X; marker = 𝛷[:,idx], ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\phi_{", idx-1, "}")); savefig(plt, "figs/Sunflower_GL_eigenvector_$(idx-1).png") # 15
+
+# group 2: GL
+idx = ht_elist_dual[3][4][1]; scatter_gplot(X; marker = 𝛷[:,idx], ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\phi_{", idx-1, "}")); savefig(plt, "figs/Sunflower_GL_eigenvector_$(idx-1).png") # 101
+idx = ht_elist_dual[3][4][Int((1+end)//2)]; scatter_gplot(X; marker = 𝛷[:,idx], ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\phi_{", idx-1, "}")); savefig(plt, "figs/Sunflower_GL_eigenvector_$(idx-1).png") # 136
+idx = ht_elist_dual[3][4][end]; scatter_gplot(X; marker = 𝛷[:,idx], ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\phi_{", idx-1, "}")); savefig(plt, "figs/Sunflower_GL_eigenvector_$(idx-1).png") # 171
+
+
+## Display some PC NGWP vectors
+# group 1: PC NGWP
+lvl = 4; i = 1; k = 2; pc_ngwp_vec = wavelet_packet_dual[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_PC_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+lvl = 4; i = 1; k = 7; pc_ngwp_vec = wavelet_packet_dual[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_PC_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+lvl = 4; i = 1; k = 15; pc_ngwp_vec = wavelet_packet_dual[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_PC_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+
+# group 2: PC NGWP
+lvl = 4; i = 4; k = 1; pc_ngwp_vec = wavelet_packet_dual[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_PC_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+lvl = 4; i = 4; k = 36; pc_ngwp_vec = wavelet_packet_dual[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_PC_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+lvl = 4; i = 4; k = 71; pc_ngwp_vec = wavelet_packet_dual[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_PC_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+
+
+## Display some varimax NGWP vectors
+# group 1: varimax NGWP
+lvl = 4; i = 1; k = 2; pc_ngwp_vec = wavelet_packet_varimax[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_varimax_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+lvl = 4; i = 1; k = 7; pc_ngwp_vec = wavelet_packet_varimax[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_varimax_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+lvl = 4; i = 1; k = 15; pc_ngwp_vec = wavelet_packet_varimax[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_varimax_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+
+# group 2: varimax NGWP
+lvl = 4; i = 4; k = 1; pc_ngwp_vec = wavelet_packet_varimax[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_varimax_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+lvl = 4; i = 4; k = 36; pc_ngwp_vec = wavelet_packet_varimax[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_varimax_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
+lvl = 4; i = 4; k = 71; pc_ngwp_vec = wavelet_packet_varimax[lvl][i][:,k]; scatter_gplot(X; marker = pc_ngwp_vec, ms = LinRange(3.0, 7.0, N), smallValFirst = false); plt = plot!(framestyle = :none, title = latexstring("\\psi_{", i-1, ",", k-1, "}", "^{", lvl-1, "}")); savefig(plt, "figs/Sunflower_varimax_NGWP_vec_lvl$(lvl-1)_i$(i-1)_k$(k-1)")
