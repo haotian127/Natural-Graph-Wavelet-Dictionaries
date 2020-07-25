@@ -178,6 +178,21 @@ function HTree_wavelet_packet(V,ht_vlist,ht_elist)
     return wav_packet
 end
 
+"""
+    HTree_wavelet_packet_varimax(V,ht_elist)
+
+HTREE\\_WAVELET\\_PACKET\\_VARIMAX construct varimax NGWP.
+
+# Input Arguments
+- `V::Matrix{Float64}`: graph Laplacian eigenvectors 𝚽
+- `ht_elist::Array{Array{Array{Int64}}}`: the hierarchical tree list of how one partition the dual graph. 
+
+# Output Argument
+- `wav_packet::Array{Array{Matrix{Float64}}}`: a list of lists of matricies. The first list index indicates the level of the hierarchical tree;
+the second list index represents the ord of the tree node position at the level (from left to right, start from 1); then we get a matrix whose columns
+are the varimax NGW vectors. E.g., wav_packet[3][1] = Ψ_{0}^{(2)} as in the paper.
+
+"""
 function HTree_wavelet_packet_varimax(V,ht_elist)
     N = size(V,1)
     wav_packet = [[Matrix{Float64}(I, N, N)]]
