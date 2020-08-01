@@ -28,9 +28,10 @@ wavelet_packet_varimax = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_
 wavelet_packet_dual = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_dual")
 
 ## Graph signal
-f = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
+# fp = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
+# fv = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fv")
 # f = exp.( (- (X[:,1] .+ 79.4).^2 - (X[:,2] .- 43.65).^2) ./ 0.01 ) # fgaussian
-# f = zeros(N); for i in 1:N; f[i] = length(findall(dist_X[:,i] .< 1/minimum(edge_weight))); end #fneighbor
+f = zeros(N); for i in 1:N; f[i] = length(findall(dist_X[:,i] .< 1/minimum(edge_weight))); end #fneighbor
 # pyplot(dpi = 400); gplot(1.0*adjacency_matrix(G), X, width = 1, color = :blue); plot!(aspect_ratio=1, framestyle = :none); Toronto_signal = scatter_gplot!(X; marker = f, smallValFirst = true)
 # savefig(Toronto_signal, "paperfigs/Toronto_fneighbor.png")
 
