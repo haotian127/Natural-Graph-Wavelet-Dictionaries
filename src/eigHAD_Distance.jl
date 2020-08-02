@@ -3,7 +3,7 @@ using Optim
 """
     eigHAD_Distance(𝛷,lamb,numEigs)
 
-EIGHAD\\_DISTANCE compute HAD distance between pairwise graph Laplacian eigenvectors, i.e., d_HAD(𝜙ᵢ₋₁, 𝜙ⱼ₋₁) = -log(a_HAD(𝜙ᵢ₋₁, 𝜙ⱼ₋₁)).
+EIGHAD\\_DISTANCE compute HAD "distance" (not really a distance) between pairwise graph Laplacian eigenvectors, i.e., d_HAD(𝜙ᵢ₋₁, 𝜙ⱼ₋₁) = 1/a_HAD(𝜙ᵢ₋₁, 𝜙ⱼ₋₁).
 
 # Input Arguments
 - `𝛷::Matrix{Float64}`: matrix of graph Laplacian eigenvectors, 𝜙ⱼ₋₁ (j = 1,...,size(𝛷,1)).
@@ -15,15 +15,7 @@ EIGHAD\\_DISTANCE compute HAD distance between pairwise graph Laplacian eigenvec
 """
 function eigHAD_Distance(𝛷, lamb; indexEigs = 1:size(𝛷,2))
     A = eigHAD_Affinity(𝛷, lamb; indexEigs = indexEigs)
-    n = size(A,1)
-    dis = zeros(n,n)
-    for i = 1:n, j = 1:n
-        if A[i,j] == 0
-            dis[i,j] = 1e9
-        else
-            dis[i,j] = -log(A[i,j])
-        end
-    end
+    dis = dualGraph(A)
     return dis
 end
 
