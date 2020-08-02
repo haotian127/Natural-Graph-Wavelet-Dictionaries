@@ -28,7 +28,7 @@ distHAD = eigHAD_Distance(𝛷,lamb)
 
 ## Generate figure
 gr(dpi = 400) # paper standard 400 dpi
-focusEigenVecInd = [4,8,31,61]
+focusEigenVecInd = [4,8,31,61,41,5]
 
 for i in focusEigenVecInd
     heatmap(transpose(reshape(𝛷[:,i], N1, N2)), c = :viridis, aspect_ratio = 1); Grid_SC_plt = plot!(framestyle = :none)
@@ -48,7 +48,7 @@ distDAG = eigDAG_Distance(𝛷, Q, N)
 
 ## Generate figure
 gr(dpi = 400) # paper standard 400 dpi
-focusEigenVecInd = [4,8,31,61]
+focusEigenVecInd = [4,8,31,61,41,5]
 
 for i in focusEigenVecInd
     heatmap(transpose(reshape(Ψ_DAG[i,100,:], N1, N2)), c = :viridis, aspect_ratio = 1); Grid_SC_plt = plot!(framestyle = :none)
