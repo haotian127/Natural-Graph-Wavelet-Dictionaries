@@ -334,6 +334,18 @@ function dct1d(k, N)
     return φ ./ norm(φ, 2)
 end
 
+"""
+    dct2d_basis(N1, N2)
+
+DCT2D\\_BASIS returns 2D DCT basis vectors in [0,1] x [0,1] with N1-1 and N2-1 subintervals respectively.
+
+# Input Arguments
+- `N1::Int`: number of nodes in x-axis.
+- `N2::Int`: number of nodes in y-axis.
+
+# Output Argument
+- `𝚽::Matrix{Float64}`: 2D DCT basis vectors.
+"""
 function dct2d_basis(N1, N2)
     N = N1 * N2
     𝚽 = zeros(N, N)
