@@ -15,7 +15,29 @@ EIGHAD\\_DISTANCE compute HAD "distance" (not really a distance) between pairwis
 """
 function eigHAD_Distance(𝛷, lamb; indexEigs = 1:size(𝛷,2))
     A = eigHAD_Affinity(𝛷, lamb; indexEigs = indexEigs)
-    dis = dualGraph(A)
+    n = size(A,1)
+    dis = zeros(n,n)
+    for i = 1:n, j = 1:n
+        if A[i,j] == 0
+            dis[i,j] = 1e9
+        else
+            dis[i,j] = 1/A[i,j]
+        end
+    end
+    return dis
+end
+
+function eigHAD_Distance_neglog(𝛷, lamb; indexEigs = 1:size(𝛷,2))
+    A = eigHAD_Affinity(𝛷, lamb; indexEigs = indexEigs)
+    n = size(A,1)
+    dis = zeros(n,n)
+    for i = 1:n, j = 1:n
+        if A[i,j] == 0
+            dis[i,j] = 1e9
+        else
+            dis[i,j] = -log(A[i,j])
+        end
+    end
     return dis
 end
 
