@@ -323,8 +323,8 @@ end
 DCT1D returns k-th 1D DCT basis vector in Rᴺ.
 
 # Input Arguments
-- `k::Int`: ord of DCT basis vector. k = 1,2,...,N.
-- `N::Int`: vector dimension.
+- `k::Int64`: ord of DCT basis vector. k = 1,2,...,N.
+- `N::Int64`: vector dimension.
 
 # Output Argument
 - `φ::Array{Float64}`: k-th 1D DCT basis vector in Rᴺ. (k is 1-indexed)
@@ -340,8 +340,8 @@ end
 DCT2D\\_BASIS returns 2D DCT basis vectors in [0,1] x [0,1] with N1-1 and N2-1 subintervals respectively.
 
 # Input Arguments
-- `N1::Int`: number of nodes in x-axis.
-- `N2::Int`: number of nodes in y-axis.
+- `N1::Int64`: number of nodes in x-axis.
+- `N2::Int64`: number of nodes in y-axis.
 
 # Output Argument
 - `𝚽::Matrix{Float64}`: 2D DCT basis vectors.
@@ -357,4 +357,33 @@ function dct2d_basis(N1, N2)
         ind += 1
     end
     return 𝚽
+end
+
+"""
+    alternating_numbers(n)
+
+ALTERNATING\\_NUMBERS e.g., n = 5, returns [1,5,2,4,3]; n = 6, returns [1,6,2,5,3,4]
+
+# Input Arguments
+- `N1::Int64`: number of nodes in x-axis.
+
+# Output Argument
+- `arr::Array{Int64}`: result array.
+"""
+function alternating_numbers(n)
+    mid = Int(ceil(n/2))
+    arr1 = 1:mid
+    arr2 = n:-1:(mid+1)
+    arr = Array{Int64}(zeros(n))
+    p1, p2 = 1, 1
+    for i = 1:n
+        if i % 2 == 1
+            arr[i] = arr1[p1]
+            p1 += 1
+        else
+            arr[i] = arr2[p2]
+            p2 += 1
+        end
+    end
+    return arr
 end
