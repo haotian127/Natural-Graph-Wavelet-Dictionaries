@@ -1,5 +1,7 @@
 ## Load packages and functions
-include(joinpath("..", "src", "func_includer.jl"))
+using LightGraphs, LinearAlgebra, SparseArrays, Optim
+
+include(joinpath("..", "src", "eigHAD_Distance.jl"))
 
 ## Build graph
 G = loadgraph(joinpath(@__DIR__, "..", "datasets", "RGC100.lgz"))
