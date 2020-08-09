@@ -1,6 +1,6 @@
 # Load all .jl files in src folder
 
-filenames = readdir("src")
+filenames = readdir(joinpath(@__DIR__, "..", "src"))
 
 for f in filenames
     if f == "func_includer.jl" || f == "pSGWT.jl"
@@ -10,6 +10,6 @@ for f in filenames
     end
 end
 
-# Load module 
+# Load module
 push!(LOAD_PATH,"src")
 using pSGWT
