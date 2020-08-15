@@ -19,9 +19,9 @@ ht_elist_dual, ht_vlist_dual = HTree_EVlist(𝛷,W_dual)
 wavelet_packet_dual = HTree_wavelet_packet(𝛷,ht_vlist_dual,ht_elist_dual)
 
 ht_elist_varimax = ht_elist_dual
-wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
-
+wavelet_packet_varimax = JLD.load(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_unweighted_alp1_wavelet_packet_varimax.jld"), "wavelet_packet_varimax")
 # JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_distROT_unweighted_alp1_wavelet_packet_varimax.jld"), "wavelet_packet_varimax", wavelet_packet_varimax)
+
 ## Display dual graph and its bi-partitions in 3-dim MDS embedding space
 using MultivariateStats
 gr(dpi=300)
@@ -139,6 +139,5 @@ lvl = 5; i = 8; k = 10; gplot(W, X; width=1); scatter_gplot!(X; marker = wavelet
 ### HAD metric
 ###########################################################################################
 ## Build Dual Graph
-aHAD = eigHAD_Affinity(𝛷, lamb)
+aHAD = JLD.load(joinpath(@__DIR__, "..", "datasets", "RGC100_aHAD_unweighted.jld"), "aHAD")
 W_dual = sparse(aHAD)
-JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_aHAD_unweighted.jld"), "aHAD", aHAD)
