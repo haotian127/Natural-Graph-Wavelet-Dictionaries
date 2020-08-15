@@ -1,5 +1,5 @@
 ## Load packages and functions
-using LightGraphs, LinearAlgebra, SparseArrays, Optim
+using LightGraphs, LinearAlgebra, SparseArrays, Optim, JLD
 
 include(joinpath("..", "src", "eigHAD_Distance.jl"))
 
