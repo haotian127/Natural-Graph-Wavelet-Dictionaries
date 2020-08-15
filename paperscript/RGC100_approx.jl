@@ -10,8 +10,6 @@ lamb, 𝛷 = eigen(L); sgn = (maximum(𝛷, dims = 1)[:] .> -minimum(𝛷, dims 
 Q = incidence_matrix(G; oriented = true)
 W = 1.0 * adjacency_matrix(G)
 
-# use the 3rd dimension of xyz as an input signal
-f = log.(-load(joinpath(@__DIR__, "..", "datasets", "RGC100_xyz.jld"),"xyz")[:,3])
 
 ## Build Dual Graph
 distDAG = eigDAG_Distance_normalized(𝛷,Q,N)
@@ -24,6 +22,13 @@ wavelet_packet_dual = HTree_wavelet_packet(𝛷,ht_vlist_dual,ht_elist_dual)
 ht_elist_varimax = ht_elist_dual
 wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
 # JLD.save(joinpath(@__DIR__, "..", "datasets", "RGC100_distDAG_normalized_unweighted_wavelet_packet_varimax.jld"), "wavelet_packet_varimax", wavelet_packet_varimax)
+
+## Input signal
+# use the 3rd dimension of xyz as an input signal
+# f = log.(-load(joinpath(@__DIR__, "..", "datasets", "RGC100_xyz.jld"),"xyz")[:,3])
+using MAT
+f = matread(joinpath(@__DIR__, "..", "datasets", "RGC100_thickness_signal.mat"))["f"]
+
 
 ## Best basis selection algorithm
 parent_dual = HTree_findParent(ht_elist_dual)
@@ -69,8 +74,8 @@ dvec_f2c, BS_f2c = ghwt_f2c_bestbasis(dmatrix, GP)
 ############# eGHWT
 dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
 
-# approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]; frac = 0.2); approx_error_plt = current()
-# savefig(approx_error_plt, "paperfigs/RGC100_fz_distDAG_normalized_reconstruct_errors.png")
+# approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]; frac = 0.03); approx_error_plt = current()
+# savefig(approx_error_plt, "paperfigs/RGC100_fthick_distDAG_normalized_reconstruct_errors.png")
 
 ERR = Array{Float64,1}[]
 DVEC = [dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]
@@ -91,4 +96,4 @@ er_SGWT = [frames_approx_res[i][3] for i in 1:length(frames_approx_res)]
 push!(ERR, er_SGWT)
 
 approx_error_plot3(ERR); approx_error_plt = current()
-savefig(approx_error_plt, "paperfigs/RGC100_fz_distDAG_normalized_reconstruct_errors_with_frames.png")
+# savefig(approx_error_plt, "paperfigs/RGC100_fz_distDAG_normalized_reconstruct_errors_with_frames.png")
