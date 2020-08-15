@@ -202,10 +202,9 @@ end
 ####################### Approximation error plot################################
 ################################################################################
 ### function to plot the approximation error curve
-function approx_error_plot2(DVEC::Array{Array{Float64,1},1})
+function approx_error_plot2(DVEC::Array{Array{Float64,1},1}; frac = 0.30)
     gr(dpi = 400)
     plot(xaxis = "Fraction of Coefficients Retained", yaxis = "Relative Approximation Error")
-    frac = 0.3
     T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC_NGW", "varimax_NGW"]
     L = [(:dashdot,:orange), (:dashdot,:pink), (:dashdot, :red), (:solid, :gray), (:solid, :green), (:solid, :blue), (:solid, :purple), (:solid, :black)]
     LW = [1, 1, 1, 1, 1, 2, 2, 2]
@@ -217,6 +216,18 @@ function approx_error_plot2(DVEC::Array{Array{Float64,1},1})
         er = sqrt.(reverse(cumsum(dvec_sort)))/dvec_norm # this is the relative L^2 error of the whole thing, i.e., its length is N
         p = Int64(floor(frac*N)) + 1 # upper limit
         plot!(frac*(0:(p-1))/(p-1), er[1:p], yaxis=:log, xlims = (0.,frac), label = T[i], line = L[i], linewidth = LW[i])
+    end
+end
+
+function approx_error_plot3(ERR::Array{Array{Float64,1},1})
+    gr(dpi = 400)
+    plot(xaxis = "Fraction of Coefficients Retained", yaxis = "Relative Approximation Error")
+    T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC_NGW", "varimax_NGW", "soft_cluster_frame", "SGWT"]
+    L = [(:dashdot,:orange), (:dashdot,:pink), (:dashdot, :red), (:solid, :gray), (:solid, :green), (:solid, :blue), (:solid, :purple), (:solid, :black), (:dash, :navy), (:dash, :teal)]
+    LW = [1, 1, 1, 1, 1, 2, 2, 2, 3, 3]
+    num_kept_coeffs = 10:10:280
+    for i in 1:length(ERR)
+        plot!(num_kept_coeffs, ERR[i], yaxis=:log, xlims = (0.,num_kept_coeffs[end]), label = T[i], line = L[i], linewidth = LW[i])
     end
 end
 
