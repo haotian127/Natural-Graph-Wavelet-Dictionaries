@@ -80,7 +80,7 @@ for i in 1:length(DVEC)
     N = length(dvec)
     dvec_norm = norm(dvec,2)
     dvec_sort = sort(dvec.^2) # the smallest first
-    er = sqrt.(reverse(cumsum(dvec_sort)))/dvec_norm # this is the relative L^2 error of the whole thing, i.e., its length is N
+    er = reverse(cumsum(dvec_sort))/N # this is the relative L^2 error of the whole thing, i.e., its length is N
     push!(ERR, er[num_kept_coeffs])
 end
 using CSV

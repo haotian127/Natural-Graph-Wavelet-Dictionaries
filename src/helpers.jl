@@ -221,7 +221,7 @@ end
 
 function approx_error_plot3(ERR::Array{Array{Float64,1},1})
     gr(dpi = 400)
-    plot(xaxis = "Fraction of Coefficients Retained", yaxis = "Relative Approximation Error")
+    plot(xaxis = "Number of Coefficients Retained", yaxis = "MSE")
     T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC_NGW", "varimax_NGW", "soft_cluster_frame", "SGWT"]
     L = [(:dashdot,:orange), (:dashdot,:pink), (:dashdot, :red), (:solid, :gray), (:solid, :green), (:solid, :blue), (:solid, :purple), (:solid, :black), (:dash, :navy), (:dash, :teal)]
     LW = [1, 1, 1, 1, 1, 2, 2, 2, 3, 3]
