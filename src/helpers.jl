@@ -398,3 +398,20 @@ function alternating_numbers(n)
     end
     return arr
 end
+
+"""
+    compute_SNR(f, g)
+
+COMPUTE\\_SNR, g = f + ϵ, SNR = 20 * log10(norm(f)/norm(g-f)).
+
+# Input Arguments
+- `f::Array{Float64}`: original signal.
+- `g::Array{Float64}`: noisy signal.
+
+# Output Argument
+- `SNR::Float64`: SNR value.
+"""
+function compute_SNR(f, g)
+    SNR = 20 * log10(norm(f)/norm(g-f))
+    return SNR
+end
