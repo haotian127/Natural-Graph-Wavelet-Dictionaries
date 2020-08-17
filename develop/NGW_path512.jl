@@ -52,23 +52,25 @@ gr(dpi = 300)
 # gif(anim, "gif/anim_Path512_Varimax_NGW.gif", fps = 30)
 
 # Mother Wavelet
-anim = @animate for i=1:128
-    WW = wavelet_packet_dual[3][2]
-    sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
-    WW = (WW' .* sgn)'
-    ord = findmax(abs.(WW), dims = 1)[2][:]
-    idx = sortperm([j[1] for j in ord])
-    plot(WW[:,idx[i]], legend = false, ylim = [-0.4,0.6])
+lev=3; band=2; # band could range between 1 and 2^(lev-1)
+WW = wavelet_packet_dual[lev][band];
+sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
+WW = (WW' .* sgn)'
+ord = findmax(abs.(WW), dims = 1)[2][:]
+idx = sortperm([j[1] for j in ord]
+anim = @animate for i=1:2^(10-lev)
+   plot(WW[:,idx[i]], legend = false, ylim = [-0.4,0.6])
 end
 gif(anim, "gif/anim_Path512_PC_NGW_mother.gif", fps = 30)
 
 # Varimax NGW
-anim = @animate for i=1:128
-    WW = wavelet_packet_varimax[3][2]
-    sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
-    WW = (WW' .* sgn)'
-    ord = findmax(abs.(WW), dims = 1)[2][:]
-    idx = sortperm([j[1] for j in ord])
+lev=3; band=2; # band could range between 1 and 2^(lev-1)
+WW = wavelet_packet_dual[lev][band];
+sgn = (maximum(WW, dims = 1)[:] .> -minimum(WW, dims = 1)[:]) .* 2 .- 1
+WW = (WW' .* sgn)'
+ord = findmax(abs.(WW), dims = 1)[2][:]
+idx = sortperm([j[1] for j in ord])
+anim = @animate for i=1:2^(10-lev)
     plot(WW[:,idx[i]], legend = false, ylim = [-0.4,0.6])
 end
 gif(anim, "gif/anim_Path512_Varimax_NGW_mother.gif", fps = 30)
