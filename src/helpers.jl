@@ -219,13 +219,12 @@ function approx_error_plot2(DVEC::Array{Array{Float64,1},1}; frac = 0.30)
     end
 end
 
-function approx_error_plot3(ERR::Array{Array{Float64,1},1})
+function approx_error_plot3(ERR::Array{Array{Float64,1},1}; num_kept_coeffs = 10:10:280)
     gr(dpi = 400)
     plot(xaxis = "Number of Coefficients Retained", yaxis = "MSE")
-    T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC_NGW", "varimax_NGW", "soft_cluster_frame", "SGWT"]
+    T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC-NGWP", "VM-NGWP", "SC-Frame", "SGWT"]
     L = [(:dashdot,:orange), (:dashdot,:pink), (:dashdot, :red), (:solid, :gray), (:solid, :green), (:solid, :blue), (:solid, :purple), (:solid, :black), (:dash, :navy), (:dash, :teal)]
     LW = [1, 1, 1, 1, 1, 2, 2, 2, 3, 3]
-    num_kept_coeffs = 10:10:280
     for i in 1:length(ERR)
         plot!(num_kept_coeffs, ERR[i], yaxis=:log, xlims = (0.,num_kept_coeffs[end]), label = T[i], line = L[i], linewidth = LW[i])
     end
