@@ -13,19 +13,19 @@ Q = incidence_matrix(G; oriented = true)
 edge_weight = 1 ./ sqrt.(sum((Q' * X).^2, dims = 2)[:])
 
 ## Build Dual Graph
-distDAG = eigDAG_Distance(𝛷,Q,N; edge_weight = edge_weight)
+distDAG = eigDAG_Distance_normalized(𝛷,Q,N; edge_weight = 1)
 W_dual = sparse(dualGraph(distDAG)) #required: sparse dual weighted adjacence matrix
 
 ## Assemble wavelet packets
 ht_elist_dual, ht_vlist_dual = HTree_EVlist(𝛷,W_dual)
-# wavelet_packet_dual = HTree_wavelet_packet(𝛷,ht_vlist_dual,ht_elist_dual)
-#
+wavelet_packet_dual = HTree_wavelet_packet(𝛷,ht_vlist_dual,ht_elist_dual)
+
 ht_elist_varimax = ht_elist_dual
-# wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
+wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
 
 # JLD.save(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_varimax", wavelet_packet_varimax, "wavelet_packet_dual", wavelet_packet_dual)
-wavelet_packet_varimax = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_varimax")
-wavelet_packet_dual = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_dual")
+# wavelet_packet_varimax = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_varimax")
+# wavelet_packet_dual = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_dual")
 
 ## Graph signal
 # fp = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
@@ -83,22 +83,42 @@ dvec_f2c, BS_f2c = ghwt_f2c_bestbasis(dmatrix, GP)
 dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
 
 
-approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]); toronto_approx_error_plt = current()
-# savefig(toronto_approx_error_plt, "paperfigs/Toronto_fneighbor_reconstruct_errors.png")
+DVEC = [dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]
 
+ERR = Array{Float64,1}[]
+num_kept_coeffs = 10:10:1130
+for i in 1:length(DVEC)
+    dvec = DVEC[i]
+    N = length(dvec)
+    dvec_norm = norm(dvec,2)
+    dvec_sort = sort(dvec.^2) # the smallest first
+    er = reverse(cumsum(dvec_sort))/N # this is the MSE
+    push!(ERR, er[num_kept_coeffs])
+end
+using CSV
+frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", "toronto_density_DAG_k=7.csv"))
+er_soft_cluster_frame = [frames_approx_res[i][2] for i in 1:length(frames_approx_res)]
+push!(ERR, er_soft_cluster_frame[1:length(num_kept_coeffs)])
+er_SGWT = [frames_approx_res[i][3] for i in 1:length(frames_approx_res)]
+push!(ERR, er_SGWT[1:length(num_kept_coeffs)])
+
+approx_error_plot3(ERR; num_kept_coeffs = num_kept_coeffs); approx_error_plt = current()
+savefig(approx_error_plt, "paperfigs/Toronto_fdensity_nDAG_approx.png")
+
+# approx_error_plot2(DVEC); current()
 
 
 ## Show some important NGW basis vectors
-# PC NGW
-importance_idx = sortperm(abs.(dvec_spectral), rev = true)
-for i = 2:6
-    gplot(W, X; width=1); scatter_gplot!(X; marker = Wav_dual[:,importance_idx[i]], ms = 2); important_NGW_basis_vectors = plot!(frame = :none)
-    savefig(important_NGW_basis_vectors, "figs/Toronto_fp_PC_NGW_important_basis_vector$(i).png")
-end
-
-# Varimax NGW
-importance_idx = sortperm(abs.(dvec_varimax), rev = true)
-for i = 2:6
-    gplot(W, X; width=1); scatter_gplot!(X; marker = Wav_varimax[:,importance_idx[i]], ms = 2); important_NGW_basis_vectors = plot!(frame = :none)
-    savefig(important_NGW_basis_vectors, "figs/Toronto_fp_varimax_NGW_important_basis_vector$(i).png")
-end
+# # PC NGW
+# importance_idx = sortperm(abs.(dvec_spectral), rev = true)
+# for i = 2:6
+#     gplot(W, X; width=1); scatter_gplot!(X; marker = Wav_dual[:,importance_idx[i]], ms = 2); important_NGW_basis_vectors = plot!(frame = :none)
+#     savefig(important_NGW_basis_vectors, "figs/Toronto_fp_PC_NGW_important_basis_vector$(i).png")
+# end
+#
+# # Varimax NGW
+# importance_idx = sortperm(abs.(dvec_varimax), rev = true)
+# for i = 2:6
+#     gplot(W, X; width=1); scatter_gplot!(X; marker = Wav_varimax[:,importance_idx[i]], ms = 2); important_NGW_basis_vectors = plot!(frame = :none)
+#     savefig(important_NGW_basis_vectors, "figs/Toronto_fp_varimax_NGW_important_basis_vector$(i).png")
+# end
