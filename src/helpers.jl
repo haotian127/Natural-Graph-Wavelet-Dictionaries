@@ -219,9 +219,27 @@ function approx_error_plot2(DVEC::Array{Array{Float64,1},1}; frac = 0.30)
     end
 end
 
+function integrate_approx_results(DVEC, num_kept_coeffs, filename)
+    ERR = Array{Float64,1}[]
+    for i in 1:length(DVEC)
+        dvec = DVEC[i]
+        N = length(dvec)
+        dvec_norm = norm(dvec,2)
+        dvec_sort = sort(dvec.^2)  # the smallest first
+        er = sqrt.(reverse(cumsum(dvec_sort)))/dvec_norm  # this is the relative L^2 error of the whole thing, i.e., its length is N
+        push!(ERR, er[num_kept_coeffs])
+    end
+    frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", filename))
+    er_soft_cluster_frame = [frames_approx_res[i][2] for i in 1:length(frames_approx_res)]
+    push!(ERR, er_soft_cluster_frame)
+    er_SGWT = [frames_approx_res[i][3] for i in 1:length(frames_approx_res)]
+    push!(ERR, er_SGWT)
+    return ERR
+end
+
 function approx_error_plot3(ERR::Array{Array{Float64,1},1}; num_kept_coeffs = 10:10:280)
     gr(dpi = 400)
-    plot(xaxis = "Number of Coefficients Retained", yaxis = "MSE")
+    plot(xaxis = "Number of Coefficients Retained", yaxis = "Relative Approximation Error")
     T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC-NGWP", "VM-NGWP", "SC-Frame", "SGWT"]
     L = [(:dashdot,:orange), (:dashdot,:pink), (:dashdot, :red), (:solid, :gray), (:solid, :green), (:solid, :blue), (:solid, :purple), (:solid, :black), (:dash, :navy), (:dash, :teal)]
     LW = [1, 1, 1, 1, 1, 2, 2, 2, 3, 3]
