@@ -24,9 +24,9 @@ wavelet_packet_varimax = JLD.load(joinpath(@__DIR__, "..", "datasets", "RGC100_d
 
 ## Input signal
 # use the 3rd dimension of xyz as an input signal
-# f = log.(-load(joinpath(@__DIR__, "..", "datasets", "RGC100_xyz.jld"),"xyz")[:,3])
+f = log.(-load(joinpath(@__DIR__, "..", "datasets", "RGC100_xyz.jld"),"xyz")[:,3])
 # using MAT; f = matread(joinpath(@__DIR__, "..", "datasets", "RGC100_thickness_signal.mat"))["f"]
-f = JLD.load(joinpath(@__DIR__, "..", "datasets", "RGC100_thickness_noisy_signal_8db.jld"), "g")
+# f = JLD.load(joinpath(@__DIR__, "..", "datasets", "RGC100_thickness_noisy_signal_8db.jld"), "g")
 
 ## Best basis selection algorithm
 parent_dual = HTree_findParent(ht_elist_dual)
@@ -77,22 +77,7 @@ DVEC = [dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:]
 approx_error_plot2(DVEC; frac = 0.3); approx_error_plt = current()
 # savefig(approx_error_plt, "paperfigs/RGC100_fthick_noisy_distDAG_normalized_reconstruct_errors.png")
 
-ERR = Array{Float64,1}[]
-num_kept_coeffs = 10:10:280
-for i in 1:length(DVEC)
-    dvec = DVEC[i]
-    N = length(dvec)
-    dvec_norm = norm(dvec,2)
-    dvec_sort = sort(dvec.^2) # the smallest first
-    er = reverse(cumsum(dvec_sort))/N # this is the relative L^2 error of the whole thing, i.e., its length is N
-    push!(ERR, er[num_kept_coeffs])
-end
-using CSV
-frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", "log(-xyz100)_dim3.csv"))
-er_soft_cluster_frame = [frames_approx_res[i][2] for i in 1:length(frames_approx_res)]
-push!(ERR, er_soft_cluster_frame)
-er_SGWT = [frames_approx_res[i][3] for i in 1:length(frames_approx_res)]
-push!(ERR, er_SGWT)
-
-approx_error_plot3(ERR); approx_error_plt = current()
-# savefig(approx_error_plt, "paperfigs/RGC100_fz_distDAG_normalized_reconstruct_errors_with_frames.png")
+num_kept_coeffs = 10:10:280; ERR = integrate_approx_results(DVEC, num_kept_coeffs, "log(-xyz100)_dim3.csv")
+approx_error_plot3(ERR; num_kept_coeffs = num_kept_coeffs); approx_error_plt = current()
+savefig(approx_error_plt, "paperfigs/RGC100_fz_nDAG_approx.png")
+approx_error_plot2(DVEC; frac = 0.25); plt = current(); savefig(plt, "paperfigs/RGC100_fz_nDAG_no_frames.png")

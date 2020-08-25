@@ -23,7 +23,7 @@ wavelet_packet_dual = HTree_wavelet_packet(𝛷,ht_vlist_dual,ht_elist_dual)
 ht_elist_varimax = ht_elist_dual
 wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
 
-# JLD.save(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_varimax", wavelet_packet_varimax, "wavelet_packet_dual", wavelet_packet_dual)
+# JLD.save(joinpath(@__DIR__, "..", "datasets", "Toronto_nDAG_NGWP.jld"), "wavelet_packet_varimax", wavelet_packet_varimax, "wavelet_packet_dual", wavelet_packet_dual)
 # wavelet_packet_varimax = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_varimax")
 # wavelet_packet_dual = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_dual")
 
@@ -85,27 +85,10 @@ dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
 
 DVEC = [dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]
 
-ERR = Array{Float64,1}[]
-num_kept_coeffs = 10:10:1130
-for i in 1:length(DVEC)
-    dvec = DVEC[i]
-    N = length(dvec)
-    dvec_norm = norm(dvec,2)
-    dvec_sort = sort(dvec.^2) # the smallest first
-    er = reverse(cumsum(dvec_sort))/N # this is the MSE
-    push!(ERR, er[num_kept_coeffs])
-end
-using CSV
-frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", "toronto_density_DAG_k=7.csv"))
-er_soft_cluster_frame = [frames_approx_res[i][2] for i in 1:length(frames_approx_res)]
-push!(ERR, er_soft_cluster_frame[1:length(num_kept_coeffs)])
-er_SGWT = [frames_approx_res[i][3] for i in 1:length(frames_approx_res)]
-push!(ERR, er_SGWT[1:length(num_kept_coeffs)])
-
+num_kept_coeffs = 10:10:1130; ERR = integrate_approx_results(DVEC, num_kept_coeffs, "toronto_density_DAG_k=7.csv")
 approx_error_plot3(ERR; num_kept_coeffs = num_kept_coeffs); approx_error_plt = current()
 savefig(approx_error_plt, "paperfigs/Toronto_fdensity_nDAG_approx.png")
-
-# approx_error_plot2(DVEC); current()
+approx_error_plot2(DVEC); plt = current(); savefig(plt, "paperfigs/Toronto_fdensity_nDAG_no_frames.png")
 
 
 ## Show some important NGW basis vectors
