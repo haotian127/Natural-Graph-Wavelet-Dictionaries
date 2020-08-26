@@ -226,7 +226,7 @@ function integrate_approx_results(DVEC, num_kept_coeffs, filename)
         N = length(dvec)
         dvec_norm = norm(dvec,2)
         dvec_sort = sort(dvec.^2)  # the smallest first
-        er = sqrt.(reverse(cumsum(dvec_sort)))/dvec_norm  # this is the relative L^2 error of the whole thing, i.e., its length is N
+        er = reverse(cumsum(dvec_sort))/dvec_norm^2  # this is the relative L^2-norm square error of the whole thing, i.e., its length is N
         push!(ERR, er[num_kept_coeffs])
     end
     frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", filename))

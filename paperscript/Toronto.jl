@@ -18,14 +18,14 @@ W_dual = sparse(dualGraph(distDAG)) #required: sparse dual weighted adjacence ma
 
 ## Assemble wavelet packets
 ht_elist_dual, ht_vlist_dual = HTree_EVlist(𝛷,W_dual)
-wavelet_packet_dual = HTree_wavelet_packet(𝛷,ht_vlist_dual,ht_elist_dual)
+# wavelet_packet_dual = HTree_wavelet_packet(𝛷,ht_vlist_dual,ht_elist_dual)
 
 ht_elist_varimax = ht_elist_dual
-wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
+# wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
 
 # JLD.save(joinpath(@__DIR__, "..", "datasets", "Toronto_nDAG_NGWP.jld"), "wavelet_packet_varimax", wavelet_packet_varimax, "wavelet_packet_dual", wavelet_packet_dual)
-# wavelet_packet_varimax = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_varimax")
-# wavelet_packet_dual = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_DAG_NGWP.jld"), "wavelet_packet_dual")
+wavelet_packet_varimax = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_nDAG_NGWP.jld"), "wavelet_packet_varimax")
+wavelet_packet_dual = JLD.load(joinpath(@__DIR__, "..", "datasets", "Toronto_nDAG_NGWP.jld"), "wavelet_packet_dual")
 
 ## Graph signal
 # fp = load(joinpath(@__DIR__, "..", "datasets", "new_toronto.jld"),"fp")
@@ -88,7 +88,7 @@ DVEC = [dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:]
 num_kept_coeffs = 10:10:1130; ERR = integrate_approx_results(DVEC, num_kept_coeffs, "toronto_density_DAG_k=7.csv")
 approx_error_plot3(ERR; num_kept_coeffs = num_kept_coeffs); approx_error_plt = current()
 savefig(approx_error_plt, "paperfigs/Toronto_fdensity_nDAG_approx.png")
-approx_error_plot2(DVEC); plt = current(); savefig(plt, "paperfigs/Toronto_fdensity_nDAG_no_frames.png")
+# approx_error_plot2(DVEC); plt = current(); savefig(plt, "paperfigs/Toronto_fdensity_nDAG_no_frames.png")
 
 
 ## Show some important NGW basis vectors

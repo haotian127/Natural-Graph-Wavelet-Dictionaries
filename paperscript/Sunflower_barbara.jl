@@ -108,10 +108,10 @@ dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
 
 DVEC = [dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]
 
-ERR = integrate_approx_results(DVEC, 10:10:200, "f_face_DAG_k=1.csv")
+num_kept_coeffs = 10:10:200; ERR = integrate_approx_results(DVEC, num_kept_coeffs, "f_face_DAG_k=1.csv")
 approx_error_plot3(ERR; num_kept_coeffs = num_kept_coeffs); approx_error_plt = current()
 savefig(approx_error_plt, "paperfigs/SunFlower_barbara_fface_nDAG_approx.png")
-approx_error_plot2(DVEC); plt = current(); savefig(plt, "paperfigs/SunFlower_barbara_fface_nDAG_no_frames.png")
+# approx_error_plot2(DVEC); plt = current(); savefig(plt, "paperfigs/SunFlower_barbara_fface_nDAG_no_frames.png")
 
 
 ## Graph signal approximation
@@ -151,4 +151,4 @@ DVEC = [dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:]
 num_kept_coeffs = 10:10:200; ERR = integrate_approx_results(DVEC, num_kept_coeffs, "f_trouser_DAG_k=1.csv")
 approx_error_plot3(ERR; num_kept_coeffs = num_kept_coeffs); approx_error_plt = current()
 savefig(approx_error_plt, "paperfigs/SunFlower_barbara_ftrouser_nDAG_approx.png")
-approx_error_plot2(DVEC); plt = current(); savefig(plt, "paperfigs/SunFlower_barbara_ftrouser_nDAG_no_frames.png")
+# approx_error_plot2(DVEC); plt = current(); savefig(plt, "paperfigs/SunFlower_barbara_ftrouser_nDAG_no_frames.png")
