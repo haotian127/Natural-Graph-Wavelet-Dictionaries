@@ -17,5 +17,5 @@
   * "f_density": the node density is a smooth synthetic data (i.e., open a circle with fixed radius at each node and count number of nodes within the circle)
 
 3. `RGC100_thickness_signal.mat` contains
-  * "f": dendritic branch neuron thickness data on the RGC100 tree graph (N = 1154 nodes)
-  * "g": add 8db white noise to the original signal f.
+  * "f": dendritic arbor thickness data on the RGC100 tree graph (N = 1154 nodes)
+  * "g": a noisy version of "f" (added 8db white Gaussian noise to the original signal f).
