@@ -252,6 +252,33 @@ function signal_transform_coeff(f, ht_elist_dual, ht_elist_varimax, wavelet_pack
     return DVEC
 end
 
+function signal_transform_coeff2(f, g, ht_elist_dual, ht_elist_varimax, wavelet_packet_dual, wavelet_packet_varimax, 𝛷, W, X)
+    parent_dual = HTree_findParent(ht_elist_dual); W_PC = best_basis_selection(f, wavelet_packet_dual, parent_dual)
+    parent_varimax = HTree_findParent(ht_elist_varimax); W_VM = best_basis_selection(f, wavelet_packet_varimax, parent_varimax)
+    ############# spectral_prioritized PC NGW coefficients
+    dvec_spectral = W_PC' * [f g]
+    ############# varimax NGW coefficients
+    dvec_varimax = W_VM' * [f g]
+    ############# plain Laplacian eigenvectors coefficients
+    dvec_Laplacian = 𝛷' * [f g]
+    tmp=zeros(length(f),2); tmp[:,1]=f; tmp[:,2]=g; G_Sig=GraphSig(1.0*W, xy=X, f=tmp); G_Sig = Adj2InvEuc(G_Sig); GP = partition_tree_fiedler(G_Sig,:Lrw);
+    dmatrix = ghwt_analysis!(G_Sig, GP=GP)
+    ############# Haar
+    BS_haar = bs_haar(GP)
+    dvec_haar = dmatrix2dvec(dmatrix, GP, BS_haar)
+    ############# Walsh
+    BS_walsh = bs_walsh(GP)
+    dvec_walsh = dmatrix2dvec(dmatrix, GP, BS_walsh)
+    ############# GHWT_c2f
+    dvec_c2f, BS_c2f = ghwt_c2f_bestbasis(dmatrix, GP)
+    ############# GHWT_f2c
+    dvec_f2c, BS_f2c = ghwt_f2c_bestbasis(dmatrix, GP)
+    ############# eGHWT
+    dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
+    DVEC = [dvec_haar, dvec_walsh, dvec_Laplacian, dvec_c2f, dvec_f2c, dvec_eghwt, dvec_spectral, dvec_varimax]
+    return DVEC
+end
+
 function integrate_approx_results(DVEC, num_kept_coeffs, filename)
     ERR = Array{Float64,1}[]
     for i in 1:length(DVEC)
@@ -260,6 +287,28 @@ function integrate_approx_results(DVEC, num_kept_coeffs, filename)
         dvec_norm = norm(dvec,2)
         dvec_sort = sort(dvec.^2)  # the smallest first
         er = sqrt.(reverse(cumsum(dvec_sort))) ./ dvec_norm  # this is the relative L^2-norm error of the whole thing, i.e., its length is N
+        push!(ERR, er[num_kept_coeffs])
+    end
+    frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", filename))
+    er_soft_cluster_frame = [sqrt(frames_approx_res[i][2]) for i in 1:length(frames_approx_res)]
+    push!(ERR, er_soft_cluster_frame)
+    er_SGWT = [sqrt(frames_approx_res[i][3]) for i in 1:length(frames_approx_res)]
+    push!(ERR, er_SGWT)
+    return ERR
+end
+
+function integrate_approx_results2(DVEC, num_kept_coeffs, filename)
+    ERR = Array{Float64,1}[]
+    for i in 1:length(DVEC)
+        dvec_f = DVEC[i][:,1]
+        dvec_g = DVEC[i][:,2]
+        N = length(dvec_f)
+        dvec_f_norm = norm(dvec_f)
+        ind = sortperm(dvec_g.^2, rev = true)  # the largest first
+        er = zeros(N)
+        for k in 1:N
+            er[k] = sqrt.(norm(dvec_f[ind[1:k]] - dvec_g[ind[1:k]])^2 + norm(dvec_f[ind[k+1:end]])^2)/dvec_f_norm
+        end
         push!(ERR, er[num_kept_coeffs])
     end
     frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", filename))
