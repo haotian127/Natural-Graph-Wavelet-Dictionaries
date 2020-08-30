@@ -213,10 +213,43 @@ function approx_error_plot2(DVEC::Array{Array{Float64,1},1}; frac = 0.30)
         N = length(dvec)
         dvec_norm = norm(dvec,2)
         dvec_sort = sort(dvec.^2) # the smallest first
-        er = sqrt.(reverse(cumsum(dvec_sort)))/dvec_norm # this is the relative L^2 error of the whole thing, i.e., its length is N
+        er = max.(sqrt.(reverse(cumsum(dvec_sort)))/dvec_norm, 1e-12) # this is the relative L^2 error of the whole thing, i.e., its length is N
         p = Int64(floor(frac*N)) + 1 # upper limit
         plot!(frac*(0:(p-1))/(p-1), er[1:p], yaxis=:log, xlims = (0.,frac), label = T[i], line = L[i], linewidth = LW[i])
     end
+end
+
+function signal_transform_coeff(f, ht_elist_dual, ht_elist_varimax, wavelet_packet_dual, wavelet_packet_varimax, 𝛷, W, X)
+    ## Best basis selection algorithm
+    parent_dual = HTree_findParent(ht_elist_dual)
+    Wav_dual = best_basis_selection(f, wavelet_packet_dual, parent_dual)
+    parent_varimax = HTree_findParent(ht_elist_varimax)
+    Wav_varimax = best_basis_selection(f, wavelet_packet_varimax, parent_varimax)
+    ############# varimax NGW coefficients
+    dvec_varimax = Wav_varimax' * f
+    ############# spectral_prioritized PC NGW coefficients
+    dvec_spectral = Wav_dual' * f
+    ############# plain Laplacian eigenvectors coefficients
+    dvec_Laplacian = 𝛷' * f
+    ## MTSG
+    tmp=zeros(length(f),1); tmp[:,1]=f; G_Sig=GraphSig(1.0*W, xy=X, f=tmp)
+    G_Sig = Adj2InvEuc(G_Sig)
+    GP = partition_tree_fiedler(G_Sig,:Lrw)
+    dmatrix = ghwt_analysis!(G_Sig, GP=GP)
+    ############# Haar
+    BS_haar = bs_haar(GP)
+    dvec_haar = dmatrix2dvec(dmatrix, GP, BS_haar)
+    ############# Walsh
+    BS_walsh = bs_walsh(GP)
+    dvec_walsh = dmatrix2dvec(dmatrix, GP, BS_walsh)
+    ############# GHWT_c2f
+    dvec_c2f, BS_c2f = ghwt_c2f_bestbasis(dmatrix, GP)
+    ############# GHWT_f2c
+    dvec_f2c, BS_f2c = ghwt_f2c_bestbasis(dmatrix, GP)
+    ############# eGHWT
+    dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
+    DVEC = [dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]
+    return DVEC
 end
 
 function integrate_approx_results(DVEC, num_kept_coeffs, filename)
@@ -226,13 +259,13 @@ function integrate_approx_results(DVEC, num_kept_coeffs, filename)
         N = length(dvec)
         dvec_norm = norm(dvec,2)
         dvec_sort = sort(dvec.^2)  # the smallest first
-        er = reverse(cumsum(dvec_sort))/dvec_norm^2  # this is the relative L^2-norm square error of the whole thing, i.e., its length is N
+        er = sqrt.(reverse(cumsum(dvec_sort))) ./ dvec_norm  # this is the relative L^2-norm error of the whole thing, i.e., its length is N
         push!(ERR, er[num_kept_coeffs])
     end
     frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", filename))
-    er_soft_cluster_frame = [frames_approx_res[i][2] for i in 1:length(frames_approx_res)]
+    er_soft_cluster_frame = [sqrt(frames_approx_res[i][2]) for i in 1:length(frames_approx_res)]
     push!(ERR, er_soft_cluster_frame)
-    er_SGWT = [frames_approx_res[i][3] for i in 1:length(frames_approx_res)]
+    er_SGWT = [sqrt(frames_approx_res[i][3]) for i in 1:length(frames_approx_res)]
     push!(ERR, er_SGWT)
     return ERR
 end
