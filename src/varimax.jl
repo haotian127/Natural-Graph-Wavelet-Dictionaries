@@ -15,7 +15,7 @@ VARIMAX perform varimax (or quartimax, equamax, parsimax) rotation to the column
 
 Implemented by Haotian Li, Aug. 20, 2019
 """
-function varimax(A; gamma = 1.0, minit = 20, maxit = 1000, reltol = 1e-14)
+function varimax(A; gamma = 1.0, minit = 20, maxit = 1000, reltol = 1e-12)
 	# Get the sizes of input matrix
     d, m = size(A)
 

@@ -380,7 +380,7 @@ end
 
 
 # Gram-Schmidt Process Orthogonalization
-function gram_schmidt(A; tol = 1e-10)
+function gram_schmidt(A; tol = 1e-12)
     # Input: matirx A
     # Output: orthogonalization matrix of A's column vectors
 
@@ -410,7 +410,7 @@ end
 
 
 # Modified Gram-Schmidt Process Orthogonalization
-function modified_gram_schmidt_lp_pivoting(A; tol = 1e-10, p = 1)
+function modified_gram_schmidt_lp_pivoting(A; tol = 1e-12, p = 1)
     # Input: matirx A
     # Output: orthogonalization matrix of A's column vectors based on L^p pivoting
 
