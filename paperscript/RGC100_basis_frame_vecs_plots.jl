@@ -35,6 +35,32 @@ node_lists = [698,784,977]
 #     savefig(plt, "paperfigs/RGC100_interest_node_$(node)")
 # end
 
+## Show SC-Frame vectors
+sc_wavelet_1_698 = [CSV.File(joinpath(@__DIR__, "..", "datasets", "wavelet_1_698.csv"); delim=",", header = false)[1][k] for k in 1:N]
+gplot(W, X; width=1); scatter_gplot!(X; marker = sc_wavelet_1_698, c = :viridis, ms = 3); plt = plot!( aspect_ratio = 1)
+savefig(plt, "paperfigs/RGC100_nDAG_SC_Frame_wavelet_1_698_no_clim")
+
+sc_wavelet_2_698 = [CSV.File(joinpath(@__DIR__, "..", "datasets", "wavelet_2_698.csv"); delim=",", header = false)[1][k] for k in 1:N]
+gplot(W, X; width=1); scatter_gplot!(X; marker = sc_wavelet_2_698, c = :viridis, ms = 3); plt = plot!( aspect_ratio = 1)
+savefig(plt, "paperfigs/RGC100_nDAG_SC_Frame_wavelet_2_698_no_clim")
+
+sc_wavelet_1_784 = [CSV.File(joinpath(@__DIR__, "..", "datasets", "wavelet_1_784.csv"); delim=",", header = false)[1][k] for k in 1:N]
+gplot(W, X; width=1); scatter_gplot!(X; marker = sc_wavelet_1_784, c = :viridis, ms = 3); plt = plot!( aspect_ratio = 1)
+savefig(plt, "paperfigs/RGC100_nDAG_SC_Frame_wavelet_1_784_no_clim")
+
+sc_wavelet_2_784 = [CSV.File(joinpath(@__DIR__, "..", "datasets", "wavelet_2_784.csv"); delim=",", header = false)[1][k] for k in 1:N]
+gplot(W, X; width=1); scatter_gplot!(X; marker = sc_wavelet_2_784, c = :viridis, ms = 3); plt = plot!( aspect_ratio = 1)
+savefig(plt, "paperfigs/RGC100_nDAG_SC_Frame_wavelet_2_784_no_clim")
+
+sc_wavelet_1_977 = [CSV.File(joinpath(@__DIR__, "..", "datasets", "wavelet_1_977.csv"); delim=",", header = false)[1][k] for k in 1:N]
+gplot(W, X; width=1); scatter_gplot!(X; marker = sc_wavelet_1_977, c = :viridis, ms = 3); plt = plot!( aspect_ratio = 1)
+savefig(plt, "paperfigs/RGC100_nDAG_SC_Frame_wavelet_1_977_no_clim")
+
+sc_wavelet_2_977 = [CSV.File(joinpath(@__DIR__, "..", "datasets", "wavelet_2_977.csv"); delim=",", header = false)[1][k] for k in 1:N]
+gplot(W, X; width=1); scatter_gplot!(X; marker = sc_wavelet_2_977, c = :viridis, ms = 3); plt = plot!( aspect_ratio = 1)
+savefig(plt, "paperfigs/RGC100_nDAG_SC_Frame_wavelet_2_977_no_clim")
+
+
 ## Show some PC NGW basis
 
 # # Level 2
