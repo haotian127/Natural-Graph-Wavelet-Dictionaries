@@ -205,7 +205,7 @@ end
 function approx_error_plot2(DVEC::Array{Array{Float64,1},1}; frac = 0.30)
     gr(dpi = 400)
     plot(xaxis = "Fraction of Coefficients Retained", yaxis = "Relative Approximation Error")
-    T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC_NGW", "varimax_NGW"]
+    T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC-NGWP", "VM-NGWP"]
     L = [(:dashdot,:orange), (:dashdot,:pink), (:dashdot, :red), (:solid, :gray), (:solid, :green), (:solid, :blue), (:solid, :purple), (:solid, :black)]
     LW = [1, 1, 1, 1, 1, 2, 2, 2]
     for i = 1:length(DVEC)
@@ -286,13 +286,13 @@ function integrate_approx_results(DVEC, num_kept_coeffs, filename)
         N = length(dvec)
         dvec_norm = norm(dvec,2)
         dvec_sort = sort(dvec.^2)  # the smallest first
-        er = sqrt.(reverse(cumsum(dvec_sort))) ./ dvec_norm  # this is the relative L^2-norm error of the whole thing, i.e., its length is N
+        er = max.(sqrt.(reverse(cumsum(dvec_sort))) ./ dvec_norm, 1e-12)  # this is the relative L^2-norm error of the whole thing, i.e., its length is N
         push!(ERR, er[num_kept_coeffs])
     end
     frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", filename))
-    er_soft_cluster_frame = [sqrt(frames_approx_res[i][2]) for i in 1:length(frames_approx_res)]
+    er_soft_cluster_frame = [max(sqrt(frames_approx_res[i][2]), 1e-12) for i in 1:length(frames_approx_res)]
     push!(ERR, er_soft_cluster_frame)
-    er_SGWT = [sqrt(frames_approx_res[i][3]) for i in 1:length(frames_approx_res)]
+    er_SGWT = [max(sqrt(frames_approx_res[i][3]), 1e-12) for i in 1:length(frames_approx_res)]
     push!(ERR, er_SGWT)
     return ERR
 end
@@ -307,14 +307,14 @@ function integrate_approx_results2(DVEC, num_kept_coeffs, filename)
         ind = sortperm(dvec_g.^2, rev = true)  # the largest first
         er = zeros(N)
         for k in 1:N
-            er[k] = sqrt.(norm(dvec_f[ind[1:k]] - dvec_g[ind[1:k]])^2 + norm(dvec_f[ind[k+1:end]])^2)/dvec_f_norm
+            er[k] = max(sqrt(norm(dvec_f[ind[1:k]] - dvec_g[ind[1:k]])^2 + norm(dvec_f[ind[k+1:end]])^2)/dvec_f_norm, 1e-12)
         end
         push!(ERR, er[num_kept_coeffs])
     end
     frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", filename))
-    er_soft_cluster_frame = [sqrt(frames_approx_res[i][2]) for i in 1:length(frames_approx_res)]
+    er_soft_cluster_frame = [max(sqrt(frames_approx_res[i][2]), 1e-12) for i in 1:length(frames_approx_res)]
     push!(ERR, er_soft_cluster_frame)
-    er_SGWT = [sqrt(frames_approx_res[i][3]) for i in 1:length(frames_approx_res)]
+    er_SGWT = [max(sqrt(frames_approx_res[i][3]), 1e-12) for i in 1:length(frames_approx_res)]
     push!(ERR, er_SGWT)
     return ERR
 end
