@@ -11,5 +11,5 @@ for f in filenames
 end
 
 # Load module
-push!(LOAD_PATH, joinpath(@__DIR__, "..", "src"))
+push!(LOAD_PATH, @__DIR__)
 using pSGWT
