@@ -289,6 +289,13 @@ dvec_eghwt, BS_eghwt = ghwt_tf_bestbasis(dmatrix, GP)
 approx_error_plot2([dvec_haar[:], dvec_walsh[:], dvec_Laplacian[:], dvec_c2f[:], dvec_f2c[:], dvec_eghwt[:], dvec_spectral[:], dvec_varimax[:]]); sunflower_approx_error_plt = current()
 savefig(sunflower_approx_error_plt, "figs/Barbara_SunFlower_reconstruct_errors_feye_Bilinear.png")
 
+## Show some important Laplacian eigenvectors
+importance_idx = sortperm(abs.(dvec_Laplacian), rev = true)
+for i = 2:6
+    scatter_gplot(X_sf .* 50; marker = 𝛷[:,importance_idx[i]], ms = LinRange(3.0, 7.0, N), smallValFirst = false, c=:greys); important_NGW_basis_vectors = plot!(xlim = [-100,100], ylim = [-100,100], yflip = true, frame = :none)
+    savefig(important_NGW_basis_vectors, "figs/Barbara_Sunflower_Bilinear_feye_Laplacian_important_basis_vector$(i).png")
+end
+
 
 ## Show some important NGW basis vectors
 importance_idx = sortperm(abs.(dvec_spectral), rev = true)
