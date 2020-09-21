@@ -202,12 +202,12 @@ end
 ####################### Approximation error plot################################
 ################################################################################
 ### function to plot the approximation error curve
-function approx_error_plot2(DVEC::Array{Array{Float64,1},1}; frac = 0.30)
+function approx_error_plot2(DVEC::Array{Array{Float64,1},1}; frac = 0.50)
     gr(dpi = 400)
     plot(xaxis = "Fraction of Coefficients Retained", yaxis = "Relative Approximation Error")
     T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC-NGWP", "VM-NGWP"]
     L = [(:dashdot,:orange), (:dashdot,:pink), (:dashdot, :red), (:solid, :gray), (:solid, :green), (:solid, :blue), (:solid, :purple), (:solid, :black)]
-    LW = [1, 1, 1, 1, 1, 2, 2, 2]
+    LW = [2, 2, 2, 2, 2, 2, 2, 2]
     for i = 1:length(DVEC)
         dvec = DVEC[i]
         N = length(dvec)
@@ -215,7 +215,7 @@ function approx_error_plot2(DVEC::Array{Array{Float64,1},1}; frac = 0.30)
         dvec_sort = sort(dvec.^2) # the smallest first
         er = max.(sqrt.(reverse(cumsum(dvec_sort)))/dvec_norm, 1e-12) # this is the relative L^2 error of the whole thing, i.e., its length is N
         p = Int64(floor(frac*N)) + 1 # upper limit
-        plot!(frac*(0:(p-1))/(p-1), er[1:p], yaxis=:log, xlims = (0.,frac), label = T[i], line = L[i], linewidth = LW[i])
+        plot!(frac*(0:(p-1))/(p-1), er[1:p], yaxis=:log, xlims = (0.,frac), label = T[i], line = L[i], linewidth = LW[i], grid = false)
     end
 end
 
@@ -290,9 +290,9 @@ function integrate_approx_results(DVEC, num_kept_coeffs, filename)
         push!(ERR, er[num_kept_coeffs])
     end
     frames_approx_res = CSV.File(joinpath(@__DIR__, "..", "datasets", filename))
-    er_soft_cluster_frame = [max(sqrt(frames_approx_res[i][2]), 1e-12) for i in 1:length(frames_approx_res)]
+    er_soft_cluster_frame = [max(sqrt(frames_approx_res[i][2]), 1e-12) for i in 1:length(num_kept_coeffs)]
     push!(ERR, er_soft_cluster_frame)
-    er_SGWT = [max(sqrt(frames_approx_res[i][3]), 1e-12) for i in 1:length(frames_approx_res)]
+    er_SGWT = [max(sqrt(frames_approx_res[i][3]), 1e-12) for i in 1:length(num_kept_coeffs)]
     push!(ERR, er_SGWT)
     return ERR
 end
@@ -319,12 +319,11 @@ function integrate_approx_results2(DVEC, num_kept_coeffs, filename)
     return ERR
 end
 
-function approx_error_plot3(ERR::Array{Array{Float64,1},1}; num_kept_coeffs = 10:10:280)
+function approx_error_plot3(ERR::Array{Array{Float64,1},1}; num_kept_coeffs = 10:10:280, LW = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
     gr(dpi = 400)
     plot(xaxis = "Number of Coefficients Retained", yaxis = "Relative Approximation Error")
     T = ["Haar", "Walsh", "Laplacian", "GHWT_c2f", "GHWT_f2c", "eGHWT", "PC-NGWP", "VM-NGWP", "SC-Frame", "SGWT"]
     L = [(:dashdot,:orange), (:dashdot,:pink), (:dashdot, :red), (:solid, :gray), (:solid, :green), (:solid, :blue), (:solid, :purple), (:solid, :black), (:dash, :navy), (:dash, :teal)]
-    LW = [1, 1, 1, 1, 1, 2, 2, 2, 3, 3]
     for i in 1:length(ERR)
         plot!(num_kept_coeffs, ERR[i], yaxis=:log, xlims = (0.,num_kept_coeffs[end]), label = T[i], line = L[i], linewidth = LW[i])
     end
