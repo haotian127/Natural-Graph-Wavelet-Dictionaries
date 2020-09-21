@@ -86,3 +86,45 @@ savefig(plt, "figs/Sunflower_Barbara_profile_Voronoi_sampling_with_cells.png")
 
 scatter_gplot(X_transform; marker = f ./ num_pxls, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys); plt = plot!(xlim = [0.8,2.2], ylim = [0.8,2.2], clim=(0,1), frame = :none)
 savefig(plt, "figs/Sunflower_Barbara_profile_Voronoi_sampling.png")
+
+
+## generate gifs
+N1 = 101; N2 = 101; X_barbara = zeros(N1, N2, 2); for i in 1:N1; for j in 1:N2; X_barbara[i,j,1] = VoronoiDelaunay.min_coord + i * (VoronoiDelaunay.max_coord - VoronoiDelaunay.min_coord) / (N1+1); X_barbara[i,j,2] = VoronoiDelaunay.max_coord - j * (VoronoiDelaunay.max_coord - VoronoiDelaunay.min_coord) / (N2+1); end; end; X_barbara = reshape(X_barbara, (N1*N2,2))
+
+
+anim = @animate for loc in 5:5:100
+    start_y = 120-loc; start_x = 340; f_barbara = reshape(barbara[start_y:(start_y+N1-1), start_x:(start_x+N2-1)]', N1*N2)[:]
+    f = zeros(N); num_pxls = zeros(N)
+    for pxl in 1:N1*N2
+        px, py = X_barbara[pxl,:]
+        P = Point(px, py)
+        for k in 1:N
+            if inpolygon(PG[k], P)
+                f[k] += f_barbara[pxl]
+                num_pxls[k] += 1
+            end
+        end
+    end
+    scatter_gplot(X_transform; marker = f ./ num_pxls, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys); plt = plot!(xlim = [0.8,2.2], ylim = [0.8,2.2], clim=(0,1), frame = :none)
+end
+
+gif(anim, "gif/sunflower_voronoi_horizontal_high_resolution.gif", fps = 8)
+
+
+anim = @animate for loc in 5:5:100
+    start_y = 50; start_x = 280+loc; f_barbara = reshape(barbara[start_y:(start_y+N1-1), start_x:(start_x+N2-1)]', N1*N2)[:]
+    f = zeros(N); num_pxls = zeros(N)
+    for pxl in 1:N1*N2
+        px, py = X_barbara[pxl,:]
+        P = Point(px, py)
+        for k in 1:N
+            if inpolygon(PG[k], P)
+                f[k] += f_barbara[pxl]
+                num_pxls[k] += 1
+            end
+        end
+    end
+    scatter_gplot(X_transform; marker = f ./ num_pxls, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys); plt = plot!(xlim = [0.8,2.2], ylim = [0.8,2.2], clim=(0,1), frame = :none)
+end
+
+gif(anim, "gif/sunflower_voronoi_vertical_high_resolution.gif", fps = 8)
