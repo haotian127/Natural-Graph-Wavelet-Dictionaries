@@ -14,19 +14,11 @@ push!(tess, pts)
 x, y = getplotxy(voronoiedges(tess))
 plt = plot(x, y, xlim=[1,2], ylim=[1,2], linestyle=:auto, linewidth=1, linecolor=:blue, grid=false, label="", aspect_ratio=1, frame=:box)
 # ; scatter_gplot!(X_transform; ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :grey)
-savefig(plt, "figs/Sunflower_Barbara_eye_Voronoi_cells.png")
+# savefig(plt, "figs/Sunflower_Barbara_Voronoi_cells.png")
 
 idx_pts = [IndexablePoint2D(X_transform[i,1], X_transform[i,2], i) for i in 1:N]
 C = voronoicells(idx_pts)
-# A = voronoiarea(C)
-
-N1 = 51; N2 = 51; X_barbara = zeros(N1, N2, 2); for i in 1:N1; for j in 1:N2; X_barbara[i,j,1] = VoronoiDelaunay.min_coord + i * (VoronoiDelaunay.max_coord - VoronoiDelaunay.min_coord) / (N1+1); X_barbara[i,j,2] = VoronoiDelaunay.max_coord - j * (VoronoiDelaunay.max_coord - VoronoiDelaunay.min_coord) / (N2+1); end; end; X_barbara = reshape(X_barbara, (N1*N2,2))
-
-f_barbara = reshape(barbara[80:130, 375:425]', N1*N2)[:]
-scatter_gplot(X_barbara; marker = f_barbara, ms = 6, c = :greys, smallValFirst = false); plt = plot!(cbar = false, grid = false)
-savefig(plt, "figs/Sunflower_Barbara_eye_raw.png")
-# plot!(x, y, xlim=[1,2], ylim=[1,2], linestyle=:auto, linewidth=1, linecolor=:blue, grid=false, label="", aspect_ratio=1, frame=:box); scatter_gplot!(X_transform; ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :grey)
-
+A = voronoiarea(C)
 
 function vertex_sort(plist)
     plist_sorted = plist[1:2]
@@ -54,7 +46,6 @@ function vertex_sort(plist)
     return plist_sorted
 end
 
-
 PG = Dict()
 for k in 1:N
     plist = vertex_sort(C[k])
@@ -68,6 +59,14 @@ for k in 1:N
         PG[k] = Polygon(plist[1], plist[2], plist[3], plist[4], plist[5], plist[6], plist[7])
     end
 end
+
+## input image
+N1 = 256; N2 = 256; X_barbara = zeros(N1, N2, 2); for i in 1:N1; for j in 1:N2; X_barbara[i,j,1] = VoronoiDelaunay.min_coord + i * (VoronoiDelaunay.max_coord - VoronoiDelaunay.min_coord) / (N1+1); X_barbara[i,j,2] = VoronoiDelaunay.max_coord - j * (VoronoiDelaunay.max_coord - VoronoiDelaunay.min_coord) / (N2+1); end; end; X_barbara = reshape(X_barbara, (N1*N2,2))
+
+f_barbara = reshape(barbara[1:256, 257:end]', N1*N2)[:] # eye - 80:120, 375:415
+scatter_gplot(X_barbara; marker = f_barbara, ms = 2, c = :greys, smallValFirst = false); plt = plot!(cbar = false, grid = false)
+savefig(plt, "figs/Sunflower_Barbara_profile_raw.png")
+# plot!(x, y, xlim=[1,2], ylim=[1,2], linestyle=:auto, linewidth=1, linecolor=:blue, grid=false, label="", aspect_ratio=1, frame=:box); scatter_gplot!(X_transform; ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :grey)
 
 
 f = zeros(N); num_pxls = zeros(N)
@@ -83,7 +82,7 @@ for pxl in 1:N1*N2
 end
 
 plot(x, y, xlim=[1,2], ylim=[1,2], linestyle=:auto, linewidth=1, linecolor=:blue, grid=false, label="", aspect_ratio=1, frame=:box); plt = scatter_gplot!(X_transform; marker = f ./ num_pxls, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys)
-savefig(plt, "figs/Sunflower_Barbara_eye_Voronoi_sampling_with_cells.png")
+savefig(plt, "figs/Sunflower_Barbara_profile_Voronoi_sampling_with_cells.png")
 
 scatter_gplot(X_transform; marker = f ./ num_pxls, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys); plt = plot!(xlim = [0.8,2.2], ylim = [0.8,2.2], clim=(0,1), frame = :none)
-savefig(plt, "figs/Sunflower_Barbara_eye_Voronoi_sampling.png")
+savefig(plt, "figs/Sunflower_Barbara_profile_Voronoi_sampling.png")
