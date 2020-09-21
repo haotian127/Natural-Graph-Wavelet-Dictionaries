@@ -108,7 +108,7 @@ anim = @animate for loc in 5:5:100
     scatter_gplot(X_transform; marker = f ./ num_pxls, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys); plt = plot!(xlim = [0.8,2.2], ylim = [0.8,2.2], clim=(0,1), frame = :none)
 end
 
-gif(anim, "gif/sunflower_voronoi_horizontal_high_resolution.gif", fps = 8)
+gif(anim, "gif/sunflower_voronoi_vertical_high_resolution.gif", fps = 8)
 
 
 anim = @animate for loc in 5:5:100
@@ -127,4 +127,4 @@ anim = @animate for loc in 5:5:100
     scatter_gplot(X_transform; marker = f ./ num_pxls, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys); plt = plot!(xlim = [0.8,2.2], ylim = [0.8,2.2], clim=(0,1), frame = :none)
 end
 
-gif(anim, "gif/sunflower_voronoi_vertical_high_resolution.gif", fps = 8)
+gif(anim, "gif/sunflower_voronoi_horizontal_high_resolution.gif", fps = 8)
