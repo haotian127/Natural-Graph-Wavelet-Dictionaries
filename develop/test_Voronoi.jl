@@ -1,6 +1,6 @@
 ## Load packages and functions
 using VoronoiDelaunay, VoronoiCells, GeometricalPredicates
-include(joinpath("..", "src", "func_includer.jl"))
+include(joinpath("..", "src", "func_includer.jl")); gr(dpi = 300)
 
 barbara = JLD.load(joinpath(@__DIR__, "..", "datasets", "barbara_gray_matrix.jld"), "barbara")
 G, L, X = SunFlowerGraph(; N = 400); N = nv(G)
