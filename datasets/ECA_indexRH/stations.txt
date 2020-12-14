@@ -1,0 +1,139 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+01-05 STAID       : Station identifier
+07-46 STATIONNAME : Station Name
+48-87 COUNTRYNAME : Country Name
+89-97 LAT         : Latitude in degrees:minutes:seconds (+:North, -:South)
+99-109 LON        : Longitude in degrees:minutes:seconds (+:East, -:West)
+111-115 HGT       : Station elevation in meters 
+
+STAID,STATIONNAME                             ,COUNTRYNAME                             ,LAT      ,LON       ,HGT
+
+5    ,LINKOEPING-MALMSLAETT                   ,SWEDEN                                  ,+58:24:00,+015:31:59,  93
+7    ,KARLSTAD-AIRPORT                        ,SWEDEN                                  ,+59:26:40,+013:20:15, 107
+11   ,KREMSMUENSTER                           ,AUSTRIA                                 ,+48:03:00,+014:07:59, 383
+12   ,GRAZ                                    ,AUSTRIA                                 ,+47:04:59,+015:27:00, 366
+13   ,INNSBRUCK                               ,AUSTRIA                                 ,+47:16:00,+011:24:00, 577
+14   ,SALZBURG                                ,AUSTRIA                                 ,+47:48:00,+013:00:00, 437
+15   ,SONNBLICK                               ,AUSTRIA                                 ,+47:03:00,+012:57:00,3106
+16   ,WIEN                                    ,AUSTRIA                                 ,+48:13:59,+016:21:00, 199
+17   ,UCCLE                                   ,BELGIUM                                 ,+50:48:00,+004:21:59, 100
+18   ,KNEJA                                   ,BULGARIA                                ,+43:30:00,+024:04:59, 116
+19   ,OBRASZOV-CHIFLIK                        ,BULGARIA                                ,+43:48:00,+026:01:59, 156
+20   ,SADOVO                                  ,BULGARIA                                ,+42:09:00,+024:57:00, 155
+21   ,ZAGREB-GRIC                             ,CROATIA                                 ,+45:49:00,+015:58:41, 157
+22   ,AMIANDOS                                ,CYPRUS                                  ,+34:55:59,+032:55:00,1360
+23   ,LARNACA                                 ,CYPRUS                                  ,+34:52:59,+033:37:59,   1
+24   ,LIMASSOL                                ,CYPRUS                                  ,+34:40:00,+033:02:59,   5
+25   ,NICOSIA                                 ,CYPRUS                                  ,+35:10:00,+033:21:00, 160
+26   ,POLIS                                   ,CYPRUS                                  ,+35:01:59,+032:25:59,  20
+32   ,BOURGES                                 ,FRANCE                                  ,+47:03:33,+002:21:34, 161
+33   ,TOULOUSE-BLAGNAC                        ,FRANCE                                  ,+43:37:15,+001:22:44, 151
+34   ,BORDEAUX-MERIGNAC                       ,FRANCE                                  ,+44:49:50,-000:41:29,  47
+35   ,CHATEAUROUX DEOLS                       ,FRANCE                                  ,+46:52:10,+001:44:26, 158
+36   ,PERPIGNAN                               ,FRANCE                                  ,+42:44:13,+002:52:22,  42
+37   ,LYON - ST EXUPERY                       ,FRANCE                                  ,+45:43:35,+005:04:40, 235
+38   ,PARIS - MONTSOURIS                      ,FRANCE                                  ,+48:49:18,+002:20:16,  75
+39   ,MARIGNANE                               ,FRANCE                                  ,+43:26:16,+005:12:57,   9
+40   ,BAMBERG                                 ,GERMANY                                 ,+49:52:31,+010:55:18, 240
+41   ,BERLIN-DAHLEM                           ,GERMANY                                 ,+52:27:50,+013:18:06,  51
+42   ,BREMEN                                  ,GERMANY                                 ,+53:02:47,+008:47:57,   4
+43   ,DRESDEN WAHNSDORF                       ,GERMANY                                 ,+51:07:00,+013:40:59, 246
+44   ,FRANKFURT                               ,GERMANY                                 ,+50:02:47,+008:35:54, 112
+45   ,HALLE                                   ,GERMANY                                 ,+51:30:52,+011:57:02,  93
+46   ,HAMBURG BERGEDORF                       ,GERMANY                                 ,+53:28:50,+010:14:34,  35
+47   ,HAMBURG FUHLSBUETTEL                    ,GERMANY                                 ,+53:38:06,+009:59:24,  11
+48   ,HOHENPEISSENBERG                        ,GERMANY                                 ,+47:48:06,+011:00:42, 977
+49   ,JENA STERNWARTE                         ,GERMANY                                 ,+50:55:36,+011:35:03, 155
+50   ,KAISERSLAUTERN                          ,GERMANY                                 ,+49:25:31,+007:44:12, 285
+51   ,KARLSRUHE                               ,GERMANY                                 ,+49:02:21,+008:21:54, 112
+52   ,MUENCHEN                                ,GERMANY                                 ,+48:09:51,+011:32:39, 515
+53   ,MUENSTER                                ,GERMANY                                 ,+51:57:02,+007:35:29,  62
+54   ,POTSDAM                                 ,GERMANY                                 ,+52:23:00,+013:03:50,  81
+55   ,SCHWERIN                                ,GERMANY                                 ,+53:38:39,+011:23:18,  59
+58   ,ZUGSPITZE                               ,GERMANY                                 ,+47:25:19,+010:59:12,2964
+59   ,CORFU                                   ,GREECE                                  ,+39:37:00,+019:55:00,  11
+60   ,HELLINIKON                              ,GREECE                                  ,+37:54:00,+023:45:00,  10
+61   ,HERAKLION                               ,GREECE                                  ,+35:19:59,+025:10:59,  39
+62   ,LARISSA                                 ,GREECE                                  ,+39:39:00,+022:27:00,  73
+63   ,METHONI                                 ,GREECE                                  ,+36:49:59,+021:42:00,  52
+64   ,BUDAPEST                                ,HUNGARY                                 ,+47:30:39,+019:01:14, 153
+65   ,DALATANGI                               ,ICELAND                                 ,+65:16:05,-013:34:32,   9
+66   ,REYKJAVIK                               ,ICELAND                                 ,+64:07:37,-021:54:09,  52
+67   ,STYKKISHOLMUR                           ,ICELAND                                 ,+65:04:26,-022:44:00,  13
+70   ,ALEKSANDROV GAJ                         ,RUSSIAN FEDERATION                      ,+50:09:00,+048:33:00,  23
+71   ,ARXANGEL'SK                             ,RUSSIAN FEDERATION                      ,+64:30:00,+040:43:59,   8
+72   ,ARMAVIR                                 ,RUSSIAN FEDERATION                      ,+44:58:59,+041:07:00, 158
+73   ,ASTRAXAN'                               ,RUSSIAN FEDERATION                      ,+46:16:59,+047:58:59, -22
+74   ,ELAT'MA                                 ,RUSSIAN FEDERATION                      ,+54:57:00,+041:46:00, 132
+75   ,XOSEDA-XARD                             ,RUSSIAN FEDERATION                      ,+67:04:59,+059:22:59,  82
+76   ,IZEVSK                                  ,RUSSIAN FEDERATION                      ,+56:49:59,+053:27:00, 155
+77   ,KALININGRAD                             ,RUSSIAN FEDERATION                      ,+54:42:00,+020:37:00,  20
+78   ,KANDALAKSHA                             ,RUSSIAN FEDERATION                      ,+67:09:00,+032:21:00,  26
+79   ,KEM'-PORT                               ,RUSSIAN FEDERATION                      ,+64:58:59,+034:48:59,   7
+80   ,KURSK                                   ,RUSSIAN FEDERATION                      ,+51:46:00,+036:10:00, 246
+81   ,KOJNAS                                  ,RUSSIAN FEDERATION                      ,+64:45:00,+047:39:00,  63
+82   ,KOSTROMA                                ,RUSSIAN FEDERATION                      ,+57:43:59,+040:51:00, 125
+83   ,KOTLAS                                  ,RUSSIAN FEDERATION                      ,+61:16:00,+046:43:00,  55
+84   ,KRASNOUFIMSK                            ,RUSSIAN FEDERATION                      ,+56:39:00,+057:46:59, 205
+85   ,SANKT-PETERBURG                         ,RUSSIAN FEDERATION                      ,+59:58:00,+030:18:00,   3
+86   ,MURMANSK                                ,RUSSIAN FEDERATION                      ,+68:58:00,+033:02:59,  57
+87   ,MOSKVA VDNX                             ,RUSSIAN FEDERATION                      ,+55:49:59,+037:37:00, 147
+88   ,NAR'YAN-MAR                             ,RUSSIAN FEDERATION                      ,+67:37:59,+053:01:59,  10
+89   ,UFA                                     ,RUSSIAN FEDERATION                      ,+54:43:00,+055:49:59, 104
+90   ,ONEGA                                   ,RUSSIAN FEDERATION                      ,+63:54:00,+038:07:00,  11
+91   ,ORENBURG                                ,RUSSIAN FEDERATION                      ,+51:40:59,+055:06:00, 115
+92   ,PAVELEс                                ,RUSSIAN FEDERATION                      ,+53:46:59,+039:15:00, 209
+93   ,PETROPAVLOVSK                           ,RUSSIAN FEDERATION                      ,+54:49:59,+069:09:00, 142
+94   ,PECHORA                                 ,RUSSIAN FEDERATION                      ,+65:07:00,+057:06:00,  53
+95   ,PSKOV                                   ,RUSSIAN FEDERATION                      ,+57:49:00,+028:19:59,  43
+96   ,SARATOV                                 ,RUSSIAN FEDERATION                      ,+51:34:00,+045:01:59, 151
+97   ,SMOLENSK                                ,RUSSIAN FEDERATION                      ,+54:45:00,+032:04:00, 236
+98   ,SORTAVALA                               ,RUSSIAN FEDERATION                      ,+61:43:00,+030:43:00,  17
+99   ,SY'KTY'VKAR                             ,RUSSIAN FEDERATION                      ,+61:40:00,+050:52:00, 116
+100  ,TAMBOV                                  ,RUSSIAN FEDERATION                      ,+52:48:00,+041:30:00, 127
+101  ,TROIсKO-PECHORSKOE                     ,RUSSIAN FEDERATION                      ,+62:42:00,+056:12:00, 134
+102  ,UST'-CIL'MA                             ,RUSSIAN FEDERATION                      ,+65:25:59,+052:16:00,  78
+103  ,VELIKIE LUKI                            ,RUSSIAN FEDERATION                      ,+56:21:00,+030:37:00,  97
+104  ,VY'TEGRA                                ,RUSSIAN FEDERATION                      ,+61:01:00,+036:27:00,  55
+105  ,VOLOGDA                                 ,RUSSIAN FEDERATION                      ,+59:19:00,+039:55:00, 125
+120  ,BIRR                                    ,IRELAND                                 ,+53:05:25,-007:52:35,  70
+121  ,DUBLIN PHOENIX PARK                     ,IRELAND                                 ,+53:21:50,-006:19:09,  49
+122  ,MALIN HEAD                              ,IRELAND                                 ,+55:22:18,-007:20:24,  21
+123  ,VALENTIA OBSERVATORY                    ,IRELAND                                 ,+51:56:22,-010:13:19,   9
+160  ,DEN HELDER                              ,NETHERLANDS                             ,+52:57:41,+004:44:49,   4
+161  ,DE KOOY                                 ,NETHERLANDS                             ,+52:55:36,+004:46:51,   1
+162  ,DE BILT                                 ,NETHERLANDS                             ,+52:05:56,+005:10:46,   2
+163  ,GRONINGEN                               ,NETHERLANDS                             ,+53:13:00,+006:33:00,   2
+164  ,EELDE                                   ,NETHERLANDS                             ,+53:07:24,+006:35:04,   5
+166  ,VLISSINGEN                              ,NETHERLANDS                             ,+51:26:29,+003:35:44,   8
+167  ,MAASTRICHT-1                            ,NETHERLANDS                             ,+50:51:00,+005:40:59,  49
+168  ,MAASTRICHT                              ,NETHERLANDS                             ,+50:54:19,+005:45:42, 114
+170  ,FERRARA                                 ,ITALY                                   ,+44:49:57,+011:37:15,  15
+174  ,BRINDISI                                ,ITALY                                   ,+40:37:59,+017:55:59,  10
+175  ,CAGLIARI                                ,ITALY                                   ,+39:13:59,+009:03:00,  21
+176  ,ROMA CIAMPINO                           ,ITALY                                   ,+41:46:59,+012:34:59, 105
+177  ,VERONA VILLAFRANCA                      ,ITALY                                   ,+45:22:59,+010:52:00,  68
+179  ,BJOERNOEYA                              ,NORWAY                                  ,+74:31:00,+019:01:00,  16
+183  ,NORD ODAL                               ,NORWAY                                  ,+60:23:18,+011:33:37, 147
+185  ,SUOLOVUOPMI                             ,NORWAY                                  ,+69:35:17,+023:31:54, 377
+186  ,SVALBARD AIRPORT                        ,NORWAY                                  ,+78:15:00,+015:28:00,  28
+187  ,HOPEN                                   ,NORWAY                                  ,+76:30:00,+025:04:00,   6
+188  ,GLOMFJORD                               ,NORWAY                                  ,+66:49:00,+013:58:59,  39
+189  ,JAN MAYEN                               ,NORWAY                                  ,+70:55:59,-008:40:00,  10
+190  ,KARASJOK                                ,NORWAY                                  ,+69:28:00,+025:30:11, 129
+191  ,KJOEREMSGRENDE                          ,NORWAY                                  ,+62:06:00,+009:03:00, 626
+192  ,FAERDER FYR                             ,NORWAY                                  ,+59:01:36,+010:31:48,   6
+193  ,OSLO BLINDERN                           ,NORWAY                                  ,+59:56:34,+010:43:14,  94
+194  ,UTSIRA FYR                              ,NORWAY                                  ,+59:18:28,+004:52:41,  55
+195  ,VARDOE                                  ,NORWAY                                  ,+70:22:01,+031:05:04,  14
+196  ,NESBYEN-SKOGLUND                        ,NORWAY                                  ,+60:34:06,+009:07:18, 167
+197  ,BULKEN                                  ,NORWAY                                  ,+60:38:45,+006:13:24, 323
+199  ,LIEPAJA                                 ,LATVIA                                  ,+56:28:59,+021:01:00,   7
+200  ,KAUNAS                                  ,LITHUANIA                               ,+54:52:59,+023:49:59,  77

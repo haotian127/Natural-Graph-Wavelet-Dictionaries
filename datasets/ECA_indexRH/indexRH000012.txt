@@ -1,0 +1,36 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on: 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+FILE FORMAT (MISSING VALUE CODE = -999999):
+
+THIS FILE HOLDS DATA FOR STATION AUSTRIA                                  GRAZ                                     (STAID:     12)
+LATITUDE: dd:mm:ss +47:04:59
+LONGITUDE: ddd:mm:ss +015:27:00
+ELEVATION: m  366
+
+DATA IS FOR INDEX Mean of daily average relative humidity (RH) with unit 0.01 Relative humidity (%)
+
+01-06 SOUID: Source identifier
+08-11 YEAR : YYYY
+13-20 ANNUAL DATA VALUES
+21-28 WINTER HALF YEAR DATA VALUES
+29-36 SUMMER HALF YEAR DATA VALUES
+37-44 WINTER (DJF) DATA VALUES
+45-52 SPRING (MAM) DATA VALUES
+53-60 SUMMER (JJA) DATA VALUES
+61-68 AUTUMN (SON) DATA VALUES
+69-76 JANUARY DATA VALUES
+etc. 
+157-164 DECEMBER DATA VALUES
+
+12     2005 7170    -999999 6786    -999999 6340    6896    8022    7132    7525    6787    6287    5945    6300    7065    7303    7817    7945    8307    7661    
+12     2006 7204    7684    6754    7691    6689    6648    7595    8029    7350    6797    6607    6661    6517    6435    6987    7320    7790    7667    8281    
+12     2007 7147    7482    6681    7596    6380    6727    7819    7368    7089    6665    5963    6500    6803    6271    7110    7443    8226    7773    8532    
+12     2008 7187    7712    6712    7890    6491    6825    7573    8171    6903    6616    6467    6390    7030    6632    6819    6943    7590    8183    8477    
+12     2009 7201    7600    6773    7859    6346    6742    7900    8219    6775    6294    6083    6652    6837    6426    6968    7683    7723    8300    8419    
+12     2010 7361    7861    6861    8156    6691    6697    8132    8277    7729    6719    6537    6813    6400    6210    7471    7737    8161    8497    7806    

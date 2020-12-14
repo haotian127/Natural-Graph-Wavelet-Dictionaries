@@ -1,0 +1,36 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on: 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+FILE FORMAT (MISSING VALUE CODE = -999999):
+
+THIS FILE HOLDS DATA FOR STATION AUSTRIA                                  INNSBRUCK                                (STAID:     13)
+LATITUDE: dd:mm:ss +47:16:00
+LONGITUDE: ddd:mm:ss +011:24:00
+ELEVATION: m  577
+
+DATA IS FOR INDEX Mean of daily average relative humidity (RH) with unit 0.01 Relative humidity (%)
+
+01-06 SOUID: Source identifier
+08-11 YEAR : YYYY
+13-20 ANNUAL DATA VALUES
+21-28 WINTER HALF YEAR DATA VALUES
+29-36 SUMMER HALF YEAR DATA VALUES
+37-44 WINTER (DJF) DATA VALUES
+45-52 SPRING (MAM) DATA VALUES
+53-60 SUMMER (JJA) DATA VALUES
+61-68 AUTUMN (SON) DATA VALUES
+69-76 JANUARY DATA VALUES
+etc. 
+157-164 DECEMBER DATA VALUES
+
+13     2005 7565    -999999 7261    -999999 6830    7480    7800    8106    7671    6835    6730    6923    7110    7703    7616    7470    7594    8343    8671    
+13     2006 7628    8100    7259    8467    7166    7266    7807    8506    8196    7306    6943    7242    6847    6929    8010    7570    7800    8050    8155    
+13     2007 7518    7769    7168    7910    6765    7263    8085    8161    7361    7055    6550    6684    6847    7097    7832    7993    7919    8347    8348    
+13     2008 7582    7800    7417    7795    6933    7723    7829    7929    7059    7168    7130    6506    7373    8148    7635    7707    8026    7747    8506    
+13     2009 7238    7809    6728    7978    6468    6940    7719    8210    7136    7161    5857    6368    6827    6952    7039    7320    7748    8087    8113    
+13     2010 7282    7559    7027    7691    6770    6990    7645    7923    6968    6474    6533    7294    6687    6810    7465    7357    7503    8080    8248    

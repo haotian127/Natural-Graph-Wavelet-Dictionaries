@@ -1,0 +1,46 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on: 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+FILE FORMAT (MISSING VALUE CODE = -999999):
+
+THIS FILE HOLDS DATA FOR STATION AUSTRIA                                  SALZBURG                                 (STAID:     14)
+LATITUDE: dd:mm:ss +47:48:00
+LONGITUDE: ddd:mm:ss +013:00:00
+ELEVATION: m  437
+
+DATA IS FOR INDEX Mean of daily average relative humidity (RH) with unit 0.01 Relative humidity (%)
+
+01-06 SOUID: Source identifier
+08-11 YEAR : YYYY
+13-20 ANNUAL DATA VALUES
+21-28 WINTER HALF YEAR DATA VALUES
+29-36 SUMMER HALF YEAR DATA VALUES
+37-44 WINTER (DJF) DATA VALUES
+45-52 SPRING (MAM) DATA VALUES
+53-60 SUMMER (JJA) DATA VALUES
+61-68 AUTUMN (SON) DATA VALUES
+69-76 JANUARY DATA VALUES
+etc. 
+157-164 DECEMBER DATA VALUES
+
+14     2005 7202    -999999 6796    -999999 6370    6936    7754    7148    7829    6613    6217    6274    6340    6858    7590    7487    7474    8310    8326    
+14     2006 7012    7860    6434    8171    6509    6327    7209    8271    7889    6906    6583    6039    6090    5619    7265    7023    7358    7240    7903    
+14     2007 6928    7193    6331    7319    5923    6401    7966    7058    6961    6619    5163    5961    6127    6132    6935    7667    8055    8173    8274    
+14     2008 6849    7559    6394    7529    6204    6377    7440    7561    6697    6558    6553    5513    6217    6458    6452    7197    7719    7393    7855    
+14     2009 7064    7666    6458    7927    6116    6682    7593    8090    7825    7123    5050    6142    6877    6506    6668    7507    7823    7443    7742    
+14     2010 7092    7428    6683    7766    6447    6530    7589    8303    7196    6039    6083    7206    6383    6016    7187    7207    7632    7927    7913    
+14     2011 8223    8111    7808    8523    7283    8021    8818    9003    8668    7571    6960    7306    8070    7974    8019    8520    8671    9267    8690    
+14     2012 8157    8480    7766    8371    7411    7874    8852    8223    8190    7845    7287    -999999 7810    8165    7645    8527    8871    9157    8913    
+14     2013 8268    8731    7807    8777    7904    7527    8892    8835    8561    8048    7757    7903    7767    7048    7774    8613    9006    9053    8881    
+14     2014 8497    8740    8235    8909    7872    8146    9151    9200    8618    7677    8010    7932    7457    8194    8765    9047    9135    9270    8668    
+14     2015 7905    8516    7509    8436    7477    7334    8315    8342    8282    7403    6860    8148    7680    7119    7213    8033    8900    7993    8884    
+14     2016 8529    8564    8232    8786    8059    8275    8942    9129    8314    8132    7903    8135    8423    8026    8381    8530    9203    9083    9068    
+14     2017 8302    8798    7974    8940    7767    7802    8703    9084    8639    7706    7987    7616    7359    7835    8184    8853    8326    8943    9094    
+14     2018 8312    8715    7812    8942    7659    7850    8855    8871    8854    8226    6917    7810    8003    7613    7939    8593    8642    9337    8977    
+14     2019 8058    8538    7667    8667    7432    7525    8808    8706    8279    7290    7067    7926    6997    7429    8132    8433    8646    9333    8519    
+14     2020 -999999 8320    7762    8202    7250    7879    -999999 8706    7324    7390    6560    7777    7993    7732    7916    8590    8803    -999999 -999999 

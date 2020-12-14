@@ -1,0 +1,41 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on: 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+FILE FORMAT (MISSING VALUE CODE = -999999):
+
+THIS FILE HOLDS DATA FOR STATION ITALY                                    BRINDISI                                 (STAID:    174)
+LATITUDE: dd:mm:ss +40:37:59
+LONGITUDE: ddd:mm:ss +017:55:59
+ELEVATION: m   10
+
+DATA IS FOR INDEX Mean of daily average relative humidity (RH) with unit 0.01 Relative humidity (%)
+
+01-06 SOUID: Source identifier
+08-11 YEAR : YYYY
+13-20 ANNUAL DATA VALUES
+21-28 WINTER HALF YEAR DATA VALUES
+29-36 SUMMER HALF YEAR DATA VALUES
+37-44 WINTER (DJF) DATA VALUES
+45-52 SPRING (MAM) DATA VALUES
+53-60 SUMMER (JJA) DATA VALUES
+61-68 AUTUMN (SON) DATA VALUES
+69-76 JANUARY DATA VALUES
+etc. 
+157-164 DECEMBER DATA VALUES
+
+174    1999 7767    -999999 7880    -999999 8365    7640    7480    8013    7661    8255    8453    8390    8057    7855    6979    7497    7306    7643    7048    
+174    2000 -999999 -999999 6508    -999999 6957    6953    6620    -999999 7097    6658    7000    7213    -999999 6661    7457    4027    8119    7663    8126    
+174    2001 7306    7701    7354    7670    7287    7396    7490    7761    7064    7410    6817    7619    6833    7442    7894    7490    8142    6817    6316    
+174    2002 7203    7175    6979    7027    7385    6684    7131    7216    7604    6987    7893    7290    6887    6632    6539    6650    7145    7597    8039    
+174    2003 7662    7519    7668    7552    8088    7307    7816    7210    7393    7719    8210    8339    7500    6716    7710    7540    7626    8290    7694    
+174    2004 7321    7366    7123    7315    7097    6816    7854    6884    7372    6358    7610    7339    7380    6458    6629    7353    8303    7890    8306    
+174    2005 7498    7890    7443    7790    7576    7410    7443    7577    7454    7768    7297    7655    7630    7223    7384    7470    7448    7410    7652    
+174    2006 7407    7605    7119    7707    7398    6938    7512    7597    7889    7655    7500    7042    6800    7219    6790    7370    7548    7617    7894    
+174    2007 7092    7488    6717    7443    7195    6524    7175    7290    7114    7435    7603    6558    6873    6245    6465    6590    7443    7503    8076    
+174    2008 7654    7795    7395    8020    7540    7335    7889    7919    8072    7761    7683    7181    7393    7142    7471    7513    8252    7890    7597    
+174    2009 7726    7801    7546    7757    7687    7339    7897    8223    7418    7390    8133    7552    7300    7068    7648    7586    7735    8379    8277    

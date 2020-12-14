@@ -1,0 +1,37 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on: 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+FILE FORMAT (MISSING VALUE CODE = -999999):
+
+THIS FILE HOLDS DATA FOR STATION NORWAY                                   BULKEN                                   (STAID:    197)
+LATITUDE: dd:mm:ss +60:38:45
+LONGITUDE: ddd:mm:ss +006:13:24
+ELEVATION: m  323
+
+DATA IS FOR INDEX Mean of daily average relative humidity (RH) with unit 0.01 Relative humidity (%)
+
+01-06 SOUID: Source identifier
+08-11 YEAR : YYYY
+13-20 ANNUAL DATA VALUES
+21-28 WINTER HALF YEAR DATA VALUES
+29-36 SUMMER HALF YEAR DATA VALUES
+37-44 WINTER (DJF) DATA VALUES
+45-52 SPRING (MAM) DATA VALUES
+53-60 SUMMER (JJA) DATA VALUES
+61-68 AUTUMN (SON) DATA VALUES
+69-76 JANUARY DATA VALUES
+etc. 
+157-164 DECEMBER DATA VALUES
+
+197    2014 -999999 -999999 -999999 -999999 -999999 7116    8122    -999999 -999999 -999999 -999999 6665    6590    7135    7606    8100    8232    8030    9497    
+197    2015 8254    8590    7761    9141    7750    7703    8629    9142    8746    7890    7680    7677    7707    7861    7542    8107    8513    9270    8955    
+197    2016 8168    8580    7867    8647    7313    8195    8370    8335    8652    7784    7357    6800    7123    8758    8668    8477    7681    8977    9413    
+197    2017 8255    8620    7836    8821    7812    8114    8352    9258    7682    8629    7777    7029    8000    7819    8519    7873    8510    8667    9223    
+197    2018 7711    8257    7312    8622    6697    7229    8515    8500    8093    6548    7457    6110    6623    6610    8435    8663    8626    8253    8655    
+197    2019 8148    8553    7596    8651    7155    8052    8593    8490    8825    8487    5757    7177    7997    7748    8410    8470    8881    8420    9113    
+197    2020 -999999 8745    7727    9030    7607    7630    -999999 9123    8841    8087    7237    7484    6530    8194    8132    8763    8560    -999999 -999999 

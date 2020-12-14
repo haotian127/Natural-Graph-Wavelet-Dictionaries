@@ -1,0 +1,41 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on: 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+FILE FORMAT (MISSING VALUE CODE = -999999):
+
+THIS FILE HOLDS DATA FOR STATION ITALY                                    VERONA VILLAFRANCA                       (STAID:    177)
+LATITUDE: dd:mm:ss +45:22:59
+LONGITUDE: ddd:mm:ss +010:52:00
+ELEVATION: m   68
+
+DATA IS FOR INDEX Mean of daily average relative humidity (RH) with unit 0.01 Relative humidity (%)
+
+01-06 SOUID: Source identifier
+08-11 YEAR : YYYY
+13-20 ANNUAL DATA VALUES
+21-28 WINTER HALF YEAR DATA VALUES
+29-36 SUMMER HALF YEAR DATA VALUES
+37-44 WINTER (DJF) DATA VALUES
+45-52 SPRING (MAM) DATA VALUES
+53-60 SUMMER (JJA) DATA VALUES
+61-68 AUTUMN (SON) DATA VALUES
+69-76 JANUARY DATA VALUES
+etc. 
+157-164 DECEMBER DATA VALUES
+
+177    1999 7240    -999999 7111    -999999 7418    6926    6960    8735    7011    7829    7290    7132    7260    6548    6983    7467    6761    6660    7155    
+177    2000 7949    7059    7667    7164    7628    7467    8897    7216    7117    7435    7883    7574    7347    7471    7581    8157    9161    9363    9058    
+177    2001 8251    8930    7814    8708    8307    7561    8691    8871    8139    8926    8153    7835    7083    7771    7813    8227    9165    8667    8319    
+177    2002 7919    8401    7540    8606    7272    7530    8176    8719    8796    6784    7653    7390    7107    7332    8139    7610    8306    8607    8648    
+177    2003 7239    7987    6647    7826    7009    6535    8003    8484    6186    7535    6823    6661    6880    6235    6500    6800    8206    8997    7471    
+177    2004 7392    7746    6669    7588    6223    6712    8588    7687    7607    6539    6453    5684    5390    6706    7997    7773    9265    8703    8871    
+177    2005 7472    8146    7164    7920    7079    7125    8113    7906    6882    7145    7370    6732    6860    7039    7468    7523    8239    8573    7881    
+177    2006 7260    7888    6740    7848    6887    6582    7621    7965    7682    6990    6937    6735    6443    6445    6852    7037    7645    8180    8235    
+177    2007 7198    7926    6665    8290    6779    6629    7175    8629    7975    6903    6662    6765    6837    6355    6703    6673    7294    7553    8045    
+177    2008 7492    7697    7049    8134    7016    7017    7662    8574    7759    6958    7113    6981    7317    6806    6939    7150    7694    8140    8487    
+177    2009 7288    7782    6828    8011    6893    6774    7620    8452    6996    6861    7257    6574    6683    6884    6752    6830    7230    8841    8132    

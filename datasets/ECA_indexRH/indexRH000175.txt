@@ -1,0 +1,41 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on: 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+FILE FORMAT (MISSING VALUE CODE = -999999):
+
+THIS FILE HOLDS DATA FOR STATION ITALY                                    CAGLIARI                                 (STAID:    175)
+LATITUDE: dd:mm:ss +39:13:59
+LONGITUDE: ddd:mm:ss +009:03:00
+ELEVATION: m   21
+
+DATA IS FOR INDEX Mean of daily average relative humidity (RH) with unit 0.01 Relative humidity (%)
+
+01-06 SOUID: Source identifier
+08-11 YEAR : YYYY
+13-20 ANNUAL DATA VALUES
+21-28 WINTER HALF YEAR DATA VALUES
+29-36 SUMMER HALF YEAR DATA VALUES
+37-44 WINTER (DJF) DATA VALUES
+45-52 SPRING (MAM) DATA VALUES
+53-60 SUMMER (JJA) DATA VALUES
+61-68 AUTUMN (SON) DATA VALUES
+69-76 JANUARY DATA VALUES
+etc. 
+157-164 DECEMBER DATA VALUES
+
+175    1999 6814    -999999 6509    -999999 7240    6097    6510    7897    7200    7197    7077    7442    6273    5945    6076    6213    5913    7423    7090    
+175    2000 7826    7364    7440    7647    7715    7243    8201    8219    7631    7926    7543    7671    7667    7110    6968    7700    8377    8520    8568    
+175    2001 7609    8308    7014    8472    7334    6865    7866    8671    8146    7555    7163    7277    6483    6906    7194    7050    8271    8263    8329    
+175    2002 7791    8200    7326    8372    7564    7043    8001    8381    8411    7568    7717    7413    6690    6894    7535    7710    7706    8597    8919    
+175    2003 -999999 8446    6981    8668    7927    6476    7747    8739    8311    8397    7960    7426    6813    6384    6242    7090    7758    8393    -999999 
+175    2004 -999999 -999999 7047    -999999 7898    6488    -999999 7708    7386    7987    8053    7658    6343    6494    6627    7107    -999999 8363    -999999 
+175    2005 6910    -999999 6483    -999999 7102    6079    7082    7558    7211    7335    7443    6520    6510    5616    6126    6723    7345    7170    7384    
+175    2006 6595    7164    5970    7218    6309    5754    6988    7323    6918    6819    6267    5823    5713    5974    5574    6480    7432    7037    7761    
+175    2007 6591    7374    6052    7548    6692    5709    6609    7584    7271    7135    6673    6268    6110    5571    5458    6263    6568    6997    7300    
+175    2008 6530    6936    5986    7206    6338    5722    6825    7429    6872    6474    6083    6448    5797    5668    5703    6220    6819    7437    7413    
+175    2009 6601    7117    6158    7279    6620    5785    6851    7513    6856    6623    7093    6190    5576    5739    6026    6390    6871    7290    7097    

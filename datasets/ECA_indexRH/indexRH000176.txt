@@ -1,0 +1,41 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on: 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+FILE FORMAT (MISSING VALUE CODE = -999999):
+
+THIS FILE HOLDS DATA FOR STATION ITALY                                    ROMA CIAMPINO                            (STAID:    176)
+LATITUDE: dd:mm:ss +41:46:59
+LONGITUDE: ddd:mm:ss +012:34:59
+ELEVATION: m  105
+
+DATA IS FOR INDEX Mean of daily average relative humidity (RH) with unit 0.01 Relative humidity (%)
+
+01-06 SOUID: Source identifier
+08-11 YEAR : YYYY
+13-20 ANNUAL DATA VALUES
+21-28 WINTER HALF YEAR DATA VALUES
+29-36 SUMMER HALF YEAR DATA VALUES
+37-44 WINTER (DJF) DATA VALUES
+45-52 SPRING (MAM) DATA VALUES
+53-60 SUMMER (JJA) DATA VALUES
+61-68 AUTUMN (SON) DATA VALUES
+69-76 JANUARY DATA VALUES
+etc. 
+157-164 DECEMBER DATA VALUES
+
+176    1999 7545    -999999 7377    -999999 7948    6871    7685    8229    7761    7684    8083    8081    6963    6745    6910    7460    7690    7903    7023    
+176    2000 7813    7815    7135    7743    7930    6481    8362    8252    7969    8065    8030    7700    -999999 6423    6742    7510    8713    8850    8919    
+176    2001 7702    8690    7139    8692    8173    6441    7941    8852    8264    8506    8060    7948    6310    6326    6684    7520    8158    8137    7687    
+176    2002 8113    7979    7856    8070    7745    7613    8578    8023    8546    7381    7980    7881    7080    7461    8281    8450    8845    8430    9029    
+176    2003 6947    7953    6185    7933    6364    5849    8038    8000    6646    6655    6380    6058    5907    5877    5765    7150    8039    8927    7955    
+176    2004 7829    8220    7377    8103    8114    6789    8204    8165    8197    8061    8700    7600    7050    6223    7103    7623    8619    8357    8287    
+176    2005 7226    7731    6952    7469    7005    6696    7927    7210    6850    6997    7323    6706    6687    6423    6977    7620    8074    8083    7748    
+176    2006 7166    7668    6904    7470    7342    6593    7299    7345    7285    7413    7353    7261    6483    6594    6700    7037    7397    7460    7684    
+176    2007 6955    7574    6507    7780    7087    6201    6874    7923    7729    7265    6967    7026    6610    5897    6107    6440    6823    7360    7352    
+176    2008 6895    7328    6366    7344    7040    6250    6844    7465    7207    7758    6813    6542    6550    6197    6013    6093    7065    7367    7671    
+176    2009 6861    7274    6401    7496    6655    6251    7041    7968    6779    6752    7013    6213    6517    6165    6081    6443    6952    7755    7723    

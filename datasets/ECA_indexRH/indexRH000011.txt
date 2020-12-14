@@ -1,0 +1,36 @@
+EUROPEAN CLIMATE ASSESSMENT & DATASET (ECA&D), file created on: 16-11-2020
+THESE DATA CAN BE USED FOR NON-COMMERCIAL RESEARCH AND EDUCATION PROVIDED THAT THE FOLLOWING SOURCE IS ACKNOWLEDGED: 
+
+Klein Tank, A.M.G. and Coauthors, 2002. Daily dataset of 20th-century surface
+air temperature and precipitation series for the European Climate Assessment.
+Int. J. of Climatol., 22, 1441-1453.
+Data and metadata available at http://www.ecad.eu
+
+FILE FORMAT (MISSING VALUE CODE = -999999):
+
+THIS FILE HOLDS DATA FOR STATION AUSTRIA                                  KREMSMUENSTER                            (STAID:     11)
+LATITUDE: dd:mm:ss +48:03:00
+LONGITUDE: ddd:mm:ss +014:07:59
+ELEVATION: m  383
+
+DATA IS FOR INDEX Mean of daily average relative humidity (RH) with unit 0.01 Relative humidity (%)
+
+01-06 SOUID: Source identifier
+08-11 YEAR : YYYY
+13-20 ANNUAL DATA VALUES
+21-28 WINTER HALF YEAR DATA VALUES
+29-36 SUMMER HALF YEAR DATA VALUES
+37-44 WINTER (DJF) DATA VALUES
+45-52 SPRING (MAM) DATA VALUES
+53-60 SUMMER (JJA) DATA VALUES
+61-68 AUTUMN (SON) DATA VALUES
+69-76 JANUARY DATA VALUES
+etc. 
+157-164 DECEMBER DATA VALUES
+
+11     2005 7546    -999999 6919    -999999 6870    6817    8211    8281    8039    7377    6603    6619    6530    6739    7174    7857    7923    8863    8584    
+11     2006 7695    8282    6954    8440    7073    6886    8214    8503    8211    7623    7010    6584    6920    6200    7539    7487    8290    8863    9148    
+11     2007 7436    8334    6556    8506    6538    6391    8408    8123    8218    7365    5707    6516    6050    6190    6923    7953    8494    8773    8952    
+11     2008 7516    8295    6791    8425    6935    6620    8166    8761    7503    7248    7273    6294    6573    6561    6723    7347    8623    8513    8761    
+11     2009 7661    8433    7103    8583    6996    7210    8044    8577    8393    7729    6100    7129    7287    6997    7348    7753    8023    8357    8277    
+11     2010 7612    7969    7240    8154    7159    7180    7905    8374    7775    7003    6790    7671    7273    6884    7387    7427    8055    8230    8471    
