@@ -56,3 +56,20 @@ function varimax(A; gamma = 1.0, minit = 20, maxit = 1000, reltol = 1e-12)
 
 	return B
 end
+
+"""
+	weighted_varimax(A; weight = ones(size(A,2)))
+
+WEIGHTED_VARIMAX perform weighted varimax rotation to the column vectors of the input matrix.
+
+# Input Arguments
+- `A::Matrix{Float64}`: input matrix, whose column vectors are to be rotated. d, m = size(A).
+- `weight::Array{Float64}`: default is an array with all 1. A weighting scheme of A's column vectors.
+
+# Output Argument
+- `B::Matrix{Float64}`: output matrix, whose columns are unit vectors and already been rotated.
+"""
+function weighted_varimax(A; weight = ones(size(A,2)))
+	B = varimax(A*Diagonal(weight))
+	return B ./ sum(B.^2; dims = 1)
+end
