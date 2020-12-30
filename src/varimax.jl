@@ -71,5 +71,5 @@ WEIGHTED_VARIMAX perform weighted varimax rotation to the column vectors of the 
 """
 function weighted_varimax(A; weight = ones(size(A,2)))
 	B = varimax(A*Diagonal(weight))
-	return B ./ sum(B.^2; dims = 1)
+	return B ./ sqrt.(sum(B.^2; dims = 1))
 end
