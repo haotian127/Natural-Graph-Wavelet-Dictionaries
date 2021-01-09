@@ -100,6 +100,7 @@ end
 function HTree_EVlist(V,W_dual)
     #input: hierarchical tree of vertices; eigenvectors V
     #output: hierarchical tree of eigenvectors
+    N = size(V,1)
     ht_elist = [DElist_Part(W_dual)]
     ht_vlist = [DVlist_Part(V,W_dual)]
     while length(ht_elist[end]) < N
