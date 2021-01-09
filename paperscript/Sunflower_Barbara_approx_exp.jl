@@ -21,7 +21,7 @@ ht_elist_varimax = ht_elist_dual
 wavelet_packet_varimax = HTree_wavelet_packet_varimax(𝛷,ht_elist_varimax)
 
 ## 1. barbara eye
-f = matread(joinpath(@__DIR__, "..", "datasets", "sunflower_barbara.mat"))["f_eye"]
+f = matread(joinpath(@__DIR__, "..", "datasets", "sunflower_barbara.mat"))["f_eye_voronoi"]
 # scatter_gplot(X; marker = f, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys); signal_plt = plot!(xlim = [-1.2,1.2], ylim = [-1.2,1.2], yflip = true, frame = :none)
 # savefig(signal_plt, "paperfigs/SunFlower_barbara_feye.png")
 
@@ -29,7 +29,7 @@ DVEC = signal_transform_coeff(f, ht_elist_dual, ht_elist_varimax, wavelet_packet
 
 # num_kept_coeffs = 10:10:200; ERR = integrate_approx_results(DVEC, num_kept_coeffs, "f_eye_DAG_k=1.csv")
 # approx_error_plot3(ERR; num_kept_coeffs = num_kept_coeffs); plot!(legend = :bottomleft, grid = false); approx_error_plt = current()
-approx_error_plot2(DVEC); plot!(legend = :topright); approx_error_plt = current()
+gr(dpi = 400); approx_error_plot2(DVEC); plot!(legend = :topright, xguidefontsize=16, yguidefontsize=16, legendfontsize=12); approx_error_plt = current()
 savefig(approx_error_plt, "paperfigs/SunFlower_barbara_feye_DAG_approx.png")
 
 # # show some important Laplacian eigenvectors
@@ -59,7 +59,7 @@ end
 
 
 ## 2. barbara face
-f = matread(joinpath(@__DIR__, "..", "datasets", "sunflower_barbara.mat"))["f_face"]
+f = matread(joinpath(@__DIR__, "..", "datasets", "sunflower_barbara.mat"))["f_face_voronoi"]
 # scatter_gplot(X; marker = f, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys); signal_plt = plot!(xlim = [-1.2,1.2], ylim = [-1.2,1.2], yflip = true, frame = :none)
 # savefig(signal_plt, "paperfigs/SunFlower_barbara_fface.png")
 
@@ -89,7 +89,7 @@ end
 
 
 ## 3. barbara trouser
-f = matread(joinpath(@__DIR__, "..", "datasets", "sunflower_barbara.mat"))["f_trouser"]
+f = matread(joinpath(@__DIR__, "..", "datasets", "sunflower_barbara.mat"))["f_trouser_voronoi"]
 # scatter_gplot(X; marker = f, ms = LinRange(4.0, 14.0, N), smallValFirst = false, c = :greys); signal_plt = plot!(xlim = [-1.2,1.2], ylim = [-1.2,1.2], yflip = true, frame = :none)
 # savefig(signal_plt, "paperfigs/SunFlower_barbara_ftrouser.png")
 
@@ -97,7 +97,7 @@ DVEC = signal_transform_coeff(f, ht_elist_dual, ht_elist_varimax, wavelet_packet
 
 # num_kept_coeffs = 10:10:200; ERR = integrate_approx_results(DVEC, num_kept_coeffs, "f_trouser_DAG_k=1.csv")
 # approx_error_plot3(ERR; num_kept_coeffs = num_kept_coeffs); plot!(grid = false); approx_error_plt = current()
-approx_error_plot2(DVEC); plot!(legend = :topright); approx_error_plt = current()
+approx_error_plot2(DVEC); plot!(legend = :topright, xguidefontsize=16, yguidefontsize=16, legendfontsize=12); approx_error_plt = current()
 savefig(approx_error_plt, "paperfigs/SunFlower_barbara_ftrouser_DAG_approx.png")
 
 # Show some important NGW basis vectors
