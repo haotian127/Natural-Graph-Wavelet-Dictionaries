@@ -16,6 +16,10 @@ function findminimum(v, n)
     return idx
 end
 
+function findmaximum(v, n)
+    return findminimum(-v, n)
+end
+
 
 """
     spike(i,n)
@@ -527,12 +531,47 @@ SORT\\_WAVELETS, sort A's column wavelet vectors based on their focused location
 - `A::Matrix{Float64}`: a matrix with sorted column.
 """
 function sort_wavelets(A; order_by_loc = true)
-    sgn = (maximum(A, dims = 1)[:] .> -minimum(A, dims = 1)[:]) .* 2 .- 1
-    A = (A' .* sgn)'
+    # sgn = (maximum(A, dims = 1)[:] .> -minimum(A, dims = 1)[:]) .* 2 .- 1
+    # A = (A' .* sgn)'
+
     if order_by_loc
         ord = findmax(abs.(A), dims = 1)[2][:]
         idx = sortperm([j[1] for j in ord])
         A = A[:,idx]
     end
+
+    N = size(A,1)
+    sgn = ones(size(A,2))
+    mid = Int(round(size(A,2)/2))
+    for i in 1:size(A,2)
+        cor_res = crosscor(A[:,mid], A[:,i], -Int(ceil(N/2)):Int(floor(N/2)))
+        if maximum(cor_res) < -minimum(cor_res)
+            sgn[i] = -1
+        end
+    end
+    A = A * Diagonal(sgn)
     return A
+end
+
+
+function findlocalmaxima(signal::Vector)
+    inds = Int[]
+    if length(signal)>1
+        if signal[1]>signal[2]
+            push!(inds,1)
+        end
+        for i=2:length(signal)-1
+            if signal[i-1]<signal[i]>signal[i+1]
+               push!(inds,i)
+            end
+        end
+        if signal[end]>signal[end-1]
+            push!(inds,length(signal))
+        end
+    end
+    inds
+end
+
+function findlocalminima(signal::Vector)
+    return findlocalmaxima(-signal)
 end
