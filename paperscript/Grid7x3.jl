@@ -6,10 +6,10 @@ Nx, Ny = 7, 3
 G = LightGraphs.grid([Nx,Ny]); N = nv(G);
 L = Matrix(laplacian_matrix(G))
 Q = incidence_matrix(G; oriented = true)
-lamb, V = eigen(L); V = V.*sign.(V[1,:])';
+𝛌, 𝚽 = eigen(L); 𝚽 = 𝚽.*sign.(𝚽[1,:])';
 
 # DAG pseudo-metric
-distDAG = eigDAG_Distance(V,Q,N)
+distDAG = eigDAG_Distance(𝚽,Q,N)
 
 # MDS embedding into R²
 D = distDAG
@@ -30,7 +30,7 @@ eig2dct = Array{Int64,3}(undef, Nx, Ny, 2); for i in 1:Nx; for j in 1:Ny; eig2dc
 
 pyplot(dpi = 400); plot()
 for k=1:N
-    heatmap!(xej[:,k],yej[:,k],reshape(V[:,k],(Nx,Ny))',c=:viridis,colorbar=false,ratio=1,annotations=(xej[4,k], yej[3,k]+b*dy, text(latexstring("\\phi_{", string(eig2dct[k,1]), ",", string(eig2dct[k,2]), "}"),10)))
+    heatmap!(xej[:,k],yej[:,k],reshape(𝚽[:,k],(Nx,Ny))',c=:viridis,colorbar=false,ratio=1,annotations=(xej[4,k], yej[3,k]+b*dy, text(latexstring("\\phi_{", string(eig2dct[k,1]), ",", string(eig2dct[k,2]), "}"),10)))
 end
 plot!(aspect_ratio = 1, xlim = [-1.4, 1.3], ylim = [-1.4, 1.3], grid = false, clims=(-0.4,0.4))
 # savefig(plt, "paperfigs/Grid_DAG.png")
@@ -53,11 +53,11 @@ include(joinpath("..", "src", "func_includer.jl"))
 W_dual = sparse(dualGraph(distDAG)) #required: sparse dual weighted adjacence matrix
 
 ## Assemble NGWPs
-ht_elist_PC, ht_vlist_PC = HTree_EVlist(V,W_dual)
-wavelet_packet_PC = HTree_wavelet_packet(V,ht_vlist_PC,ht_elist_PC)
+ht_elist_PC, ht_vlist_PC = HTree_EVlist(𝚽,W_dual)
+wavelet_packet_PC = HTree_wavelet_packet(𝚽,ht_vlist_PC,ht_elist_PC)
 
 ht_elist_VM = ht_elist_PC
-wavelet_packet_VM = HTree_wavelet_packet_varimax(V,ht_elist_VM)
+wavelet_packet_VM = HTree_wavelet_packet_varimax(𝚽,ht_elist_VM)
 
 ## level 2 VM-NGWP vectors
 lvl = 3; W_VM = hcat(wavelet_packet_VM[lvl][1], wavelet_packet_VM[lvl][2], wavelet_packet_VM[lvl][3], wavelet_packet_VM[lvl][4]);
