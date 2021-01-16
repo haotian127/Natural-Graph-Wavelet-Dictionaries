@@ -16,7 +16,7 @@ W = 1.0 * adjacency_matrix(G)
 gr(dpi = 400)
 for i in 2:5
     gplot(W, X; width = 1); scatter_gplot!(X; marker = Ψ_SGWT[:,i], ms = 14); Grid_SC_plt = plot!(framestyle = :none, xlim = [0.5, 11], ylim = [0.5, 5.5])
-    savefig(Grid_SC_plt, "paperfigs/Grid_SGWT_MexicanHat_wavelet_scale$(i).png")
+    # savefig(Grid_SC_plt, "paperfigs/Grid_SGWT_MexicanHat_wavelet_scale$(i).png")
 end
 
 ## Non-trivial eigenvector metric
@@ -31,12 +31,12 @@ focusEigenVecInd = [6, 9, 10, 19]
 
 for i in focusEigenVecInd
     gplot(W, X; width = 1); scatter_gplot!(X; marker = 𝛷[:,i], ms = 14); Grid_SC_plt = plot!(framestyle = :none, xlim = [0.5, 11], ylim = [0.5, 5.5])
-    savefig(Grid_SC_plt, "paperfigs/Grid_EigenVec$(i-1).png")
+    # savefig(Grid_SC_plt, "paperfigs/Grid_EigenVec$(i-1).png")
 end
 
 for i in focusEigenVecInd
     gplot(W, X; width = 1); scatter_gplot!(X; marker = Ψ[i,28,:], ms = 14); Grid_SC_plt = plot!(framestyle = :none, xlim = [0.5, 11], ylim = [0.5, 5.5])
-    savefig(Grid_SC_plt, "paperfigs/Grid_SC_HAD_wavelet_focusEigenVec$(i-1).png")
+    # savefig(Grid_SC_plt, "paperfigs/Grid_SC_HAD_wavelet_focusEigenVec$(i-1).png")
 end
 
 ## Non-trivial eigenvector metric
@@ -51,5 +51,5 @@ focusEigenVecInd = [6, 9, 10, 19]
 
 for i in focusEigenVecInd
     gplot(W, X; width = 1); scatter_gplot!(X; marker = Ψ[i,28,:], ms = 14); Grid_SC_plt = plot!(framestyle = :none, xlim = [0.5, 11], ylim = [0.5, 5.5])
-    savefig(Grid_SC_plt, "paperfigs/Grid_SC_DAG_wavelet_focusEigenVec$(i-1).png")
+    # savefig(Grid_SC_plt, "paperfigs/Grid_SC_DAG_wavelet_focusEigenVec$(i-1).png")
 end
