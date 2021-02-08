@@ -1,3 +1,3 @@
 # Natural Graph Wavelet Packet Dictionaries
 
-Code Scripts for Varimax-Rotation Natural Graph Wavelet Packet (VM-NGWP) and Pair-Clustering Natural Graph Wavelet Packet (PC-NGWP).
+This repo is deprecated. Please visit [`NGWP.jl`](https://github.com/haotian127/NGWP.jl) for the official version.
